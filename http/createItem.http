@@ -1,0 +1,31 @@
+### Create Item
+POST localhost:8080/item
+Content-Type: application/json
+
+{
+  "itemType": "ITEM",
+  "name": "XD",
+  "description": "description_6ae72bc32177",
+  "categoryId": "category-kitchen",
+  "brand": "Firma",
+  "currentStock": 2,
+  "desiredStock": 0,
+  "photoId": "photoId_4f8843d6bb90",
+  "barcode": "1245"
+}
+
+### Create SubItem
+POST localhost:8080/item
+Content-Type: application/json
+
+{
+  "itemType": "SUB_ITEM",
+  "name": "XD",
+  "description": "description_6ae72bc32177",
+  "parentId": "528c31ae-c782-4e09-9090-e88fdbbed2a8",
+  "brand": "Firma",
+  "currentStock": 2,
+  "desiredStock": 0,
+  "photoId": "photoId_4f8843d6bb90",
+  "barcode": "1245"
+}

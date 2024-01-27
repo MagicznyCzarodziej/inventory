@@ -1,0 +1,8 @@
+### Create ParentItem
+POST http://localhost:8080/parent-item
+Content-Type: application/json
+
+{
+  "name": "name_5e53c38f27aa",
+  "categoryId": "category-kitchen"
+}

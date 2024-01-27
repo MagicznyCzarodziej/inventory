@@ -1,0 +1,17 @@
+<configuration>
+    <conversionRule conversionWord="prefix"
+                    converterClass="pl.przemyslawpitus.inventory.logging.ColorPrefixConverter"/>
+    <conversionRule conversionWord="noPrefixMessage"
+                    converterClass="pl.przemyslawpitus.inventory.logging.RemoveMessagePrefixConverter"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%prefix %cyan(%logger{60}) %white([%thread]) %n%noPrefixMessage %n%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>
