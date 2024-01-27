@@ -16,7 +16,7 @@ class CreateParentItemEndpoint(
     private val createParentItemUseCase: CreateParentItemUseCase,
 ) {
     @PostMapping(
-        "/parent-item",
+        "/parent-items",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )

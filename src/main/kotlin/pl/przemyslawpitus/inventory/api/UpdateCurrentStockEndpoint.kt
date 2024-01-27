@@ -16,7 +16,7 @@ class UpdateCurrentStockEndpoint(
 ) {
 
     @PutMapping(
-        "/item/{itemId}/stock/current",
+        "/items/{itemId}/stock/current",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )

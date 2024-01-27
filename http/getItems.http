@@ -1,0 +1,2 @@
+### Get items
+GET localhost:8080/items

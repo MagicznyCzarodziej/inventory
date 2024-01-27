@@ -16,4 +16,8 @@ class InMemoryParentItemRepository : ParentItemRepository {
     override fun getById(parentItemId: ParentItemId): ParentItem? {
         return parentItems[parentItemId]
     }
+
+    override fun getAll(): List<ParentItem> {
+        return parentItems.values.toList()
+    }
 }

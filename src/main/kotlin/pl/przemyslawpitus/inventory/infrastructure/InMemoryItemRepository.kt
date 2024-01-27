@@ -26,4 +26,8 @@ class InMemoryItemRepository : ItemRepository, CreateItemRepository {
         items[item.id] = item
         return item
     }
+
+    override fun getAll(): List<Item> {
+        return items.values.toList()
+    }
 }

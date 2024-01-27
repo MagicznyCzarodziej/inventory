@@ -18,7 +18,7 @@ class CreateItemEndpoint(
     private val createItemUseCase: CreateItemUseCase,
 ) {
     @PostMapping(
-        "/item",
+        "/items",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )

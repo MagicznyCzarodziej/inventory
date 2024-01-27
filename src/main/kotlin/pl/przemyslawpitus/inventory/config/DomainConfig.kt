@@ -10,6 +10,8 @@ import pl.przemyslawpitus.inventory.domain.changeItemCountUseCase.UpdateCurrentS
 import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemRepository
 import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemUseCase
 import pl.przemyslawpitus.inventory.domain.createParentItemUseCase.CreateParentItemUseCase
+import pl.przemyslawpitus.inventory.domain.geItemUseCase.GetItemUseCase
+import pl.przemyslawpitus.inventory.domain.getItemsUseCase.GetItemsUseCase
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryCategoryRepository
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryItemRepository
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryParentItemRepository
@@ -56,6 +58,20 @@ class DomainConfig {
     ) = UpdateCurrentStockUseCase(
         itemRepository = itemRepository,
         stockTransformer = stockTransformer,
+    )
+
+    @Bean
+    fun getItemsUseCase(
+      itemRepository: ItemRepository,
+    ) = GetItemsUseCase(
+      itemRepository = itemRepository,
+    )
+
+    @Bean
+    fun getItemUseCase(
+      itemRepository: ItemRepository,
+    ) = GetItemUseCase(
+      itemRepository = itemRepository,
     )
 }
 
