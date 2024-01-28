@@ -17,7 +17,7 @@ class GetItemEndpoint(
 ) {
     @GetMapping(
         "/items/{itemId}",
-        produces = [MediaType.APPLICATION_JSON_VALUE]
+        produces = [MediaType.APPLICATION_JSON_VALUE],
     )
     fun getItem(
         @PathVariable itemId: String,

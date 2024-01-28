@@ -5,7 +5,10 @@ import pl.przemyslawpitus.inventory.domain.item.Category
 import pl.przemyslawpitus.inventory.domain.item.CategoryId
 
 class InMemoryCategoryRepository: CategoryRepository {
-    private val categories = mutableMapOf<CategoryId, Category>(kitchenCategory.id to kitchenCategory)
+    private val categories = mutableMapOf<CategoryId, Category>(
+        foodCategory.id to foodCategory,
+        cleaningCategory.id to cleaningCategory,
+    )
 
     override fun getById(categoryId: CategoryId): Category? {
         return categories[categoryId]
@@ -13,8 +16,14 @@ class InMemoryCategoryRepository: CategoryRepository {
 }
 
 // TODO Remove this
-private val kitchenCategory = Category(
-    id = CategoryId(value = "category-kitchen"),
-    name = "Kitchen",
+val foodCategory = Category(
+    id = CategoryId(value = "category-food"),
+    name = "Jedzenie",
+    version = 0,
+)
+
+val cleaningCategory = Category(
+    id = CategoryId(value = "category-cleaning"),
+    name = "Sprzątańsko",
     version = 0,
 )

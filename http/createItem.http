@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "itemType": "ITEM",
-  "name": "Dwa",
+  "name": "XDDD",
   "description": "description_6ae72bc32177",
   "categoryId": "category-kitchen",
   "brand": "Firma",
@@ -20,12 +20,12 @@ Content-Type: application/json
 
 {
   "itemType": "SUB_ITEM",
-  "name": "Child 3",
-  "description": "description_6ae72bc32177",
-  "parentId": "09f013f8-de40-4e5d-ade5-2332229d4531",
-  "brand": "Firma",
+  "name": "60l",
+  "description": "Na zmieszane",
+  "parentId": "28c83796-26a2-452f-ac44-a2eb47f6ad14",
+  "brand": "Purio",
   "currentStock": 2,
-  "desiredStock": 3,
+  "desiredStock": 5,
   "photoId": "photoId_4f8843d6bb90",
-  "barcode": "1245"
+  "barcode": "05913245618"
 }

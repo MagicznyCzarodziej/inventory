@@ -3,6 +3,6 @@ POST http://localhost:8080/parent-items
 Content-Type: application/json
 
 {
-  "name": "Parent 2",
+  "name": "Worki na śmieci",
   "categoryId": "category-kitchen"
 }

@@ -7,6 +7,8 @@ import java.time.Instant
 class StockTransformer {
     fun updateCurrentStock(stock: Stock, stockChange: Int): Stock {
         val newCurrentStock = stock.currentStock + stockChange
+        if (newCurrentStock < 0) throw CurrentStockCannotBeNegativeException()
+
         val newHistory = stock.stockHistory + StockHistoryEntry(
             change = stockChange,
             stockAfterChange = newCurrentStock,
@@ -19,3 +21,5 @@ class StockTransformer {
         )
     }
 }
+
+class CurrentStockCannotBeNegativeException : RuntimeException("Current stock cannot be less than 0")
