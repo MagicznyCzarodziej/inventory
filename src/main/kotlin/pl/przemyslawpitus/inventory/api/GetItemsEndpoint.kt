@@ -42,7 +42,9 @@ data class GetItemsResponse(
         data class ItemEntry(
             val id: String,
             val name: String,
+            val brand: String?,
             val currentStock: Int,
+            val desiredStock: Int,
         ) : Entry()
     }
 }
@@ -57,7 +59,9 @@ private fun List<ItemsView.Entry>.toGetItemsResponse() = GetItemsResponse(
                     GetItemsResponse.Entry.ItemEntry(
                         id = item.id.value,
                         name = item.name,
+                        brand = item.brand,
                         currentStock = item.stock.currentStock,
+                        desiredStock = item.stock.desiredStock,
                     )
                 }
             )
@@ -65,7 +69,9 @@ private fun List<ItemsView.Entry>.toGetItemsResponse() = GetItemsResponse(
             is ItemsView.Entry.IndependentItemEntry -> GetItemsResponse.Entry.ItemEntry(
                 id = it.item.id.value,
                 name = it.item.name,
+                brand = it.item.brand,
                 currentStock = it.item.stock.currentStock,
+                desiredStock = it.item.stock.desiredStock,
             )
         }
     }

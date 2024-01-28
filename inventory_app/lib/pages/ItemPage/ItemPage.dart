@@ -1,24 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_app/api/HttpClient.dart';
 
 import '../../dto/GetItemResponse.dart';
+import '../../utils.dart';
 
 Future<GetItemResponse> getItem(String itemId) async {
   var response = await HttpClient.getJson('/items/$itemId');
   return GetItemResponse.fromJson(response);
-}
-
-Future<void> updateCurrentStock(
-  String itemId,
-  int stockChange,
-) {
-  return HttpClient.putJson(
-    '/items/$itemId/stock/current',
-    jsonEncode({"stockChange": stockChange}),
-  );
 }
 
 class ItemPage extends StatefulWidget {
@@ -32,20 +21,6 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   late Future<GetItemResponse> itemResponse;
-
-  Color getCurrentStockColor(int currentStock, int desiredStock) {
-    if (currentStock < 1) {
-      return Colors.red;
-    } else if (currentStock < 2 && desiredStock > 1) {
-      return Colors.pink;
-    } else if (currentStock < desiredStock / 2) {
-      return Colors.orange;
-    } else if (currentStock > desiredStock) {
-      return Colors.teal;
-    } else {
-      return Colors.green;
-    }
-  }
 
   @override
   void initState() {
@@ -63,28 +38,32 @@ class _ItemPageState extends State<ItemPage> {
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    height: 270,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(
-                            item.photoUrl != null ? item.photoUrl! : "",
+                  if (item.photoUrl != null)
+                    Container(
+                      height: 270,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            item.photoUrl!,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
+                    )
+                  else
+                    SafeArea(child: Container()),
                   Expanded(
                     child: Container(
                       decoration: const BoxDecoration(boxShadow: [
                         BoxShadow(
-                          color: Colors.black38,
+                          color: Colors.black54,
                           blurRadius: 20,
                           blurStyle: BlurStyle.outer,
                         ),
                       ]),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        padding:
+                            const EdgeInsets.only(left: 24, right: 16, top: 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -98,15 +77,30 @@ class _ItemPageState extends State<ItemPage> {
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: const Icon(Icons.delete),
+                                  icon: Icon(
+                                    Icons.delete,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceVariant,
+                                  ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: const Icon(Icons.history),
+                                  icon: Icon(
+                                    Icons.history,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceVariant,
+                                  ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
-                                  icon: const Icon(Icons.edit),
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceVariant,
+                                  ),
                                 ),
                               ],
                             ),
@@ -122,21 +116,29 @@ class _ItemPageState extends State<ItemPage> {
                                 Text(
                                   item.name,
                                   style: const TextStyle(
-                                    fontSize: 40,
+                                    fontSize: 32,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 if (item.brand != null)
                                   Text(
-                                    "  ${item.brand!}",
+                                    " ${item.brand!}",
                                     style: const TextStyle(fontSize: 32),
                                   ),
                               ],
                             ),
                             if (item.description != null)
-                              Text(
-                                item.description!,
-                                style: const TextStyle(fontSize: 22),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                  item.description!,
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSurfaceVariant,
+                                  ),
+                                ),
                               ),
                             const Spacer(),
                             Row(
@@ -184,6 +186,8 @@ class _ItemPageState extends State<ItemPage> {
                 ],
               ),
               bottomNavigationBar: BottomAppBar(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                height: 70,
                 child: Row(
                   children: [
                     Row(

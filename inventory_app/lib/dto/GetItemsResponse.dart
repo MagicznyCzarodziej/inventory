@@ -37,9 +37,17 @@ class ParentEntry implements Entry {
 class ItemEntry implements Entry {
   String id;
   String name;
+  String? brand;
   int currentStock;
+  int desiredStock;
 
-  ItemEntry(this.id, this.name, this.currentStock);
+  ItemEntry(
+    this.id,
+    this.name,
+    this.brand,
+    this.currentStock,
+    this.desiredStock,
+  );
 
   factory ItemEntry.fromJson(Map<String, dynamic> json) =>
       _$ItemEntryFromJson(json);

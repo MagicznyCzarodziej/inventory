@@ -38,11 +38,15 @@ Map<String, dynamic> _$ParentEntryToJson(ParentEntry instance) =>
 ItemEntry _$ItemEntryFromJson(Map<String, dynamic> json) => ItemEntry(
       json['id'] as String,
       json['name'] as String,
+      json['brand'] as String?,
       json['currentStock'] as int,
+      json['desiredStock'] as int,
     );
 
 Map<String, dynamic> _$ItemEntryToJson(ItemEntry instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
+      'brand': instance.brand,
       'currentStock': instance.currentStock,
+      'desiredStock': instance.desiredStock,
     };

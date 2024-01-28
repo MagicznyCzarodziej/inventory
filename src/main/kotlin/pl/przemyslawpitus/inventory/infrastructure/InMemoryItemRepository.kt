@@ -18,6 +18,7 @@ class InMemoryItemRepository : ItemRepository, CreateItemRepository {
         item2.id to item2,
         item3.id to item3,
         item4.id to item4,
+        item5.id to item5,
     )
 
     override fun createItem(item: Item): Item {
@@ -43,7 +44,7 @@ class InMemoryItemRepository : ItemRepository, CreateItemRepository {
 val item1 = Item(
     id = ItemId(value = randomUuid()),
     name = "Łagodny",
-    description = null,
+    description = "Z dużym korkiem",
     root = Root.ParentRoot(
         parentItem = parent2,
     ),
@@ -73,7 +74,7 @@ val item1 = Item(
 val item2 = Item(
     id = ItemId(value = randomUuid()),
     name = "Pikantny",
-    description = null,
+    description = "Z dużym korkiem",
     root = Root.ParentRoot(
         parentItem = parent2,
     ),
@@ -100,7 +101,7 @@ val item2 = Item(
 val item3 = Item(
     id = ItemId(value = randomUuid()),
     name = "60l",
-    description = null,
+    description = "Zapach lawendowy",
     root = Root.ParentRoot(
         parentItem = parent1,
     ),
@@ -147,6 +148,36 @@ val item4 = Item(
             StockHistoryEntry(
                 change = 1,
                 stockAfterChange = 1,
+                createdAt = Instant.now(),
+            ),
+        )
+    ),
+    createdAt = Instant.now(),
+    updatedAt = Instant.now(),
+    removedAt = null,
+    version = 0
+)
+
+val item5 = Item(
+    id = ItemId(value = randomUuid()),
+    name = "Majonez",
+    description = null,
+    root = Root.CategoryRoot(
+        category = foodCategory,
+    ),
+    brand = "Winiary",
+    barcode = "05954186451",
+    photo = ItemPhoto(
+        photoId = PhotoId(randomUuid()),
+        photoUrl = "https://www.dine4fit.pl/file/image/foodstuff/53b83bde708c45398001dbec9ddb79f6/381ffa4ece244078b5f14c3621af6648"
+    ),
+    stock = Stock(
+        currentStock = 0,
+        desiredStock = 1,
+        stockHistory = listOf(
+            StockHistoryEntry(
+                change = 0,
+                stockAfterChange = 0,
                 createdAt = Instant.now(),
             ),
         )
