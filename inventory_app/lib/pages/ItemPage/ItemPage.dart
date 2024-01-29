@@ -45,7 +45,7 @@ class _ItemPageState extends State<ItemPage> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            item.photoUrl!,
+                            item.photoUrl!.startsWith("/") ? "http://192.168.0.66:8080${item.photoUrl}" : item.photoUrl!,
                           ),
                         ),
                       ),
@@ -76,7 +76,11 @@ class _ItemPageState extends State<ItemPage> {
                                 ),
                                 const Spacer(),
                                 IconButton(
-                                  onPressed: () => {},
+                                  onPressed: () async {
+                                    await HttpClient.delete("/items/${item.id}");
+                                    if (!mounted) return;
+                                    Navigator.pop(context);
+                                  },
                                   icon: Icon(
                                     Icons.delete,
                                     color: Theme.of(context)

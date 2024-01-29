@@ -12,7 +12,7 @@ Future<void> main() async {
   final firstCamera = cameras.first;
 
   runApp(MaterialApp(
-    title: 'Flutter Demo',
+    title: 'Inventory',
     theme: ThemeData(
       colorScheme: const ColorScheme(
         brightness: Brightness.dark,
@@ -55,6 +55,6 @@ Future<void> main() async {
       ),
       useMaterial3: true,
     ),
-    home: const ItemsPage(title: 'Flutter Demo Home Page'),
+    home: ItemsPage(camera: firstCamera),
   ));
 }

@@ -44,14 +44,7 @@ class HttpClient {
     return jsonDecode(response.body);
   }
 
-  static Future<Response> delete(String uri, Object? body) => http.delete(
+  static Future<Response> delete(String uri) => http.delete(
         Uri.parse(baseUri + uri),
-        body: body,
-        headers: {"Content-Type": MediaType.Json, "Accept": MediaType.Json},
       );
-
-  static Future deleteJson(String uri, Object? body) async {
-    var response = await delete(uri, body);
-    return jsonDecode(response.body);
-  }
 }

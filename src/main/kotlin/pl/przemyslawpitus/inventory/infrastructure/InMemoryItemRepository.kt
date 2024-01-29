@@ -36,6 +36,11 @@ class InMemoryItemRepository : ItemRepository, CreateItemRepository {
         return item
     }
 
+    override fun removeById(itemId: ItemId) {
+        if (!items.containsKey(itemId)) throw RuntimeException("Item $itemId not found")
+        items.remove(itemId)
+    }
+
     override fun getAll(): List<Item> {
         return items.values.toList()
     }

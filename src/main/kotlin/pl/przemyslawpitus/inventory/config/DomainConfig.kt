@@ -11,10 +11,17 @@ import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemRepositor
 import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemUseCase
 import pl.przemyslawpitus.inventory.domain.createParentItemUseCase.CreateParentItemUseCase
 import pl.przemyslawpitus.inventory.domain.geItemUseCase.GetItemUseCase
+import pl.przemyslawpitus.inventory.domain.getCategoriesUseCase.GetCategoriesUseCase
 import pl.przemyslawpitus.inventory.domain.getItemsUseCase.GetItemsUseCase
+import pl.przemyslawpitus.inventory.domain.getParentItemsUseCase.GetParentItemsUseCase
+import pl.przemyslawpitus.inventory.domain.getPhotoUseCase.GetPhotoUseCase
+import pl.przemyslawpitus.inventory.domain.removeItemUseCase.RemoveItemUseCase
+import pl.przemyslawpitus.inventory.domain.uploadPhotoUseCase.PhotoRepository
+import pl.przemyslawpitus.inventory.domain.uploadPhotoUseCase.UploadPhotoUseCase
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryCategoryRepository
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryItemRepository
 import pl.przemyslawpitus.inventory.infrastructure.InMemoryParentItemRepository
+import pl.przemyslawpitus.inventory.infrastructure.InMemoryPhotoRepository
 
 @Configuration
 @Suppress("TooManyFunctions")
@@ -29,14 +36,19 @@ class DomainConfig {
     fun categoryRepository() = InMemoryCategoryRepository()
 
     @Bean
+    fun photoRepository() = InMemoryPhotoRepository()
+
+    @Bean
     fun createItemUseCase(
         createItemRepository: CreateItemRepository,
         categoryRepository: CategoryRepository,
         parentItemRepository: ParentItemRepository,
+        photoRepository: PhotoRepository,
     ) = CreateItemUseCase(
         createItemRepository = createItemRepository,
         categoryRepository = categoryRepository,
         parentItemRepository = parentItemRepository,
+        photoRepository = photoRepository,
     )
 
     @Bean
@@ -73,5 +85,41 @@ class DomainConfig {
     ) = GetItemUseCase(
       itemRepository = itemRepository,
     )
+
+    @Bean
+    fun removeItemUseCase(
+      itemRepository: ItemRepository,
+    ) = RemoveItemUseCase(
+      itemRepository = itemRepository,
+    )
+
+    @Bean
+    fun uploadPhotoUseCase(
+      photoRepository: PhotoRepository,
+    ) = UploadPhotoUseCase(
+      photoRepository = photoRepository,
+    )
+
+    @Bean
+    fun getPhotoUseCase(
+      photoRepository: PhotoRepository,
+    ) = GetPhotoUseCase(
+      photoRepository = photoRepository,
+    )
+
+    @Bean
+    fun getParentItemsUseCase(
+      parentItemRepository: ParentItemRepository,
+    ) = GetParentItemsUseCase(
+      parentItemRepository = parentItemRepository,
+    )
+
+    @Bean
+    fun getCategoriesUseCase(
+      categoryRepository: CategoryRepository,
+    ) = GetCategoriesUseCase(
+      categoryRepository = categoryRepository,
+    )
+
 }
 

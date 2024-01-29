@@ -6,11 +6,14 @@ import pl.przemyslawpitus.inventory.logging.WithLogger
 import pl.przemyslawpitus.inventory.domain.item.CategoryId
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
+import pl.przemyslawpitus.inventory.domain.item.ItemPhoto
 import pl.przemyslawpitus.inventory.domain.item.ParentItemId
+import pl.przemyslawpitus.inventory.domain.item.Photo
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.domain.item.Stock
 import pl.przemyslawpitus.inventory.domain.item.StockHistoryEntry
+import pl.przemyslawpitus.inventory.domain.uploadPhotoUseCase.PhotoRepository
 import pl.przemyslawpitus.inventory.domain.utils.randomUuid
 import java.time.Instant
 
@@ -18,12 +21,13 @@ class CreateItemUseCase(
     private val createItemRepository: CreateItemRepository,
     private val categoryRepository: CategoryRepository,
     private val parentItemRepository: ParentItemRepository,
+    private val photoRepository: PhotoRepository,
 ) {
     fun createItem(itemDraft: ItemDraft): Item {
         logger.domain("Create item | ${itemDraft.name}")
 
         val now = Instant.now()
-        val photo = null // TODO Fetch photo by photo id from draft
+        val itemPhoto = itemDraft.photoId?.let { getPhoto(it) }
         val root = getRoot(itemDraft)
 
         val item = Item(
@@ -33,7 +37,7 @@ class CreateItemUseCase(
             root = root,
             brand = itemDraft.brand,
             barcode = itemDraft.barcode,
-            photo = photo,
+            photo = itemPhoto,
             stock = createNewStock(
                 currentStock = itemDraft.currentStock,
                 desiredStock = itemDraft.desiredStock,
@@ -49,16 +53,31 @@ class CreateItemUseCase(
         return savedItem
     }
 
-    private fun getRoot(itemDraft: ItemDraft):Root =
+    private fun getPhoto(photoId: PhotoId): ItemPhoto {
+//        val photo = photoRepository.getById(photoId) ?: throw RuntimeException("Photo $photoId not found")
+
+        return ItemPhoto(
+            photoId = photoId,
+            photoUrl = "/photos/${photoId.value}"
+        )
+    }
+
+    private fun getRoot(itemDraft: ItemDraft): Root =
         when (itemDraft.itemType) {
             ItemDraft.ItemType.ITEM -> {
                 requireNotNull(itemDraft.categoryId)
-                Root.CategoryRoot(categoryRepository.getById(itemDraft.categoryId) ?: throw RuntimeException("Category not found ${itemDraft.categoryId}"))
+                Root.CategoryRoot(
+                    categoryRepository.getById(itemDraft.categoryId)
+                        ?: throw RuntimeException("Category not found ${itemDraft.categoryId}")
+                )
             }
 
             ItemDraft.ItemType.SUB_ITEM -> {
                 requireNotNull(itemDraft.parentId)
-                Root.ParentRoot(parentItemRepository.getById(itemDraft.parentId) ?: throw RuntimeException("ParentItem not found ${itemDraft.parentId}"))
+                Root.ParentRoot(
+                    parentItemRepository.getById(itemDraft.parentId)
+                        ?: throw RuntimeException("ParentItem not found ${itemDraft.parentId}")
+                )
             }
         }
 

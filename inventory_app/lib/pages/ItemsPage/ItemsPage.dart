@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_app/api/HttpClient.dart';
 import 'package:inventory_app/pages/AddItemPage/AddItemPage.dart';
+import 'package:inventory_app/pages/AddItemPage/ChooseItemRootPage.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemEntryWidget.dart';
 import 'package:inventory_app/routes/simpleRoute.dart';
 import 'package:inventory_app/utils.dart';
@@ -13,9 +15,9 @@ Future<GetItemsResponse> getItems() async {
 }
 
 class ItemsPage extends StatefulWidget {
-  const ItemsPage({super.key, required this.title});
+  const ItemsPage({super.key, required this.camera});
 
-  final String title;
+  final CameraDescription camera;
 
   @override
   State<ItemsPage> createState() => _ItemsPageState();
@@ -78,7 +80,8 @@ class _ItemsPageState extends State<ItemsPage> {
                   children: [
                     Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.only(left: 16, right: 16,top: 16),
+                        padding:
+                            const EdgeInsets.only(left: 16, right: 16, top: 16),
                         itemCount: entries.length,
                         itemBuilder: (BuildContext context, int index) {
                           var entry = entries[index];
@@ -166,8 +169,11 @@ class _ItemsPageState extends State<ItemsPage> {
                                   Theme.of(context).colorScheme.surfaceVariant,
                               child: IconButton(
                                 onPressed: () async {
-                                  var res = await Navigator.push(context,
-                                      simpleRoute(const AddItemPage()));
+                                  var res = await Navigator.push(
+                                      context,
+                                      simpleRoute(ChooseItemRootPage(
+                                        camera: widget.camera,
+                                      )));
                                   if (!mounted) return;
                                   setState(() {
                                     itemsResponse = getItems();
