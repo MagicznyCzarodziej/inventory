@@ -1,8 +1,8 @@
 package pl.przemyslawpitus.inventory.domain.item
 
 data class ItemPhoto(
-    val photoId: PhotoId,
-    val photoUrl: String,
+    val id: PhotoId,
+    val url: String,
 )
 
 data class PhotoId(val value: String) {

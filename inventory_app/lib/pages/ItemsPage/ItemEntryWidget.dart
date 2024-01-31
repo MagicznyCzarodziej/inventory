@@ -34,7 +34,7 @@ class ItemEntryWidget extends StatelessWidget {
           Navigator.push(context, simpleRoute(ItemPage(itemId: entry.id)))
               .then((value) => refetchItems()),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.only(bottom: 12.0),
         child: Container(
           color: Theme.of(context).colorScheme.surface,
           child: Padding(
@@ -45,7 +45,7 @@ class ItemEntryWidget extends StatelessWidget {
                 Text(
                   entry.name,
                   style: const TextStyle(
-                    fontSize: 24,
+                    fontSize: 18,
                   ),
                 ),
                 Row(

@@ -4,7 +4,7 @@ part '../generated/dto/GetCategoriesResponse.g.dart';
 
 @JsonSerializable()
 class GetCategoriesResponse {
-  List<ParentItem> categories;
+  List<Category> categories;
 
   GetCategoriesResponse(this.categories);
 
@@ -13,12 +13,12 @@ class GetCategoriesResponse {
 }
 
 @JsonSerializable()
-class ParentItem {
+class Category {
   String id;
   String name;
 
-  ParentItem(this.id, this.name);
+  Category(this.id, this.name);
 
-  factory ParentItem.fromJson(Map<String, dynamic> json) =>
-      _$ParentItemFromJson(json);
+  factory Category.fromJson(Map<String, dynamic> json) =>
+      _$CategoryFromJson(json);
 }

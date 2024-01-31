@@ -43,6 +43,7 @@ dependencies:
   path: ^1.8.3
   flutter_barcode_scanner: ^2.0.0
   mobile_scanner: 3.5.5
+  image: ^4.1.4
 
 dev_dependencies:
   flutter_test:

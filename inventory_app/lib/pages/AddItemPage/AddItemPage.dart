@@ -13,10 +13,23 @@ import 'package:inventory_app/routes/simpleRoute.dart';
 
 import '../../utils.dart';
 
-class AddItemPage extends StatefulWidget {
-  const AddItemPage({super.key, required this.camera, this.categoryId});
+Future<GetCategoriesResponse> getCategories() async {
+  var response = await HttpClient.getJson('/categories');
+  return GetCategoriesResponse.fromJson(response);
+}
 
-  final String? categoryId;
+class AddItemPage extends StatefulWidget {
+  const AddItemPage({
+    super.key,
+    required this.camera,
+    required this.itemType,
+    this.parentId,
+    this.name,
+  });
+
+  final String? itemType;
+  final String? parentId;
+  final String? name;
   final CameraDescription camera;
 
   @override
@@ -31,16 +44,24 @@ class _AddItemPageState extends State<AddItemPage> {
 
   String name = "";
   String description = "";
-  String? parentId;
   String? brand = "";
+  String? categoryId;
   int currentStock = 1;
   int desiredStock = 1;
   String? photoId;
   String? barcode;
 
+  void fetchData() {
+    setState(() {
+      categoriesResponse = getCategories();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    fetchData();
+    name = widget.name?.trim() ?? "";
   }
 
   @override
@@ -61,7 +82,7 @@ class _AddItemPageState extends State<AddItemPage> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            "http://192.168.0.66:8080/photos/$photoId",
+                            "$API_URL/photos/$photoId",
                           ),
                         ),
                       ),
@@ -112,13 +133,19 @@ class _AddItemPageState extends State<AddItemPage> {
                       ),
                     ),
                   Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: const EdgeInsets.only(
+                      left: 32,
+                      right: 32,
+                      top: 8,
+                      bottom: 32,
+                    ),
                     child: Column(
                       children: [
                         TextFormField(
+                            initialValue: name,
                             autofocus: true,
                             style: const TextStyle(
-                              fontSize: 32,
+                              fontSize: 24,
                             ),
                             decoration: const InputDecoration(
                               labelText: "Nazwa",
@@ -130,7 +157,7 @@ class _AddItemPageState extends State<AddItemPage> {
                             textInputAction: TextInputAction.next),
                         TextFormField(
                             style: const TextStyle(
-                              fontSize: 32,
+                              fontSize: 24,
                             ),
                             decoration: const InputDecoration(
                               labelText: "Opis",
@@ -140,9 +167,27 @@ class _AddItemPageState extends State<AddItemPage> {
                                   description = value;
                                 }),
                             textInputAction: TextInputAction.next),
+                        if (widget.itemType == "ITEM")
+                          FutureBuilder(
+                              future: categoriesResponse,
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData)
+                                  return DropdownMenu(dropdownMenuEntries: []);
+                                return DropdownMenu(
+                                    onSelected: (value) {
+                                      setState(() {
+                                        categoryId = value;
+                                      });
+                                    },
+                                    dropdownMenuEntries: snapshot
+                                        .data!.categories
+                                        .map((e) => DropdownMenuEntry(
+                                            value: e.id, label: e.name))
+                                        .toList());
+                              }),
                         TextFormField(
                             style: const TextStyle(
-                              fontSize: 32,
+                              fontSize: 24,
                             ),
                             decoration: const InputDecoration(
                               labelText: "Firma / Producent",
@@ -153,7 +198,7 @@ class _AddItemPageState extends State<AddItemPage> {
                                 }),
                             textInputAction: TextInputAction.done),
                         Padding(
-                          padding: const EdgeInsets.only(top: 24),
+                          padding: const EdgeInsets.only(top: 24, bottom: 32),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -200,26 +245,30 @@ class _AddItemPageState extends State<AddItemPage> {
                                 Column(
                                   children: [
                                     IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            currentStock = currentStock + 1;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.add)),
+                                      onPressed: () {
+                                        setState(() {
+                                          currentStock = currentStock + 1;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add),
+                                    ),
                                     if (currentStock > 0)
                                       IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              currentStock = currentStock - 1;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.remove)),
+                                        onPressed: () {
+                                          setState(() {
+                                            currentStock = currentStock - 1;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.remove),
+                                      )
+                                    else
+                                      const SizedBox(height: 48)
                                   ],
                                 ),
                                 Text(
                                   currentStock.toString(),
                                   style: const TextStyle(
-                                    fontSize: 128,
+                                    fontSize: 96,
                                   ),
                                 ),
                               ],
@@ -236,7 +285,7 @@ class _AddItemPageState extends State<AddItemPage> {
                                 Text(
                                   desiredStock.toString(),
                                   style: const TextStyle(
-                                    fontSize: 128,
+                                    fontSize: 96,
                                   ),
                                 ),
                                 Column(
@@ -250,12 +299,15 @@ class _AddItemPageState extends State<AddItemPage> {
                                         icon: const Icon(Icons.add)),
                                     if (desiredStock > 0)
                                       IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              desiredStock = desiredStock - 1;
-                                            });
-                                          },
-                                          icon: const Icon(Icons.remove)),
+                                        onPressed: () {
+                                          setState(() {
+                                            desiredStock = desiredStock - 1;
+                                          });
+                                        },
+                                        icon: const Icon(Icons.remove),
+                                      )
+                                    else
+                                      const SizedBox(height: 48)
                                   ],
                                 ),
                               ],
@@ -278,11 +330,12 @@ class _AddItemPageState extends State<AddItemPage> {
             await HttpClient.postJson(
               "/items",
               jsonEncode({
-                "itemType": "ITEM",
-                "name": name,
-                "description": description,
-                "categoryId": widget.categoryId,
-                "brand": brand,
+                "itemType": widget.itemType,
+                "name": name.trim(),
+                "description": description.trim(),
+                "categoryId": categoryId,
+                "parentId": widget.parentId,
+                "brand": brand?.trim(),
                 "currentStock": currentStock,
                 "desiredStock": desiredStock,
                 "photoId": photoId,
@@ -290,7 +343,7 @@ class _AddItemPageState extends State<AddItemPage> {
               }),
             );
             if (!mounted) return;
-            Navigator.pop(context);
+            Navigator.popUntil(context, (route) => route.isFirst);
           },
           icon: const Icon(Icons.check),
           style: IconButton.styleFrom(

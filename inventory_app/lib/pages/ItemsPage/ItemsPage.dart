@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_app/api/HttpClient.dart';
 import 'package:inventory_app/pages/AddItemPage/AddItemPage.dart';
@@ -171,7 +172,7 @@ class _ItemsPageState extends State<ItemsPage> {
                                 onPressed: () async {
                                   var res = await Navigator.push(
                                       context,
-                                      simpleRoute(ChooseItemRootPage(
+                                      CupertinoPageRoute(builder: (_) => ChooseItemRootPage(
                                         camera: widget.camera,
                                       )));
                                   if (!mounted) return;
@@ -201,6 +202,7 @@ class _ItemsPageState extends State<ItemsPage> {
               ),
             );
           } else {
+            print(snapshot.error);
             return const Text("cos sie zepsuło");
           }
         },

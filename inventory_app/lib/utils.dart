@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 
 import 'api/HttpClient.dart';
 
+const String API_URL = "http://192.168.0.66:8080";
+// const String API_URL = "http://inventory-api.przemyslawpitus.pl";
+
 Color getCurrentStockColor(int currentStock, int desiredStock) {
   if (currentStock < 1) {
     return Colors.red;
@@ -45,7 +48,7 @@ Future<UploadPhotoResponse> upload(File imageFile) async {
   var length = await imageFile.length();
 
   // string to uri
-  var uri = Uri.parse("http://192.168.0.66:8080/photos");
+  var uri = Uri.parse("$API_URL/photos");
 
   // create multipart request
   var request = http.MultipartRequest("POST", uri);

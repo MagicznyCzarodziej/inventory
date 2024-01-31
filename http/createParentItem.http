@@ -3,6 +3,6 @@ POST http://localhost:8080/parent-items
 Content-Type: application/json
 
 {
-  "name": "Worki na śmieci",
-  "categoryId": "category-kitchen"
+  "name": "Papier śniadaniowy",
+  "categoryId": "bf2eab98-2ff7-49fd-9f86-4f39dd976af2"
 }

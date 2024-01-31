@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+mongodb:
+  username: docker
+  password: mongopw
+  database: inventory
+  authenticationDatabase: admin
+  host: localhost
+  port: 55000

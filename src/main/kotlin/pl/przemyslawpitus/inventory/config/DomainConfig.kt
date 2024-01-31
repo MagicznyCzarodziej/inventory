@@ -2,53 +2,78 @@ package pl.przemyslawpitus.inventory.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import pl.przemyslawpitus.inventory.domain.CategoryRepository
-import pl.przemyslawpitus.inventory.domain.ItemRepository
-import pl.przemyslawpitus.inventory.domain.ParentItemRepository
-import pl.przemyslawpitus.inventory.domain.changeItemCountUseCase.StockTransformer
-import pl.przemyslawpitus.inventory.domain.changeItemCountUseCase.UpdateCurrentStockUseCase
-import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemRepository
-import pl.przemyslawpitus.inventory.domain.createItemUseCase.CreateItemUseCase
-import pl.przemyslawpitus.inventory.domain.createParentItemUseCase.CreateParentItemUseCase
-import pl.przemyslawpitus.inventory.domain.geItemUseCase.GetItemUseCase
-import pl.przemyslawpitus.inventory.domain.getCategoriesUseCase.GetCategoriesUseCase
-import pl.przemyslawpitus.inventory.domain.getItemsUseCase.GetItemsUseCase
-import pl.przemyslawpitus.inventory.domain.getParentItemsUseCase.GetParentItemsUseCase
-import pl.przemyslawpitus.inventory.domain.getPhotoUseCase.GetPhotoUseCase
-import pl.przemyslawpitus.inventory.domain.removeItemUseCase.RemoveItemUseCase
-import pl.przemyslawpitus.inventory.domain.uploadPhotoUseCase.PhotoRepository
-import pl.przemyslawpitus.inventory.domain.uploadPhotoUseCase.UploadPhotoUseCase
-import pl.przemyslawpitus.inventory.infrastructure.InMemoryCategoryRepository
-import pl.przemyslawpitus.inventory.infrastructure.InMemoryItemRepository
-import pl.przemyslawpitus.inventory.infrastructure.InMemoryParentItemRepository
-import pl.przemyslawpitus.inventory.infrastructure.InMemoryPhotoRepository
+import org.springframework.data.mongodb.core.MongoTemplate
+import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
+import pl.przemyslawpitus.inventory.domain.item.ItemRepository
+import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
+import pl.przemyslawpitus.inventory.domain.item.changeItemCountUseCase.StockTransformer
+import pl.przemyslawpitus.inventory.domain.item.changeItemCountUseCase.UpdateCurrentStockUseCase
+import pl.przemyslawpitus.inventory.domain.category.createCategoryUseCase.CreateCategoryUseCase
+import pl.przemyslawpitus.inventory.domain.item.createItemUseCase.CreateItemUseCase
+import pl.przemyslawpitus.inventory.domain.parentItem.createParentItemUseCase.CreateParentItemUseCase
+import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemUseCase
+import pl.przemyslawpitus.inventory.domain.item.geItemUseCase.GetItemUseCase
+import pl.przemyslawpitus.inventory.domain.category.getCategoriesUseCase.GetCategoriesUseCase
+import pl.przemyslawpitus.inventory.domain.item.getItemsUseCase.GetItemsUseCase
+import pl.przemyslawpitus.inventory.domain.parentItem.getParentItemsUseCase.GetParentItemsUseCase
+import pl.przemyslawpitus.inventory.domain.photo.getPhotoUseCase.GetPhotoUseCase
+import pl.przemyslawpitus.inventory.domain.item.removeItemUseCase.RemoveItemUseCase
+import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
+import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.UploadPhotoUseCase
+import pl.przemyslawpitus.inventory.infrastructure.memory.InMemoryParentItemRepository
+import pl.przemyslawpitus.inventory.infrastructure.memory.InMemoryPhotoRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.ItemEntityToDomainMapper
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoCategoryRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoItemRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoPhotoRepository
 
 @Configuration
 @Suppress("TooManyFunctions")
 class DomainConfig {
     @Bean
-    fun ItemRepository() = InMemoryItemRepository()
+    fun itemRepository(
+        mongoTemplate: MongoTemplate,
+        itemEntityToDomainMapper: ItemEntityToDomainMapper,
+    ) = MongoItemRepository(
+        mongoTemplate = mongoTemplate,
+        itemEntityToDomainMapper = itemEntityToDomainMapper,
+    )
+
+    @Bean
+    fun itemEntityToDomainMapper(
+        categoryRepository: CategoryRepository,
+        parentItemRepository: ParentItemRepository,
+    ) = ItemEntityToDomainMapper(
+        categoryRepository = categoryRepository,
+        parentItemRepository = parentItemRepository,
+    )
 
     @Bean
     fun parentItemRepository() = InMemoryParentItemRepository()
 
     @Bean
-    fun categoryRepository() = InMemoryCategoryRepository()
+    fun categoryRepository(
+      mongoTemplate: MongoTemplate,
+    ) = MongoCategoryRepository(
+      mongoTemplate = mongoTemplate,
+    )
 
     @Bean
-    fun photoRepository() = InMemoryPhotoRepository()
+    fun photoRepository(
+        mongoTemplate: MongoTemplate,
+    ) = MongoPhotoRepository(
+        mongoTemplate = mongoTemplate,
+    )
 
     @Bean
     fun createItemUseCase(
-        createItemRepository: CreateItemRepository,
+        itemRepository: ItemRepository,
         categoryRepository: CategoryRepository,
         parentItemRepository: ParentItemRepository,
-        photoRepository: PhotoRepository,
     ) = CreateItemUseCase(
-        createItemRepository = createItemRepository,
+        itemRepository = itemRepository,
         categoryRepository = categoryRepository,
         parentItemRepository = parentItemRepository,
-        photoRepository = photoRepository,
     )
 
     @Bean
@@ -74,51 +99,65 @@ class DomainConfig {
 
     @Bean
     fun getItemsUseCase(
-      itemRepository: ItemRepository,
+        itemRepository: ItemRepository,
     ) = GetItemsUseCase(
-      itemRepository = itemRepository,
+        itemRepository = itemRepository,
     )
 
     @Bean
     fun getItemUseCase(
-      itemRepository: ItemRepository,
+        itemRepository: ItemRepository,
     ) = GetItemUseCase(
-      itemRepository = itemRepository,
+        itemRepository = itemRepository,
     )
 
     @Bean
     fun removeItemUseCase(
-      itemRepository: ItemRepository,
+        itemRepository: ItemRepository,
     ) = RemoveItemUseCase(
-      itemRepository = itemRepository,
+        itemRepository = itemRepository,
     )
 
     @Bean
     fun uploadPhotoUseCase(
-      photoRepository: PhotoRepository,
+        photoRepository: PhotoRepository,
     ) = UploadPhotoUseCase(
-      photoRepository = photoRepository,
+        photoRepository = photoRepository,
     )
 
     @Bean
     fun getPhotoUseCase(
-      photoRepository: PhotoRepository,
+        photoRepository: PhotoRepository,
     ) = GetPhotoUseCase(
-      photoRepository = photoRepository,
+        photoRepository = photoRepository,
     )
 
     @Bean
     fun getParentItemsUseCase(
-      parentItemRepository: ParentItemRepository,
+        parentItemRepository: ParentItemRepository,
     ) = GetParentItemsUseCase(
-      parentItemRepository = parentItemRepository,
+        parentItemRepository = parentItemRepository,
     )
 
     @Bean
     fun getCategoriesUseCase(
-      categoryRepository: CategoryRepository,
+        categoryRepository: CategoryRepository,
     ) = GetCategoriesUseCase(
+        categoryRepository = categoryRepository,
+    )
+
+    @Bean
+    fun createCategoryUseCase(
+        categoryRepository: CategoryRepository,
+    ) = CreateCategoryUseCase(
       categoryRepository = categoryRepository,
+    )
+
+    @Bean
+    fun editItemUseCase(
+        itemRepository: ItemRepository,
+    ) = EditItemUseCase(
+      itemRepository = itemRepository,
     )
 
 }

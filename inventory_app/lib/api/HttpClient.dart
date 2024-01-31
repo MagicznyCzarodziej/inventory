@@ -3,16 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 
+import '../utils.dart';
+
 class MediaType {
   static String Json = "application/json;charset=UTF-8";
 }
 
-const String baseUri = "http://192.168.0.66:8080";
-// const String baseUri = "http://10.0.2.2:8080";
-
 class HttpClient {
   static Future<Response> get(String uri) => http.get(
-        Uri.parse(baseUri + uri),
+        Uri.parse(API_URL + uri),
         headers: {"Accept": MediaType.Json},
       );
 
@@ -22,7 +21,7 @@ class HttpClient {
   }
 
   static Future<Response> post(String uri, Object? body) => http.post(
-        Uri.parse(baseUri + uri),
+        Uri.parse(API_URL + uri),
         body: body,
         headers: {"Content-Type": MediaType.Json, "Accept": MediaType.Json},
       );
@@ -33,7 +32,7 @@ class HttpClient {
   }
 
   static Future<Response> put(String uri, Object? body) => http.put(
-        Uri.parse(baseUri + uri),
+        Uri.parse(API_URL + uri),
         body: body,
         headers: {"Content-Type": MediaType.Json},
       );
@@ -45,6 +44,6 @@ class HttpClient {
   }
 
   static Future<Response> delete(String uri) => http.delete(
-        Uri.parse(baseUri + uri),
+        Uri.parse(API_URL + uri),
       );
 }

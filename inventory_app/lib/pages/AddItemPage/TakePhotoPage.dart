@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TakePhotoPage extends StatefulWidget {
   const TakePhotoPage({super.key, required this.camera});
@@ -24,6 +25,7 @@ class _TakePhotoPageState extends State<TakePhotoPage> {
     );
 
     _initializeControllerFuture = _controller.initialize();
+    // _controller.lockCaptureOrientation(DeviceOrientation.landscapeLeft);
   }
 
   @override

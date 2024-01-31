@@ -2,3 +2,19 @@ logging:
   level:
     root: INFO
     pl.przemyslawpitus.inventory: DEBUG
+
+server:
+  port: 57420
+
+mongodb:
+  username: ${MONGO_USERNAME}
+  password: ${MONGO_PASSWORD}
+  database: ${MONGO_DATABASE}
+  authenticationDatabase: ${MONGO_DATABASE} # Same as database for MyDevil hosting
+  host: ${MONGO_HOST}
+  port: ${MONGO_PORT}
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB

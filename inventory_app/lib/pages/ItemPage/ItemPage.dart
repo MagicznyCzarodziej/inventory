@@ -35,6 +35,7 @@ class _ItemPageState extends State<ItemPage> {
             var item = snapshot.data!;
 
             return Scaffold(
+              resizeToAvoidBottomInset: false,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +46,7 @@ class _ItemPageState extends State<ItemPage> {
                         image: DecorationImage(
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            item.photoUrl!.startsWith("/") ? "http://192.168.0.66:8080${item.photoUrl}" : item.photoUrl!,
+                            item.photoUrl!.startsWith("/") ? "$API_URL${item.photoUrl}" : item.photoUrl!,
                           ),
                         ),
                       ),
