@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
   "itemType": "ITEM",
-  "name": " zmywarki",
+  "name": "Zmywaki",
   "description": "description_6ae72bc32177",
   "categoryId": "bf2eab98-2ff7-49fd-9f86-4f39dd976af2",
   "brand": "Firma",
@@ -20,9 +20,9 @@ Content-Type: application/json
 
 {
   "itemType": "SUB_ITEM",
-  "name": "Rolka",
+  "name": "Torebki",
   "description": "Opis",
-  "parentId": "dd019d02-4024-4bf2-8512-23dc538c2fa4",
+  "parentId": "9ff47c8f-eaf3-4317-bb45-7e9de1c69155",
   "brand": "Purio",
   "currentStock": 2,
   "desiredStock": 5,

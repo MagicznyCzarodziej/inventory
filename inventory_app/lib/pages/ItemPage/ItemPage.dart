@@ -63,8 +63,7 @@ class _ItemPageState extends State<ItemPage> {
                         ),
                       ]),
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 24, right: 16, top: 8),
+                        padding: const EdgeInsets.only(left: 24, right: 16, top: 8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -72,8 +71,7 @@ class _ItemPageState extends State<ItemPage> {
                               children: [
                                 Text(
                                   item.category.name,
-                                  style: const TextStyle(
-                                      color: Colors.grey, fontSize: 20),
+                                  style: const TextStyle(color: Colors.grey, fontSize: 20),
                                 ),
                                 const Spacer(),
                                 IconButton(
@@ -84,27 +82,21 @@ class _ItemPageState extends State<ItemPage> {
                                   },
                                   icon: Icon(
                                     Icons.delete,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceVariant,
+                                    color: Theme.of(context).colorScheme.surfaceVariant,
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
                                   icon: Icon(
                                     Icons.history,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceVariant,
+                                    color: Theme.of(context).colorScheme.surfaceVariant,
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
                                   icon: Icon(
                                     Icons.edit,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .surfaceVariant,
+                                    color: Theme.of(context).colorScheme.surfaceVariant,
                                   ),
                                 ),
                               ],
@@ -114,12 +106,10 @@ class _ItemPageState extends State<ItemPage> {
                                 item.parentItem!.name,
                                 style: const TextStyle(fontSize: 40),
                               ),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
+                            Wrap(
                               children: [
                                 Text(
-                                  item.name,
+                                  "${item.name}${item.brand != null ? " " : ""}",
                                   style: const TextStyle(
                                     fontSize: 32,
                                     fontWeight: FontWeight.bold,
@@ -127,7 +117,7 @@ class _ItemPageState extends State<ItemPage> {
                                 ),
                                 if (item.brand != null)
                                   Text(
-                                    " ${item.brand!}",
+                                    item.brand!,
                                     style: const TextStyle(fontSize: 32),
                                   ),
                               ],
@@ -139,9 +129,7 @@ class _ItemPageState extends State<ItemPage> {
                                   item.description!,
                                   style: TextStyle(
                                     fontSize: 22,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurfaceVariant,
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -156,14 +144,12 @@ class _ItemPageState extends State<ItemPage> {
                                   style: TextStyle(
                                     height: 0.8,
                                     fontSize: 200,
-                                    color: getCurrentStockColor(
-                                        item.currentStock, item.desiredStock),
+                                    color: getCurrentStockColor(item.currentStock, item.desiredStock),
                                   ),
                                 ),
                                 Text(
                                   "/${item.desiredStock.toString()}",
-                                  style: TextStyle(
-                                      fontSize: 70, color: Colors.grey[400]),
+                                  style: TextStyle(fontSize: 70, color: Colors.grey[400]),
                                 ),
                               ],
                             ),
@@ -223,8 +209,7 @@ class _ItemPageState extends State<ItemPage> {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: TextButton(
                           onPressed: () => {
-                            updateCurrentStock(item.id, -item.currentStock)
-                                .then((value) {
+                            updateCurrentStock(item.id, -item.currentStock).then((value) {
                               setState(() {
                                 itemResponse = getItem(widget.itemId);
                               });

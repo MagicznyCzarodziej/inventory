@@ -2,10 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_app/api/HttpClient.dart';
-import 'package:inventory_app/pages/AddItemPage/AddItemPage.dart';
-import 'package:inventory_app/pages/AddItemPage/ChooseItemRootPage.dart';
+import 'package:inventory_app/pages/AddItemPage/NewItemSearchPage.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemEntryWidget.dart';
-import 'package:inventory_app/routes/simpleRoute.dart';
 import 'package:inventory_app/utils.dart';
 
 import '../../dto/GetItemsResponse.dart';
@@ -172,7 +170,8 @@ class _ItemsPageState extends State<ItemsPage> {
                                 onPressed: () async {
                                   var res = await Navigator.push(
                                       context,
-                                      CupertinoPageRoute(builder: (_) => ChooseItemRootPage(
+                                      // CupertinoPageRoute(builder: (_) => ChooseItemRootPage(
+                                      CupertinoPageRoute(builder: (_) => NewItemSearchPage(
                                         camera: widget.camera,
                                       )));
                                   if (!mounted) return;

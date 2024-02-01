@@ -4,23 +4,33 @@ import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.domain.item.Root
+import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
 
 class GetItemsUseCase(
     private val itemRepository: ItemRepository,
+    private val parentItemRepository: ParentItemRepository,
 ) {
     fun getItems(): List<ItemsView.Entry> {
         val items = itemRepository.getAll()
         val (independentItems, subItems) = items.partition { it.root is Root.CategoryRoot }
 
-        val parentItemsToItems = subItems.groupBy { (it.root as Root.ParentRoot).parentItem }
+        val parentItems = parentItemRepository.getAll()
+
+        val parentsWithItems = parentItems.associateWith { parent ->
+            subItems.filter {
+                (it.root as Root.ParentRoot).parentItem.id == parent.id
+            }
+        }
+
+        val parentEntries = parentsWithItems.map {
+            ItemsView.Entry.ParentEntry(
+                parentItem = it.key,
+                items = it.value,
+            )
+        }
 
         val groups =
-            parentItemsToItems.map {
-                ItemsView.Entry.ParentEntry(
-                    parentItem = it.key,
-                    items = it.value
-                )
-            } + independentItems.map {
+            parentEntries + independentItems.map {
                 ItemsView.Entry.IndependentItemEntry(
                     item = it
                 )

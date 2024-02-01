@@ -20,12 +20,12 @@ import pl.przemyslawpitus.inventory.domain.photo.getPhotoUseCase.GetPhotoUseCase
 import pl.przemyslawpitus.inventory.domain.item.removeItemUseCase.RemoveItemUseCase
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.UploadPhotoUseCase
-import pl.przemyslawpitus.inventory.infrastructure.memory.InMemoryParentItemRepository
-import pl.przemyslawpitus.inventory.infrastructure.memory.InMemoryPhotoRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.ItemEntityToDomainMapper
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoCategoryRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoItemRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoParentItemRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoPhotoRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.ParentItemEntityToDomainMapper
 
 @Configuration
 @Suppress("TooManyFunctions")
@@ -49,13 +49,26 @@ class DomainConfig {
     )
 
     @Bean
-    fun parentItemRepository() = InMemoryParentItemRepository()
+    fun parentItemRepository(
+        mongoTemplate: MongoTemplate,
+        parentItemEntityToDomainMapper: ParentItemEntityToDomainMapper,
+    ) = MongoParentItemRepository(
+        mongoTemplate = mongoTemplate,
+        parentItemEntityToDomainMapper = parentItemEntityToDomainMapper,
+    )
+
+    @Bean
+    fun parentItemEntityToDomainMapper(
+        categoryRepository: CategoryRepository,
+    ) = ParentItemEntityToDomainMapper(
+        categoryRepository = categoryRepository,
+    )
 
     @Bean
     fun categoryRepository(
-      mongoTemplate: MongoTemplate,
+        mongoTemplate: MongoTemplate,
     ) = MongoCategoryRepository(
-      mongoTemplate = mongoTemplate,
+        mongoTemplate = mongoTemplate,
     )
 
     @Bean
@@ -100,8 +113,10 @@ class DomainConfig {
     @Bean
     fun getItemsUseCase(
         itemRepository: ItemRepository,
+        parentItemRepository: ParentItemRepository,
     ) = GetItemsUseCase(
         itemRepository = itemRepository,
+        parentItemRepository = parentItemRepository,
     )
 
     @Bean
@@ -150,14 +165,14 @@ class DomainConfig {
     fun createCategoryUseCase(
         categoryRepository: CategoryRepository,
     ) = CreateCategoryUseCase(
-      categoryRepository = categoryRepository,
+        categoryRepository = categoryRepository,
     )
 
     @Bean
     fun editItemUseCase(
         itemRepository: ItemRepository,
     ) = EditItemUseCase(
-      itemRepository = itemRepository,
+        itemRepository = itemRepository,
     )
 
 }

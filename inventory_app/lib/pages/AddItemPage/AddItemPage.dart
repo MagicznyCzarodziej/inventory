@@ -122,9 +122,7 @@ class _AddItemPageState extends State<AddItemPage> {
                                 "Zrób zdjęcie",
                                 style: TextStyle(
                                   fontSize: 24,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurfaceVariant,
+                                  color: Theme.of(context).colorScheme.onSurfaceVariant,
                                 ),
                               ),
                             ],
@@ -140,63 +138,77 @@ class _AddItemPageState extends State<AddItemPage> {
                       bottom: 32,
                     ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
+                        if (widget.parentId != null) Text("ParentId: ${widget.parentId}"),
                         TextFormField(
-                            initialValue: name,
-                            autofocus: true,
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                            decoration: const InputDecoration(
-                              labelText: "Nazwa",
-                            ),
-                            textCapitalization: TextCapitalization.sentences,
-                            onChanged: (value) => setState(() {
-                                  name = value;
-                                }),
-                            textInputAction: TextInputAction.next),
+                          initialValue: name,
+                          autofocus: true,
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: "Nazwa",
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
+                          onChanged: (value) => setState(() {
+                            name = value;
+                          }),
+                          textInputAction: TextInputAction.next,
+                        ),
                         TextFormField(
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                            decoration: const InputDecoration(
-                              labelText: "Opis",
-                            ),
-                            textCapitalization: TextCapitalization.sentences,
-                            onChanged: (value) => setState(() {
-                                  description = value;
-                                }),
-                            textInputAction: TextInputAction.next),
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: "Opis",
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
+                          onChanged: (value) => setState(() {
+                            description = value;
+                          }),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        TextFormField(
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: "Firma / Producent",
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
+                          onChanged: (value) => setState(() {
+                            brand = value;
+                          }),
+                          textInputAction: TextInputAction.done,
+                        ),
                         if (widget.itemType == "ITEM")
                           FutureBuilder(
-                              future: categoriesResponse,
-                              builder: (context, snapshot) {
-                                if (!snapshot.hasData)
-                                  return DropdownMenu(dropdownMenuEntries: []);
-                                return DropdownMenu(
-                                    onSelected: (value) {
-                                      setState(() {
-                                        categoryId = value;
-                                      });
-                                    },
-                                    dropdownMenuEntries: snapshot
-                                        .data!.categories
-                                        .map((e) => DropdownMenuEntry(
-                                            value: e.id, label: e.name))
-                                        .toList());
-                              }),
-                        TextFormField(
-                            style: const TextStyle(
-                              fontSize: 24,
-                            ),
-                            decoration: const InputDecoration(
-                              labelText: "Firma / Producent",
-                            ),
-                            textCapitalization: TextCapitalization.sentences,
-                            onChanged: (value) => setState(() {
-                                  brand = value;
-                                }),
-                            textInputAction: TextInputAction.done),
+                            future: categoriesResponse,
+                            builder: (context, snapshot) {
+                              return DropdownMenu(
+                                label: const Text("Kategoria"),
+                                textStyle: const TextStyle(
+                                  fontSize: 24,
+                                ),
+                                expandedInsets: EdgeInsets.zero,
+                                inputDecorationTheme: const InputDecorationTheme(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 16),
+                                  filled: true,
+                                  fillColor: Colors.transparent,
+                                ),
+                                onSelected: (value) {
+                                  setState(() {
+                                    categoryId = value;
+                                  });
+                                },
+                                dropdownMenuEntries: snapshot.data?.categories
+                                        .map((e) => DropdownMenuEntry(value: e.id, label: e.name))
+                                        .toList() ??
+                                    const Iterable<DropdownMenuEntry>.empty().toList(),
+                              );
+                            },
+                          ),
                         Padding(
                           padding: const EdgeInsets.only(top: 24, bottom: 32),
                           child: Row(
@@ -226,9 +238,7 @@ class _AddItemPageState extends State<AddItemPage> {
                                   });
                                 },
                                 child: Text(
-                                  barcode == null
-                                      ? "Zeskanuj kod kreskowy"
-                                      : "Skanuj",
+                                  barcode == null ? "Zeskanuj kod kreskowy" : "Skanuj",
                                   style: const TextStyle(
                                     fontSize: 18,
                                   ),
@@ -346,9 +356,7 @@ class _AddItemPageState extends State<AddItemPage> {
             Navigator.popUntil(context, (route) => route.isFirst);
           },
           icon: const Icon(Icons.check),
-          style: IconButton.styleFrom(
-              alignment: FractionalOffset.centerRight,
-              padding: EdgeInsets.only(right: 32)),
+          style: IconButton.styleFrom(alignment: FractionalOffset.centerRight, padding: EdgeInsets.only(right: 32)),
         ),
       ),
     );
