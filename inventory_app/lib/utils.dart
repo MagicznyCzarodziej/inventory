@@ -8,21 +8,29 @@ import 'package:flutter/material.dart';
 
 import 'api/HttpClient.dart';
 
-const String API_URL = "http://192.168.0.66:8080";
+const String API_URL = "http://192.168.5.94:8080";
 // const String API_URL = "http://inventory-api.przemyslawpitus.pl";
 
 Color getCurrentStockColor(int currentStock, int desiredStock) {
-  if (currentStock < 1) {
-    return Colors.red;
-  } else if (currentStock < 2 && desiredStock > 1) {
-    return Colors.pink;
-  } else if (currentStock < desiredStock / 2) {
-    return Colors.orange;
-  } else if (currentStock > desiredStock) {
-    return Colors.teal;
-  } else {
+  if (currentStock < 1 && desiredStock > 0)
+    return Colors.redAccent[100]!;
+  else if (currentStock < desiredStock)
+    return Colors.orangeAccent[100]!;
+  else
     return Colors.green;
-  }
+
+
+  // if (currentStock < 1 && desiredStock > 0) {
+  //   return Colors.red;
+  // } else if (currentStock < 2 && desiredStock > 1) {
+  //   return Colors.pink;
+  // } else if (currentStock < desiredStock / 2) {
+  //   return Colors.orange;
+  // } else if (currentStock > desiredStock) {
+  //   return Colors.teal;
+  // } else {
+  //   return Colors.green;
+  // }
 }
 
 extension SearchInString on String? {

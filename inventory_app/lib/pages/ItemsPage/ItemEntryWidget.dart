@@ -17,6 +17,15 @@ class ItemsListEntry {
   });
 }
 
+Color getColor(ItemsListEntry entry) {
+  if (entry.currentStock < 1 && entry.desiredStock > 0)
+    return Colors.redAccent[100]!;
+  else if (entry.currentStock < entry.desiredStock)
+    return Colors.orangeAccent[100]!;
+  else
+    return Colors.green;
+}
+
 class ItemEntryWidget extends StatelessWidget {
   const ItemEntryWidget({
     super.key,
@@ -30,53 +39,62 @@ class ItemEntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.push(context, simpleRoute(ItemPage(itemId: entry.id)))
-              .then((value) => refetchItems()),
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 12.0),
-        child: Container(
-          color: Theme.of(context).colorScheme.surface,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  entry.name,
-                  style: const TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-                Row(
+      onTap: () => Navigator.push(context, simpleRoute(ItemPage(itemId: entry.id))).then((value) => refetchItems()),
+      child: Container(
+        // color: Theme.of(context).colorScheme.surface,
+        decoration: BoxDecoration(
+          border: BorderDirectional(start: BorderSide(color: getColor(entry), width: 8))
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 56,
+                child: Row(
+                  textBaseline: TextBaseline.alphabetic,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
                   children: [
-                    if (entry.currentStock > 0)
-                      IconButton(
-                        onPressed: () async {
-                          await updateCurrentStock(entry.id, -1);
-                          refetchItems();
-                        },
-                        icon: const Icon(Icons.remove),
-                      ),
                     Text(
                       entry.currentStock.toString(),
                       style: TextStyle(
                         fontSize: 24,
-                        color: getCurrentStockColor(
-                            entry.currentStock, entry.desiredStock),
+                        color: getCurrentStockColor(entry.currentStock, entry.desiredStock),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        await updateCurrentStock(entry.id, 1);
-                        refetchItems();
-                      },
-                      icon: const Icon(Icons.add),
-                    )
+                    Text(
+                      "/${entry.desiredStock}",
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              Text(
+                entry.name,
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+              const Spacer(),
+              if (entry.currentStock > 0)
+                IconButton(
+                  onPressed: () async {
+                    await updateCurrentStock(entry.id, -1);
+                    refetchItems();
+                  },
+                  icon: const Icon(Icons.remove),
+                ),
+              IconButton(
+                onPressed: () async {
+                  await updateCurrentStock(entry.id, 1);
+                  refetchItems();
+                },
+                icon: const Icon(Icons.add),
+              )
+            ],
           ),
         ),
       ),

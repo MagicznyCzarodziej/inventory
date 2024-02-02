@@ -14,22 +14,6 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'Inventory',
     theme: ThemeData(
-      colorScheme: const ColorScheme(
-        brightness: Brightness.dark,
-        background: Color(0xFF11181C),
-        onBackground: Colors.white,
-        primary: Color(0xFF44C869),
-        onPrimary: Colors.white,
-        secondary: Color(0xFF44C869),
-        onSecondary: Color(0xFF206d36),
-        error: Color(0xFFC15959),
-        onError: Color(0xFF672727),
-        surface: Color(0xFF222d33),
-        onSurface: Colors.white,
-        surfaceVariant: Color(0xFF384b56),
-        onSurfaceVariant: Color(0xFFccd7dd),
-        surfaceTint: Color(0xFF222d33),
-      ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: const Color(0xFFa9bcc7),
