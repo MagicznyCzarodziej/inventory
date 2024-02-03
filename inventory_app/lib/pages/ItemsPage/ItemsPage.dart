@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:inventory_app/api/HttpClient.dart';
 import 'package:inventory_app/pages/AddItemPage/NewItemSearchPage.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemEntryWidget.dart';
+import 'package:inventory_app/pages/ItemsPage/HideOnScroll.dart';
 import 'package:inventory_app/utils.dart';
 
 import '../../dto/GetItemsResponse.dart';
@@ -27,6 +28,7 @@ class _ItemsPageState extends State<ItemsPage> {
 
   String query = "";
   final searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   void fetchItems() {
     setState(() {
@@ -38,6 +40,12 @@ class _ItemsPageState extends State<ItemsPage> {
   void initState() {
     super.initState();
     itemsResponse = getItems();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   FutureBuilder builder() => FutureBuilder<GetItemsResponse>(
@@ -73,7 +81,7 @@ class _ItemsPageState extends State<ItemsPage> {
               if (a.currentStock < a.desiredStock && b.currentStock < b.desiredStock) {
                 if (a.currentStock == b.currentStock) {
                   return b.desiredStock - a.desiredStock;
-                } else if (a.currentStock < b.currentStock){
+                } else if (a.currentStock < b.currentStock) {
                   return -1;
                 } else {
                   return 1;
@@ -82,7 +90,7 @@ class _ItemsPageState extends State<ItemsPage> {
                 return -1;
               } else if (b.currentStock < b.desiredStock) {
                 return 1;
-              } else { // oba current wieksze niz desired
+              } else {
                 if (a.desiredStock == 0) return 1;
                 if (b.desiredStock == 0) return -1;
 
@@ -97,10 +105,11 @@ class _ItemsPageState extends State<ItemsPage> {
                 children: [
                   SafeArea(
                     child: ListView.builder(
+                      controller: _scrollController,
                       padding: const EdgeInsets.only(
-                        // left: 16, right: 16, top: 16,
-                        bottom: 64,
-                      ),
+                          // left: 16, right: 16, top: 16,
+                          // bottom: 64,
+                          ),
                       itemCount: entries.length,
                       itemBuilder: (BuildContext context, int index) {
                         var entry = entries[index];
@@ -118,97 +127,109 @@ class _ItemsPageState extends State<ItemsPage> {
                   Column(
                     children: [
                       Spacer(),
-                      Container(
-                        height: 60,
-                        margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  color: Colors.blueGrey,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(30),
-                                  ),
-                                ),
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => {},
-                                      icon: const Icon(
-                                        Icons.manage_search,
-                                        size: 30,
-                                      ),
+                      HideOnScroll(
+                        scrollController: _scrollController,
+                        height: 66,
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 22, right: 16, bottom: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromRGBO(230, 230, 230, 1),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
                                     ),
-                                    Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 8),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(left: 2.0, right: 8),
+                                        child: IconButton(
+                                          onPressed: () => {},
+                                          icon: const Icon(
+                                            Icons.manage_search,
+                                            // size: 30,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
                                         child: TextField(
                                           onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
                                           controller: searchController,
                                           onChanged: (String value) => {setState(() => query = value)},
                                           style: const TextStyle(
-                                            fontSize: 20,
+                                            fontSize: 16,
                                           ),
                                           decoration: InputDecoration(
-                                              suffix: query.isEmpty
-                                                  ? null
-                                                  : IconButton(
-                                                      onPressed: () {
-                                                        searchController.clear();
-                                                        setState(() {
-                                                          query = "";
-                                                        });
-                                                      },
-                                                      icon: const Icon(Icons.clear),
+                                            suffixIconConstraints: BoxConstraints(maxHeight: 66,maxWidth: 66),
+                                            suffixIcon: query.isEmpty
+                                                ? null
+                                                : IconButton(
+                                                    iconSize: 16,
+                                                    style: IconButton.styleFrom(
+                                                      foregroundColor: const Color(0xFFa9bcc7),
+                                                      shape: const RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.all(
+                                                          Radius.circular(8),
+                                                        ),
+                                                      ),
                                                     ),
-                                              border: InputBorder.none,
-                                              hintText: "Czego szukasz?",
-                                              hintStyle: const TextStyle(
-                                                fontWeight: FontWeight.normal,
-                                              )),
+                                                    onPressed: () {
+                                                      searchController.clear();
+                                                      setState(() {
+                                                        query = "";
+                                                      });
+                                                    },
+                                                    icon: const Icon(Icons.clear),
+                                                  ),
+                                            border: InputBorder.none,
+                                            hintText: "Czego szukasz?",
+                                            hintStyle: const TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.blueGrey,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(30),
-                                ),
+                              const SizedBox(
+                                width: 16,
                               ),
-                              child: IconButton(
-                                onPressed: () async {
-                                  var res = await Navigator.push(
+                              Container(
+                                decoration: const BoxDecoration(
+                                  color: Color.fromRGBO(230, 230, 230, 1),
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                ),
+                                child: IconButton(
+                                  onPressed: () async {
+                                    var res = await Navigator.push(
                                       context,
-                                      // CupertinoPageRoute(builder: (_) => ChooseItemRootPage(
                                       CupertinoPageRoute(
-                                          builder: (_) => NewItemSearchPage(
-                                                camera: widget.camera,
-                                              )));
-                                  if (!mounted) return;
-                                  setState(() {
-                                    itemsResponse = getItems();
-                                  });
-                                },
-                                icon: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                  child: Icon(
+                                        builder: (_) => NewItemSearchPage(
+                                          camera: widget.camera,
+                                        ),
+                                      ),
+                                    );
+                                    if (!mounted) return;
+                                    setState(() {
+                                      itemsResponse = getItems();
+                                    });
+                                  },
+                                  icon: Icon(
                                     Icons.add_shopping_cart_outlined,
-                                    size: 30,
+                                    // size: 30,
                                     color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

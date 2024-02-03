@@ -48,9 +48,11 @@ class ItemEntryWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
           child: Row(
+            textBaseline: TextBaseline.alphabetic,
+            crossAxisAlignment: CrossAxisAlignment.baseline,
             children: [
               SizedBox(
-                width: 56,
+                width: 60,
                 child: Row(
                   textBaseline: TextBaseline.alphabetic,
                   crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -72,13 +74,18 @@ class ItemEntryWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              Text(
-                entry.name,
-                style: const TextStyle(
-                  fontSize: 18,
+              Expanded(
+                child: Wrap(
+                  children: [
+                    Text(
+                      entry.name,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const Spacer(),
               if (entry.currentStock > 0)
                 IconButton(
                   onPressed: () async {
