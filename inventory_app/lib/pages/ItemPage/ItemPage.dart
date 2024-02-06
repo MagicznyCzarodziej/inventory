@@ -55,13 +55,16 @@ class _ItemPageState extends State<ItemPage> {
                     SafeArea(child: Container()),
                   Expanded(
                     child: Container(
-                      decoration: const BoxDecoration(boxShadow: [
-                        BoxShadow(
-                          color: Colors.black54,
-                          blurRadius: 20,
-                          blurStyle: BlurStyle.outer,
-                        ),
-                      ]),
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(250, 250, 250, 1),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 20,
+                            blurStyle: BlurStyle.outer,
+                          ),
+                        ],
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 24, right: 16, top: 8),
                         child: Column(
@@ -71,7 +74,10 @@ class _ItemPageState extends State<ItemPage> {
                               children: [
                                 Text(
                                   item.category.name,
-                                  style: const TextStyle(color: Colors.grey, fontSize: 20),
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+                                    fontSize: 20,
+                                  ),
                                 ),
                                 const Spacer(),
                                 IconButton(
@@ -82,21 +88,21 @@ class _ItemPageState extends State<ItemPage> {
                                   },
                                   icon: Icon(
                                     Icons.delete,
-                                    color: Theme.of(context).colorScheme.surfaceVariant,
+                                    color: Theme.of(context).colorScheme.error,
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
                                   icon: Icon(
                                     Icons.history,
-                                    color: Theme.of(context).colorScheme.surfaceVariant,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () => {},
                                   icon: Icon(
                                     Icons.edit,
-                                    color: Theme.of(context).colorScheme.surfaceVariant,
+                                    color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ],
@@ -165,7 +171,12 @@ class _ItemPageState extends State<ItemPage> {
                                   Text(item.barcode!),
                                   TextButton(
                                     onPressed: () => {},
-                                    child: const Text("Porównaj"),
+                                    child: Text(
+                                      "Porównaj",
+                                      style: TextStyle(
+                                        color: Theme.of(context).colorScheme.primary,
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
@@ -180,16 +191,8 @@ class _ItemPageState extends State<ItemPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 height: 70,
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Row(
-                      children: [
-                        TextButton(
-                          onPressed: () => {},
-                          child: const Text("Dodaj wiele"),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
                     if (item.currentStock > 0)
                       IconButton(
                         onPressed: () => {
@@ -199,9 +202,12 @@ class _ItemPageState extends State<ItemPage> {
                             });
                           })
                         },
-                        icon: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.remove),
+                        icon: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.remove,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     if (item.currentStock > 0)
@@ -215,9 +221,14 @@ class _ItemPageState extends State<ItemPage> {
                               });
                             })
                           },
-                          child: const Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Text("Nie ma"),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              "Nie ma",
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -229,9 +240,12 @@ class _ItemPageState extends State<ItemPage> {
                           });
                         })
                       },
-                      icon: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.add),
+                      icon: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.add,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
                   ],

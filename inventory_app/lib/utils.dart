@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 import 'api/HttpClient.dart';
 
-const String API_URL = "http://192.168.5.94:8080";
+const String API_URL = "http://192.168.0.66:8080";
 // const String API_URL = "http://inventory-api.przemyslawpitus.pl";
 
 Color getCurrentStockColor(int currentStock, int desiredStock) {

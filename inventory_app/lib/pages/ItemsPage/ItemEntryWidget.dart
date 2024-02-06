@@ -19,9 +19,9 @@ class ItemsListEntry {
 
 Color getColor(ItemsListEntry entry) {
   if (entry.currentStock < 1 && entry.desiredStock > 0)
-    return Colors.redAccent[100]!;
+    return Colors.redAccent[200]!;
   else if (entry.currentStock < entry.desiredStock)
-    return Colors.orangeAccent[100]!;
+    return Colors.orangeAccent[200]!;
   else
     return Colors.green;
 }
@@ -41,15 +41,14 @@ class ItemEntryWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(context, simpleRoute(ItemPage(itemId: entry.id))).then((value) => refetchItems()),
       child: Container(
-        // color: Theme.of(context).colorScheme.surface,
         decoration: BoxDecoration(
-          border: BorderDirectional(start: BorderSide(color: getColor(entry), width: 8))
+            border: BorderDirectional(
+              start: BorderSide(color: getColor(entry), width: 8),
+            ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),
           child: Row(
-            textBaseline: TextBaseline.alphabetic,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
             children: [
               SizedBox(
                 width: 60,
@@ -75,15 +74,20 @@ class ItemEntryWidget extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: Wrap(
-                  children: [
-                    Text(
-                      entry.name,
-                      style: const TextStyle(
-                        fontSize: 18,
+                child: Baseline(
+                  baselineType: TextBaseline.alphabetic,
+                  baseline: 20,
+                  child: Wrap(
+                    children: [
+                      Text(
+                        entry.name,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               if (entry.currentStock > 0)

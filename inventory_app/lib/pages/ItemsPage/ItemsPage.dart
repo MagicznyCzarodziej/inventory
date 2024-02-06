@@ -104,72 +104,88 @@ class _ItemsPageState extends State<ItemsPage> {
               body: Stack(
                 children: [
                   SafeArea(
-                    child: ListView.builder(
-                      controller: _scrollController,
-                      padding: const EdgeInsets.only(
-                          // left: 16, right: 16, top: 16,
-                          // bottom: 64,
-                          ),
-                      itemCount: entries.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        var entry = entries[index];
-                        return Column(
-                          children: [
-                            ItemEntryWidget(
-                              entry: entry,
-                              refetchItems: fetchItems,
-                            ),
-                          ],
-                        );
-                      },
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 8),
+                      color: const Color.fromRGBO(250, 250, 250, 1),
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        separatorBuilder: (context, index) => const Divider(
+                          endIndent: 16,
+                          indent: 16,
+                          color: Color.fromRGBO(0, 0, 0, 0.08),
+                        ),
+                        itemCount: entries.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var entry = entries[index];
+                          return Column(
+                            children: [
+                              ItemEntryWidget(
+                                entry: entry,
+                                refetchItems: fetchItems,
+                              ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
                   Column(
                     children: [
-                      Spacer(),
+                      const Spacer(),
                       HideOnScroll(
                         scrollController: _scrollController,
-                        height: 66,
+                        height: 77,
                         child: Container(
-                          margin: const EdgeInsets.only(left: 22, right: 16, bottom: 16),
-                          child: Row(
+                          margin: const EdgeInsets.only(
+                            left: 24,
+                            right: 16,
+                            bottom: 16,
+                          ),
+                          child: Stack(alignment: Alignment.center,
                             children: [
-                              Expanded(
-                                child: Container(
-                                  decoration: const BoxDecoration(
-                                    color: Color.fromRGBO(230, 230, 230, 1),
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
+                              Container(
+                                margin: const EdgeInsets.only(right: 54),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primaryContainer,
+                                  borderRadius: const BorderRadius.horizontal(
+                                    left: Radius.circular(10),
                                   ),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 2.0, right: 8),
-                                        child: IconButton(
-                                          onPressed: () => {},
-                                          icon: const Icon(
-                                            Icons.manage_search,
-                                            // size: 30,
-                                          ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 4,
+                                        right: 8,
+                                        // top: 2,
+                                        // bottom: 2,
+                                      ),
+                                      child: IconButton(
+                                        onPressed: () => {},
+                                        icon: Icon(
+                                          Icons.manage_search,
+                                          color: Theme.of(context).colorScheme.onPrimaryContainer,
                                         ),
                                       ),
-                                      Expanded(
-                                        child: TextField(
-                                          onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
-                                          controller: searchController,
-                                          onChanged: (String value) => {setState(() => query = value)},
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                          decoration: InputDecoration(
-                                            suffixIconConstraints: BoxConstraints(maxHeight: 66,maxWidth: 66),
-                                            suffixIcon: query.isEmpty
-                                                ? null
-                                                : IconButton(
+                                    ),
+                                    Expanded(
+                                      child: TextField(
+                                        onTapOutside: (_) => FocusManager.instance.primaryFocus?.unfocus(),
+                                        controller: searchController,
+                                        onChanged: (String value) => {setState(() => query = value)},
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                        ),
+                                        decoration: InputDecoration(
+                                          suffixIconConstraints: const BoxConstraints(maxHeight: 76, maxWidth: 76),
+                                          suffixIcon: query.isEmpty
+                                              ? null
+                                              : Padding(
+                                                padding: const EdgeInsets.only(right: 6.0),
+                                                child: IconButton(
                                                     iconSize: 16,
                                                     style: IconButton.styleFrom(
-                                                      foregroundColor: const Color(0xFFa9bcc7),
+                                                      foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
                                                       shape: const RoundedRectangleBorder(
                                                         borderRadius: BorderRadius.all(
                                                           Radius.circular(8),
@@ -184,49 +200,59 @@ class _ItemsPageState extends State<ItemsPage> {
                                                     },
                                                     icon: const Icon(Icons.clear),
                                                   ),
-                                            border: InputBorder.none,
-                                            hintText: "Czego szukasz?",
-                                            hintStyle: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                            ),
+                                              ),
+                                          border: InputBorder.none,
+                                          hintText: "Czego szukasz?",
+                                          hintStyle: TextStyle(
+                                            color: Theme.of(context).colorScheme.onPrimaryContainer,
+                                            fontWeight: FontWeight.normal,
                                           ),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              const SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                  color: Color.fromRGBO(230, 230, 230, 1),
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                ),
-                                child: IconButton(
-                                  onPressed: () async {
-                                    var res = await Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                        builder: (_) => NewItemSearchPage(
-                                          camera: widget.camera,
+                              // const SizedBox(
+                              //   width: 16,
+                              // ),
+                              Row(
+                                children: [
+                                  Spacer(),
+                                  Container(
+                                     decoration: BoxDecoration(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      borderRadius: const BorderRadius.horizontal(
+                                        left: Radius.circular(10),
+                                        right: Radius.circular(10),
+                                      ),
+                                    ),
+                                    child: IconButton(
+                                      onPressed: () async {
+                                        var res = await Navigator.push(
+                                          context,
+                                          CupertinoPageRoute(
+                                            builder: (_) => NewItemSearchPage(
+                                              camera: widget.camera,
+                                            ),
+                                          ),
+                                        );
+                                        if (!mounted) return;
+                                        setState(() {
+                                          itemsResponse = getItems();
+                                        });
+                                      },
+                                      icon: Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Icon(
+                                          Icons.add,
+                                          size: 24,
+                                          color: Theme.of(context).colorScheme.onPrimary,
                                         ),
                                       ),
-                                    );
-                                    if (!mounted) return;
-                                    setState(() {
-                                      itemsResponse = getItems();
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.add_shopping_cart_outlined,
-                                    // size: 30,
-                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
                             ],
                           ),

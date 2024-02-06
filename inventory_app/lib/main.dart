@@ -16,7 +16,7 @@ Future<void> main() async {
     theme: ThemeData(
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: const Color(0xFFa9bcc7),
+          // foregroundColor: const Color(0xFFa9bcc7),
           textStyle: const TextStyle(
             fontSize: 16,
           ),
