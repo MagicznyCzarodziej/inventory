@@ -135,7 +135,7 @@ class _AddItemPageState extends State<AddItemPage> {
                       left: 32,
                       right: 32,
                       top: 8,
-                      bottom: 32,
+                      bottom: 0,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -210,7 +210,7 @@ class _AddItemPageState extends State<AddItemPage> {
                             },
                           ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 24, bottom: 32),
+                          padding: const EdgeInsets.only(top: 24, bottom: 8),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -286,8 +286,8 @@ class _AddItemPageState extends State<AddItemPage> {
                             const Text(
                               "/",
                               style: TextStyle(
-                                fontSize: 128,
-                                color: Colors.white60,
+                                fontSize: 96,
+                                color: Colors.black12,
                               ),
                             ),
                             Row(
@@ -301,12 +301,13 @@ class _AddItemPageState extends State<AddItemPage> {
                                 Column(
                                   children: [
                                     IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            desiredStock = desiredStock + 1;
-                                          });
-                                        },
-                                        icon: const Icon(Icons.add)),
+                                      onPressed: () {
+                                        setState(() {
+                                          desiredStock = desiredStock + 1;
+                                        });
+                                      },
+                                      icon: const Icon(Icons.add),
+                                    ),
                                     if (desiredStock > 0)
                                       IconButton(
                                         onPressed: () {
@@ -333,30 +334,33 @@ class _AddItemPageState extends State<AddItemPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 70,
-        child: IconButton(
-          onPressed: () async {
-            await HttpClient.postJson(
-              "/items",
-              jsonEncode({
-                "itemType": widget.itemType,
-                "name": name.trim(),
-                "description": description.trim(),
-                "categoryId": categoryId,
-                "parentId": widget.parentId,
-                "brand": brand?.trim(),
-                "currentStock": currentStock,
-                "desiredStock": desiredStock,
-                "photoId": photoId,
-                "barcode": barcode,
-              }),
-            );
-            if (!mounted) return;
-            Navigator.popUntil(context, (route) => route.isFirst);
-          },
-          icon: const Icon(Icons.check),
-          style: IconButton.styleFrom(alignment: FractionalOffset.centerRight, padding: EdgeInsets.only(right: 32)),
+      floatingActionButton: IconButton(
+        onPressed: () async {
+          await HttpClient.postJson(
+            "/items",
+            jsonEncode({
+              "itemType": widget.itemType,
+              "name": name.trim(),
+              "description": description.trim(),
+              "categoryId": categoryId,
+              "parentId": widget.parentId,
+              "brand": brand?.trim(),
+              "currentStock": currentStock,
+              "desiredStock": desiredStock,
+              "photoId": photoId,
+              "barcode": barcode,
+            }),
+          );
+          if (!mounted) return;
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
+        icon: const Icon(
+          Icons.check,
+          size: 48,
+        ),
+        color: Theme.of(context).colorScheme.onPrimary,
+        style: IconButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

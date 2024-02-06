@@ -57,11 +57,24 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 16,
+                  right: 16,
+                ),
                 child: TextField(
                   autofocus: true,
                   textCapitalization: TextCapitalization.sentences,
                   decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Theme.of(context).colorScheme.primaryContainer,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    border: const OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8),
+                      ),
+                    ),
                     hintText: "Co dodać?",
                     hintStyle: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
@@ -76,11 +89,11 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 4, right: 12),
+                padding: const EdgeInsets.only(top: 8, bottom: 8,left: 16, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextButton(
+                    FilledButton.icon(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -93,20 +106,13 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                           ),
                         );
                       },
-                      child: const Row(
-                        children: [
-                          Text("dodaj jako produkt"),
-                          Padding(
-                            padding: EdgeInsets.only(left: 4),
-                            child: Icon(
-                              Icons.add,
-                              size: 20,
-                            ),
-                          ),
-                        ],
+                      label: const Text("dodaj jako produkt"),
+                      icon: const Icon(
+                        Icons.add,
+                        size: 16,
                       ),
                     ),
-                    TextButton(
+                    FilledButton.icon(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -117,18 +123,8 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                           ),
                         );
                       },
-                      style: TextButton.styleFrom(
-                        padding: const EdgeInsets.only(left: 8, top: 4, bottom: 4),
-                      ),
-                      child: const Row(
-                        children: [
-                          Text("dodaj jako grupę"),
-                          Padding(
-                            padding: EdgeInsets.only(left: 8.0, right: 4),
-                            child: Icon(CupertinoIcons.arrow_turn_right_up, size: 16),
-                          ),
-                        ],
-                      ),
+                      label: const Text("dodaj jako grupę"),
+                      icon: const Icon(CupertinoIcons.arrow_turn_right_up, size: 12),
                     ),
                   ],
                 ),
