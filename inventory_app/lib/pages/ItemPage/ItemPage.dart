@@ -255,8 +255,18 @@ class _ItemPageState extends State<ItemPage> {
                 ),
               ),
             );
+          } else if (snapshot.hasError) {
+            return const Scaffold(
+              body: Center(
+                child: Text("coś nie tak"),
+              ),
+            );
           } else {
-            return const Text("coś nie tak");
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         },
       );

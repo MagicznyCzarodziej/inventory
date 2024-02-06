@@ -140,7 +140,7 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                 future: itemsResponse,
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const Text("Loading");
+                    return const LinearProgressIndicator();
                   }
 
                   var entries = snapshot.data!.entries.where((entry) => nameForEntry(entry).containsIgnoreCase(query));
