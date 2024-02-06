@@ -18,19 +18,6 @@ Color getCurrentStockColor(int currentStock, int desiredStock) {
     return Colors.orangeAccent[100]!;
   else
     return Colors.green;
-
-
-  // if (currentStock < 1 && desiredStock > 0) {
-  //   return Colors.red;
-  // } else if (currentStock < 2 && desiredStock > 1) {
-  //   return Colors.pink;
-  // } else if (currentStock < desiredStock / 2) {
-  //   return Colors.orange;
-  // } else if (currentStock > desiredStock) {
-  //   return Colors.teal;
-  // } else {
-  //   return Colors.green;
-  // }
 }
 
 extension SearchInString on String? {
@@ -51,7 +38,7 @@ Future<void> updateCurrentStock(
 Future<UploadPhotoResponse> upload(File imageFile) async {
   // open a bytestream
   var stream =
-      http.ByteStream(DelegatingStream(imageFile.openRead())); //.cast()
+      http.ByteStream(DelegatingStream(imageFile.openRead()));
   // get file length
   var length = await imageFile.length();
 
