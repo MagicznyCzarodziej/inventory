@@ -51,6 +51,12 @@ class _AddParentItemPageState extends State<AddParentItemPage> {
                     name = value;
                   });
                 },
+                style: const TextStyle(
+                  fontSize: 24,
+                ),
+                decoration: const InputDecoration(
+                  label: Text("Nazwa grupy"),
+                ),
               ),
               FutureBuilder(
                 future: categoriesResponse,
@@ -77,23 +83,30 @@ class _AddParentItemPageState extends State<AddParentItemPage> {
                   );
                 },
               ),
-              FilledButton(
-                onPressed: () async {
-                  await HttpClient.postJson(
-                    "/parent-items",
-                    jsonEncode({
-                      "name": name,
-                      "categoryId": categoryId,
-                    }),
-                  );
-
-                  if (!mounted) return;
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text("Dodaj"),
-              ),
             ],
           ),
+        ),
+      ),
+      floatingActionButton: IconButton(
+        onPressed: () async {
+          await HttpClient.postJson(
+            "/parent-items",
+            jsonEncode({
+              "name": name,
+              "categoryId": categoryId,
+            }),
+          );
+
+          if (!mounted) return;
+          Navigator.popUntil(context, (route) => route.isFirst);
+        },
+        icon: const Icon(
+          Icons.check,
+          size: 48,
+        ),
+        color: Theme.of(context).colorScheme.onPrimary,
+        style: IconButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

@@ -161,24 +161,27 @@ class _ItemPageState extends State<ItemPage> {
                             ),
                             const Spacer(),
                             if (item.barcode != null)
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(right: 4),
-                                    child: Icon(CupertinoIcons.barcode),
-                                  ),
-                                  Text(item.barcode!),
-                                  TextButton(
-                                    onPressed: () => {},
-                                    child: Text(
-                                      "Porównaj",
-                                      style: TextStyle(
-                                        color: Theme.of(context).colorScheme.primary,
-                                      ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 4),
+                                      child: Icon(CupertinoIcons.barcode),
                                     ),
-                                  )
-                                ],
+                                    Text(item.barcode!),
+                                    TextButton(
+                                      onPressed: () => {},
+                                      child: Text(
+                                        "Porównaj",
+                                        style: TextStyle(
+                                          color: Theme.of(context).colorScheme.primary,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
                           ],
                         ),
