@@ -1,8 +1,9 @@
 package pl.przemyslawpitus.inventory.domain.parentItem.createParentItemUseCase
 
-import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
 import pl.przemyslawpitus.inventory.domain.category.CategoryId
+import pl.przemyslawpitus.inventory.domain.category.CategoryProvider
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.domain.utils.randomUuid
@@ -10,17 +11,21 @@ import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
 class CreateParentItemUseCase(
-    private val categoryRepository: CategoryRepository,
+    private val categoryProvider: CategoryProvider,
     private val parentItemRepository: ParentItemRepository,
 ) {
-    fun createParentItem(itemDraft: ParentItemDraft): ParentItem {
+    fun createParentItem(itemDraft: ParentItemDraft, userId: UserId): ParentItem {
         logger.domain("Create parent item | ${itemDraft.name}")
 
         val now = Instant.now()
-        val category = categoryRepository.getById(itemDraft.categoryId) ?: throw RuntimeException("Category not found")
+        val category = categoryProvider.getByIdForUser(
+            categoryId = itemDraft.categoryId,
+            userId = userId
+        )
 
         val item = ParentItem(
             id = ParentItemId(value = randomUuid()),
+            userId = userId,
             name = itemDraft.name,
             category = category,
             createdAt = now,

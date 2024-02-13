@@ -10,6 +10,7 @@ import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.domain.item.Root
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
@@ -20,6 +21,11 @@ class MongoItemRepository(
     override fun getById(itemId: ItemId): Item? {
         logger.infra("Get item | $itemId")
         return mongoTemplate.findById(itemId.value, ItemEntity::class.java)?.toDomain()
+    }
+
+    override fun getByUserId(userId: UserId): List<Item> {
+        logger.infra("Get items for user | $userId")
+        return mongoTemplate.find(queryByUserId(userId), ItemEntity::class.java).toDomain()
     }
 
     override fun getAll(): List<Item> {
@@ -48,6 +54,7 @@ class MongoItemRepository(
 @Document("items")
 data class ItemEntity(
     val id: String,
+    val userId: String,
     val name: String,
     val description: String?,
     val root: RootEntity,
@@ -91,6 +98,7 @@ data class ItemEntity(
 
 private fun Item.toEntity() = ItemEntity(
     id = this.id.value,
+    userId = this.userId.value,
     name = this.name,
     description = this.description,
     root = when (this.root) {

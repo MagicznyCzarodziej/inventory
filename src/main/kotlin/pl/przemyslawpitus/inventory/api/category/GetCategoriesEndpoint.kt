@@ -2,10 +2,12 @@ package pl.przemyslawpitus.inventory.api.category
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import pl.przemyslawpitus.inventory.domain.category.getCategoriesUseCase.GetCategoriesUseCase
 import pl.przemyslawpitus.inventory.domain.category.Category
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
 @RestController
@@ -16,10 +18,12 @@ class GetCategoriesEndpoint(
         "/categories",
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )
-    fun getCategoriesItems(): ResponseEntity<*> {
+    fun getCategoriesItems(
+        @AuthenticationPrincipal userDetails: UserDetails,
+    ): ResponseEntity<*> {
         logger.api("Get categories items")
 
-        val categories = getCategoriesUseCase.getCategories()
+        val categories = getCategoriesUseCase.getCategories(userId = userDetails.id)
 
         return ResponseEntity.ok(
             categories.toGetCategoriesResponse()

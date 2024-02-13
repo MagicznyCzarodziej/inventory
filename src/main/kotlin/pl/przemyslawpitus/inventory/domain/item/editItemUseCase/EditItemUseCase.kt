@@ -3,18 +3,23 @@ package pl.przemyslawpitus.inventory.domain.item.editItemUseCase
 import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
+import pl.przemyslawpitus.inventory.domain.item.ItemProvider
 import pl.przemyslawpitus.inventory.domain.item.Stock
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
 class EditItemUseCase(
     private val itemRepository: ItemRepository,
+    private val itemProvider: ItemProvider,
 ) {
-    fun editItem(editItemParameters: EditItemParameters): Item {
+    fun editItem(editItemParameters: EditItemParameters, userId: UserId): Item {
         logger.domain("Edit item | ${editItemParameters.name}")
 
-        val item = itemRepository.getById(editItemParameters.id)
-            ?: throw RuntimeException("Item ${editItemParameters.id} not found")
+        val item = itemProvider.getByIdForUser(
+            itemId = editItemParameters.id,
+            userId = userId,
+        )
 
         if (!hasAnyFieldChanged(item, editItemParameters)) {
             logger.domain("Nothing changed | ${item.id}")

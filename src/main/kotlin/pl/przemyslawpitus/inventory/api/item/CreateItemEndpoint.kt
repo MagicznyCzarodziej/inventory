@@ -2,9 +2,11 @@ package pl.przemyslawpitus.inventory.api.item
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import pl.przemyslawpitus.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.domain.item.Item
@@ -24,11 +26,13 @@ class CreateItemEndpoint(
     )
     fun createItem(
         @RequestBody request: CreateItemRequest,
+        @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
         logger.api("Create item | ${request.name}")
 
         val item = createItemUseCase.createItem(
-            request.toItemDraft()
+            itemDraft = request.toItemDraft(),
+            userId = userDetails.id,
         )
 
         return ResponseEntity.ok(

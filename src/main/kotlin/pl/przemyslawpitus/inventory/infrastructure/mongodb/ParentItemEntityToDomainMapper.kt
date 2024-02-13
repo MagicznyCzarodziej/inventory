@@ -1,5 +1,6 @@
 package pl.przemyslawpitus.inventory.infrastructure.mongodb
 
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.category.Category
 import pl.przemyslawpitus.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
@@ -11,7 +12,8 @@ class ParentItemEntityToDomainMapper(
 ) {
     fun mapToDomain(parentItemEntity: ParentItemEntity) =
         ParentItem(
-            id = ParentItemId(value = parentItemEntity.id),
+            id = ParentItemId(parentItemEntity.id),
+            userId = UserId(parentItemEntity.userId),
             name = parentItemEntity.name,
             category = getCategory(parentItemEntity.categoryId),
             createdAt = parentItemEntity.createdAt,

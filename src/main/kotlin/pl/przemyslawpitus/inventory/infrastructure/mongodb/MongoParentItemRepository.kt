@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import java.time.Instant
 
 class MongoParentItemRepository(
@@ -20,6 +21,10 @@ class MongoParentItemRepository(
         return mongoTemplate.findById(parentItemId.value, ParentItemEntity::class.java)?.toDomain()
     }
 
+    override fun getByUserId(userId: UserId): List<ParentItem> {
+        return mongoTemplate.find(queryByUserId(userId), ParentItemEntity::class.java).toDomain()
+    }
+
     override fun getAll(): List<ParentItem> {
         return mongoTemplate.findAll(ParentItemEntity::class.java).toDomain()
     }
@@ -31,6 +36,7 @@ class MongoParentItemRepository(
 @Document("parentItems")
 data class ParentItemEntity(
     val id: String,
+    val userId: String,
     val name: String,
     val categoryId: String,
     val createdAt: Instant,
@@ -41,6 +47,7 @@ data class ParentItemEntity(
 
 private fun ParentItem.toEntity() = ParentItemEntity(
     id = this.id.value,
+    userId = this.userId.value,
     name = this.name,
     categoryId = this.category.id.value,
     createdAt = this.createdAt,

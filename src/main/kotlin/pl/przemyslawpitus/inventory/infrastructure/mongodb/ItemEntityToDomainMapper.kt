@@ -1,5 +1,6 @@
 package pl.przemyslawpitus.inventory.infrastructure.mongodb
 
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
 import pl.przemyslawpitus.inventory.domain.category.Category
@@ -33,6 +34,7 @@ class ItemEntityToDomainMapper(
 
         return Item(
             id = ItemId(entity.id),
+            userId = UserId(entity.userId),
             name = entity.name,
             description = entity.description,
             root = root,
@@ -52,7 +54,6 @@ class ItemEntityToDomainMapper(
             id = PhotoId(this.id),
             url = this.url,
         )
-
 
     private fun ItemEntity.StockEntity.toDomain() =
         Stock(

@@ -5,16 +5,17 @@ import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
+import pl.przemyslawpitus.inventory.domain.user.UserId
 
 class GetItemsUseCase(
     private val itemRepository: ItemRepository,
     private val parentItemRepository: ParentItemRepository,
 ) {
-    fun getItems(): List<ItemsView.Entry> {
-        val items = itemRepository.getAll()
+    fun getItems(userId: UserId): List<ItemsView.Entry> {
+        val items = itemRepository.getByUserId(userId)
         val (independentItems, subItems) = items.partition { it.root is Root.CategoryRoot }
 
-        val parentItems = parentItemRepository.getAll()
+        val parentItems = parentItemRepository.getByUserId(userId)
 
         val parentsWithItems = parentItems.associateWith { parent ->
             subItems.filter {

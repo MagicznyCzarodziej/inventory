@@ -1,10 +1,10 @@
 package pl.przemyslawpitus.inventory.domain.item.createItemUseCase
 
-import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.item.ItemRepository
-import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import pl.przemyslawpitus.inventory.domain.category.CategoryId
+import pl.przemyslawpitus.inventory.domain.category.CategoryProvider
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.domain.item.ItemPhoto
@@ -13,23 +13,25 @@ import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.domain.item.Stock
 import pl.przemyslawpitus.inventory.domain.item.StockHistoryEntry
+import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemProvider
 import pl.przemyslawpitus.inventory.domain.utils.randomUuid
 import java.time.Instant
 
 class CreateItemUseCase(
     private val itemRepository: ItemRepository,
-    private val categoryRepository: CategoryRepository,
-    private val parentItemRepository: ParentItemRepository,
+    private val categoryProvider: CategoryProvider,
+    private val parentItemProvider: ParentItemProvider,
 ) {
-    fun createItem(itemDraft: ItemDraft): Item {
+    fun createItem(itemDraft: ItemDraft, userId: UserId): Item {
         logger.domain("Create item | ${itemDraft.name}")
 
         val now = Instant.now()
         val itemPhoto = itemDraft.photoId?.let { getPhoto(it) }
-        val root = getRoot(itemDraft)
+        val root = getRoot(itemDraft, userId)
 
         val item = Item(
             id = ItemId(value = randomUuid()),
+            userId = userId,
             name = itemDraft.name,
             description = itemDraft.description,
             root = root,
@@ -57,24 +59,39 @@ class CreateItemUseCase(
             url = "/photos/${photoId.value}"
         )
 
-    private fun getRoot(itemDraft: ItemDraft): Root =
+    private fun getRoot(itemDraft: ItemDraft, userId: UserId): Root =
         when (itemDraft.itemType) {
-            ItemDraft.ItemType.ITEM -> {
-                requireNotNull(itemDraft.categoryId)
-                Root.CategoryRoot(
-                    categoryRepository.getById(itemDraft.categoryId)
-                        ?: throw RuntimeException("Category not found ${itemDraft.categoryId}")
-                )
-            }
-
-            ItemDraft.ItemType.SUB_ITEM -> {
-                requireNotNull(itemDraft.parentId)
-                Root.ParentRoot(
-                    parentItemRepository.getById(itemDraft.parentId)
-                        ?: throw RuntimeException("ParentItem not found ${itemDraft.parentId}")
-                )
-            }
+            ItemDraft.ItemType.ITEM -> createCategoryRoom(itemDraft, userId)
+            ItemDraft.ItemType.SUB_ITEM -> createParentItemRoot(itemDraft, userId)
         }
+
+    private fun createCategoryRoom(
+        itemDraft: ItemDraft,
+        userId: UserId,
+    ): Root.CategoryRoot {
+        requireNotNull(itemDraft.categoryId)
+
+        val category = categoryProvider.getByIdForUser(
+            categoryId = itemDraft.categoryId,
+            userId = userId
+        )
+
+        return Root.CategoryRoot(category)
+    }
+
+    private fun createParentItemRoot(
+        itemDraft: ItemDraft,
+        userId: UserId,
+    ): Root.ParentRoot {
+        requireNotNull(itemDraft.parentId)
+
+        val parentItem = parentItemProvider.getByIdForUser(
+            parentItemId = itemDraft.parentId,
+            userId = userId,
+        )
+
+        return Root.ParentRoot(parentItem)
+    }
 
     private fun createNewStock(currentStock: Int, desiredStock: Int) =
         Stock(

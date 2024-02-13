@@ -6,13 +6,14 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.photo.getPhotoUseCase.GetPhotoUseCase
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
-import java.io.File
 import java.nio.charset.Charset
 
 @RestController
@@ -25,12 +26,14 @@ class GetPhotoEndpoint(
     )
     fun getItem(
         @PathVariable photoId: String,
+        @AuthenticationPrincipal userDetails: UserDetails,
         request: HttpServletRequest,
     ): ResponseEntity<*> {
         logger.api("Get photo | $photoId")
 
         val photo = getPhotoUseCase.getPhoto(
-            PhotoId(photoId)
+            photoId = PhotoId(photoId),
+            userId = userDetails.id,
         )
 
         return ResponseEntity(

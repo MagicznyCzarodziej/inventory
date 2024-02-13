@@ -2,6 +2,7 @@ package pl.przemyslawpitus.inventory.api.item
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
@@ -9,6 +10,7 @@ import pl.przemyslawpitus.inventory.domain.item.geItemUseCase.GetItemUseCase
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.domain.item.Root
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
 @RestController
@@ -21,11 +23,13 @@ class GetItemEndpoint(
     )
     fun getItem(
         @PathVariable itemId: String,
+        @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
         logger.api("Get item | $itemId")
 
         val item = getItemUseCase.getItem(
-            ItemId(itemId)
+            itemId = ItemId(itemId),
+            userId = userDetails.id,
         )
 
         return ResponseEntity.ok(

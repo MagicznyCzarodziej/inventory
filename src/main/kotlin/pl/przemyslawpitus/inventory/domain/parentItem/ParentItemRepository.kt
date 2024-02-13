@@ -1,7 +1,10 @@
 package pl.przemyslawpitus.inventory.domain.parentItem
 
+import pl.przemyslawpitus.inventory.domain.user.UserId
+
 interface ParentItemRepository {
     fun save(parentItem: ParentItem): ParentItem
     fun getById(parentItemId: ParentItemId): ParentItem?
+    fun getByUserId(userId: UserId): List<ParentItem>
     fun getAll(): List<ParentItem>
 }

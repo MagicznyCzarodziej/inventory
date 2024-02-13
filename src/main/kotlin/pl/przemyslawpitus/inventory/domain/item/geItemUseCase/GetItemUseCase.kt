@@ -1,15 +1,17 @@
 package pl.przemyslawpitus.inventory.domain.item.geItemUseCase
 
-import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
+import pl.przemyslawpitus.inventory.domain.item.ItemProvider
+import pl.przemyslawpitus.inventory.domain.user.UserId
 
 class GetItemUseCase(
-    private val itemRepository: ItemRepository,
+    private val itemProvider: ItemProvider,
 ) {
-    fun getItem(itemId: ItemId): Item {
-        val item = itemRepository.getById(itemId) ?: throw RuntimeException("Item $itemId not found")
-
-        return item
+    fun getItem(itemId: ItemId, userId: UserId): Item {
+        return itemProvider.getByIdForUser(
+            itemId = itemId,
+            userId = userId,
+        )
     }
 }

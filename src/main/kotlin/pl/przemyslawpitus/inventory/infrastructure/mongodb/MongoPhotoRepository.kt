@@ -4,6 +4,7 @@ import org.bson.BsonBinarySubType
 import org.bson.types.Binary
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.mapping.Document
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.photo.Photo
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
@@ -23,15 +24,18 @@ class MongoPhotoRepository(
 @Document("photos")
 data class PhotoEntity(
     val id: String,
+    val userId: String,
     val file: Binary,
 ) {
     fun toDomain() = Photo(
         id = PhotoId(this.id),
+        userId = UserId(this.userId),
         file = this.file.data
     )
 }
 
 private fun Photo.toEntity() = PhotoEntity(
     id = this.id.value,
+    userId = this.userId.value,
     file = Binary(BsonBinarySubType.BINARY, this.file),
 )

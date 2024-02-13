@@ -3,6 +3,15 @@ package pl.przemyslawpitus.inventory.config
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import pl.przemyslawpitus.inventory.config.auth.AuthenticationProperties
+import pl.przemyslawpitus.inventory.domain.auth.AuthTokenVerifier
+import pl.przemyslawpitus.inventory.domain.auth.AuthenticationDetailsCreator
+import pl.przemyslawpitus.inventory.domain.user.UserRepository
+import pl.przemyslawpitus.inventory.domain.auth.loginUseCase.LoginUseCase
+import pl.przemyslawpitus.inventory.domain.auth.refreshTokenUseCase.RefreshTokenUseCase
+import pl.przemyslawpitus.inventory.domain.auth.registerUseCase.RegisterUseCase
+import pl.przemyslawpitus.inventory.domain.category.CategoryProvider
 import pl.przemyslawpitus.inventory.domain.category.CategoryRepository
 import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemRepository
@@ -14,10 +23,12 @@ import pl.przemyslawpitus.inventory.domain.parentItem.createParentItemUseCase.Cr
 import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemUseCase
 import pl.przemyslawpitus.inventory.domain.item.geItemUseCase.GetItemUseCase
 import pl.przemyslawpitus.inventory.domain.category.getCategoriesUseCase.GetCategoriesUseCase
+import pl.przemyslawpitus.inventory.domain.item.ItemProvider
 import pl.przemyslawpitus.inventory.domain.item.getItemsUseCase.GetItemsUseCase
 import pl.przemyslawpitus.inventory.domain.parentItem.getParentItemsUseCase.GetParentItemsUseCase
 import pl.przemyslawpitus.inventory.domain.photo.getPhotoUseCase.GetPhotoUseCase
 import pl.przemyslawpitus.inventory.domain.item.removeItemUseCase.RemoveItemUseCase
+import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemProvider
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.UploadPhotoUseCase
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.ItemEntityToDomainMapper
@@ -25,11 +36,19 @@ import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoCategoryReposito
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoItemRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoParentItemRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoPhotoRepository
+import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoUserRepository
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.ParentItemEntityToDomainMapper
 
 @Configuration
 @Suppress("TooManyFunctions")
 class DomainConfig {
+    @Bean
+    fun userRepository(
+        mongoTemplate: MongoTemplate,
+    ) = MongoUserRepository(
+        mongoTemplate = mongoTemplate,
+    )
+
     @Bean
     fun itemRepository(
         mongoTemplate: MongoTemplate,
@@ -37,6 +56,13 @@ class DomainConfig {
     ) = MongoItemRepository(
         mongoTemplate = mongoTemplate,
         itemEntityToDomainMapper = itemEntityToDomainMapper,
+    )
+
+    @Bean
+    fun itemProvider(
+      itemRepository: ItemRepository,
+    ) = ItemProvider(
+      itemRepository = itemRepository,
     )
 
     @Bean
@@ -58,6 +84,13 @@ class DomainConfig {
     )
 
     @Bean
+    fun parentItemProvider(
+      parentItemRepository: ParentItemRepository,
+    ) = ParentItemProvider(
+      parentItemRepository = parentItemRepository,
+    )
+
+    @Bean
     fun parentItemEntityToDomainMapper(
         categoryRepository: CategoryRepository,
     ) = ParentItemEntityToDomainMapper(
@@ -72,6 +105,13 @@ class DomainConfig {
     )
 
     @Bean
+    fun categoryProvider(
+      categoryRepository: CategoryRepository,
+    ) = CategoryProvider(
+      categoryRepository = categoryRepository,
+    )
+
+    @Bean
     fun photoRepository(
         mongoTemplate: MongoTemplate,
     ) = MongoPhotoRepository(
@@ -79,23 +119,68 @@ class DomainConfig {
     )
 
     @Bean
+    fun loginUseCase(
+        userRepository: UserRepository,
+        passwordEncoder: BCryptPasswordEncoder,
+        authenticationDetailsCreator: AuthenticationDetailsCreator,
+    ) = LoginUseCase(
+        userRepository = userRepository,
+        passwordEncoder = passwordEncoder,
+        authenticationDetailsCreator = authenticationDetailsCreator,
+    )
+
+    @Bean
+    fun refreshTokenUseCase(
+        authTokenVerifier: AuthTokenVerifier,
+        userRepository: UserRepository,
+        authenticationDetailsCreator: AuthenticationDetailsCreator,
+    ) = RefreshTokenUseCase(
+        authTokenVerifier = authTokenVerifier,
+        userRepository = userRepository,
+        authenticationDetailsCreator = authenticationDetailsCreator,
+    )
+
+    @Bean
+    fun authTokenVerifier(
+        authenticationProperties: AuthenticationProperties,
+    ) = AuthTokenVerifier(
+        authenticationProperties = authenticationProperties,
+    )
+
+    @Bean
+    fun registerUseCase(
+        userRepository: UserRepository,
+        passwordEncoder: BCryptPasswordEncoder,
+    ) = RegisterUseCase(
+        userRepository = userRepository,
+        passwordEncoder = passwordEncoder,
+    )
+
+    @Bean
+    fun authenticationDetailsCreator(
+        authenticationProperties: AuthenticationProperties,
+    ) = AuthenticationDetailsCreator(
+        authenticationProperties = authenticationProperties,
+    )
+
+    @Bean
     fun createItemUseCase(
         itemRepository: ItemRepository,
-        categoryRepository: CategoryRepository,
-        parentItemRepository: ParentItemRepository,
+        categoryProvider: CategoryProvider,
+        parentItemProvider: ParentItemProvider,
     ) = CreateItemUseCase(
         itemRepository = itemRepository,
-        categoryRepository = categoryRepository,
-        parentItemRepository = parentItemRepository,
+        categoryProvider = categoryProvider,
+        parentItemProvider = parentItemProvider,
     )
 
     @Bean
     fun createParentItemUseCase(
         parentItemRepository: ParentItemRepository,
-        categoryRepository: CategoryRepository,
+        categoryProvider: CategoryProvider,
     ) = CreateParentItemUseCase(
         parentItemRepository = parentItemRepository,
-        categoryRepository = categoryRepository,
+        categoryProvider = categoryProvider,
     )
 
     @Bean
@@ -103,9 +188,11 @@ class DomainConfig {
 
     @Bean
     fun updateCurrentStockUseCase(
+        itemProvider: ItemProvider,
         itemRepository: ItemRepository,
         stockTransformer: StockTransformer,
     ) = UpdateCurrentStockUseCase(
+        itemProvider = itemProvider,
         itemRepository = itemRepository,
         stockTransformer = stockTransformer,
     )
@@ -121,16 +208,18 @@ class DomainConfig {
 
     @Bean
     fun getItemUseCase(
-        itemRepository: ItemRepository,
+        itemProvider: ItemProvider,
     ) = GetItemUseCase(
-        itemRepository = itemRepository,
+        itemProvider = itemProvider,
     )
 
     @Bean
     fun removeItemUseCase(
         itemRepository: ItemRepository,
+        itemProvider: ItemProvider,
     ) = RemoveItemUseCase(
         itemRepository = itemRepository,
+        itemProvider = itemProvider,
     )
 
     @Bean
@@ -171,8 +260,10 @@ class DomainConfig {
     @Bean
     fun editItemUseCase(
         itemRepository: ItemRepository,
+        itemProvider: ItemProvider,
     ) = EditItemUseCase(
         itemRepository = itemRepository,
+        itemProvider = itemProvider,
     )
 
 }

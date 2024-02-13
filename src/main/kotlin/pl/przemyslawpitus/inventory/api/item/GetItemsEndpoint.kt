@@ -2,10 +2,12 @@ package pl.przemyslawpitus.inventory.api.item
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 import pl.przemyslawpitus.inventory.domain.item.getItemsUseCase.GetItemsUseCase
 import pl.przemyslawpitus.inventory.domain.item.getItemsUseCase.ItemsView
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
 @RestController
@@ -16,10 +18,14 @@ class GetItemsEndpoint(
         "/items",
         produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun getItems(): ResponseEntity<*> {
+    fun getItems(
+        @AuthenticationPrincipal userDetails: UserDetails,
+    ): ResponseEntity<*> {
         logger.api("Get items")
 
-        val items = getItemsUseCase.getItems()
+        val items = getItemsUseCase.getItems(
+            userId = userDetails.id,
+        )
 
         return ResponseEntity.ok(
             items.toGetItemsResponse()

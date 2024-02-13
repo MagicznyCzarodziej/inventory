@@ -2,9 +2,11 @@ package pl.przemyslawpitus.inventory.api.parentItem
 
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.domain.parentItem.createParentItemUseCase.CreateParentItemUseCase
 import pl.przemyslawpitus.inventory.domain.parentItem.createParentItemUseCase.ParentItemDraft
 import pl.przemyslawpitus.inventory.domain.category.CategoryId
@@ -22,11 +24,13 @@ class CreateParentItemEndpoint(
     )
     fun createItem(
         @RequestBody request: CreateParentItemRequest,
+        @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
         logger.api("Create parent item | ${request.name}")
 
         val item = createParentItemUseCase.createParentItem(
-            request.toParentItemDraft()
+            itemDraft = request.toParentItemDraft(),
+            userId = userDetails.id,
         )
 
         return ResponseEntity.ok(

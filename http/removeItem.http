@@ -1,2 +1,2 @@
 ### Remove item
-DELETE http://localhost:8080/items/f60f6820-7893-4a08-b393-da7f4e9ff382
+DELETE http://localhost:8080/items/2c197dec-357a-4f93-a5ab-ea6c8de2d701

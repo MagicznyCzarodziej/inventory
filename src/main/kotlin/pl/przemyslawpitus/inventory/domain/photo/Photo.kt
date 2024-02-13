@@ -1,9 +1,11 @@
 package pl.przemyslawpitus.inventory.domain.photo
 
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
 
 data class Photo(
     val id: PhotoId,
+    val userId: UserId,
     val file: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {

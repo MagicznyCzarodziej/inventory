@@ -18,3 +18,12 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+
+authentication:
+  jwt:
+    issuer: pl.przemyslawpitus.inventory
+    secret: secret
+    accessTokenCookieName: accessToken
+    refreshTokenCookieName: refreshToken
+    accessTokenExpirationTime: PT1H
+    refreshTokenExpirationTime: P7D

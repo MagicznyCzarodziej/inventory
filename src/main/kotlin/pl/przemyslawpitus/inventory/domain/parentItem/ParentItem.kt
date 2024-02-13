@@ -1,10 +1,12 @@
 package pl.przemyslawpitus.inventory.domain.parentItem
 
+import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.category.Category
 import java.time.Instant
 
 data class ParentItem(
     val id: ParentItemId,
+    val userId: UserId,
     val name: String,
     val category: Category,
     val createdAt: Instant,
