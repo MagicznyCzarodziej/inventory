@@ -1,13 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:inventory_app/api/HttpClient.dart';
+import 'package:inventory_app/api/Categories.dart';
+import 'package:inventory_app/api/ParentItems.dart';
 import 'package:inventory_app/dto/GetCategoriesResponse.dart';
-
-Future<GetCategoriesResponse> getCategories() async {
-  var response = await HttpClient.getJson('/categories');
-  return GetCategoriesResponse.fromJson(response);
-}
 
 class AddParentItemPage extends StatefulWidget {
   const AddParentItemPage({super.key, required this.name});
@@ -89,12 +83,11 @@ class _AddParentItemPageState extends State<AddParentItemPage> {
       ),
       floatingActionButton: IconButton(
         onPressed: () async {
-          await HttpClient.postJson(
-            "/parent-items",
-            jsonEncode({
+          await addParentItem(
+            {
               "name": name,
               "categoryId": categoryId,
-            }),
+            },
           );
 
           if (!mounted) return;

@@ -1,18 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_app/api/HttpClient.dart';
+import 'package:inventory_app/api/Items.dart';
 import 'package:inventory_app/dto/GetItemsResponse.dart';
 import 'package:inventory_app/pages/AddItemPage/AddItemPage.dart';
 import 'package:inventory_app/pages/AddItemPage/AddParentItemPage.dart';
 import 'package:inventory_app/pages/ItemPage/ItemPage.dart';
 import 'package:inventory_app/routes/simpleRoute.dart';
 import 'package:inventory_app/utils.dart';
-
-Future<GetItemsResponse> getItems() async {
-  var response = await HttpClient.getJson('/items');
-  return GetItemsResponse.fromJson(response);
-}
 
 String nameForEntry(Entry entry) {
   return switch (entry) {

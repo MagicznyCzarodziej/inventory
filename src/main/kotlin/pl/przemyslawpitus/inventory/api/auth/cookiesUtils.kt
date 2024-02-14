@@ -17,6 +17,6 @@ fun createSecureCookie(name: String, value: String) =
 
 fun extractCookieFromRequest(request: HttpServletRequest, cookieName: String): String? {
     return request.cookies
-        .find { it.name == cookieName }
+        ?.find { it.name == cookieName }
         ?.value
 }

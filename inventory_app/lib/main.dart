@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_app/api/Auth.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemsPage.dart';
 
 Future<void> main() async {
@@ -10,6 +11,8 @@ Future<void> main() async {
 
   // Get a specific camera from the list of available cameras.
   final firstCamera = cameras.first;
+
+  await login();
 
   runApp(MaterialApp(
     title: 'Inventory',

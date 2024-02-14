@@ -1,18 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_app/api/HttpClient.dart';
+import 'package:inventory_app/api/Items.dart';
 import 'package:inventory_app/pages/AddItemPage/NewItemSearchPage.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemEntryWidget.dart';
 import 'package:inventory_app/pages/ItemsPage/HideOnScroll.dart';
 import 'package:inventory_app/utils.dart';
 
 import '../../dto/GetItemsResponse.dart';
-
-Future<GetItemsResponse> getItems() async {
-  var response = await HttpClient.getJson('/items');
-  return GetItemsResponse.fromJson(response);
-}
 
 class ItemsPage extends StatefulWidget {
   const ItemsPage({super.key, required this.camera});

@@ -25,5 +25,5 @@ authentication:
     secret: secret
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
-    accessTokenExpirationTime: PT1H
-    refreshTokenExpirationTime: P7D
+    accessTokenExpirationTime: PT15M
+    refreshTokenExpirationTime: P30D

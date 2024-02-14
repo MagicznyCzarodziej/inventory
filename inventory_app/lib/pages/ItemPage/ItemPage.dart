@@ -1,14 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_app/api/HttpClient.dart';
+import 'package:inventory_app/api/Items.dart';
+import 'package:inventory_app/api/Photo.dart';
 
 import '../../dto/GetItemResponse.dart';
 import '../../utils.dart';
-
-Future<GetItemResponse> getItem(String itemId) async {
-  var response = await HttpClient.getJson('/items/$itemId');
-  return GetItemResponse.fromJson(response);
-}
 
 class ItemPage extends StatefulWidget {
   const ItemPage({super.key, required this.itemId});
@@ -21,11 +19,13 @@ class ItemPage extends StatefulWidget {
 
 class _ItemPageState extends State<ItemPage> {
   late Future<GetItemResponse> itemResponse;
+  late Future<Uint8List?> photo;
 
   @override
   void initState() {
     super.initState();
     itemResponse = getItem(widget.itemId);
+    photo = itemResponse.then((item) => item.photoUrl != null ? getPhoto(item.photoUrl!) : null);
   }
 
   FutureBuilder builder() => FutureBuilder<GetItemResponse>(
@@ -40,17 +40,27 @@ class _ItemPageState extends State<ItemPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (item.photoUrl != null)
-                    Container(
-                      height: 270,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            item.photoUrl!.startsWith("/") ? "$API_URL${item.photoUrl}" : item.photoUrl!,
-                          ),
-                        ),
-                      ),
-                    )
+                    FutureBuilder(
+                        future: photo,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Container(
+                              height: 270,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: MemoryImage(snapshot.data!),
+                                ),
+                              ),
+                            );
+                          }
+                          return const SizedBox(
+                            height: 270,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        })
                   else
                     SafeArea(child: Container()),
                   Expanded(
@@ -82,7 +92,7 @@ class _ItemPageState extends State<ItemPage> {
                                 const Spacer(),
                                 IconButton(
                                   onPressed: () async {
-                                    await HttpClient.delete("/items/${item.id}");
+                                    await deleteItem(item.id);
                                     if (!mounted) return;
                                     Navigator.pop(context);
                                   },

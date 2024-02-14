@@ -1,22 +1,16 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_app/api/HttpClient.dart';
+import 'package:inventory_app/api/Categories.dart';
+import 'package:inventory_app/api/Items.dart';
+import 'package:inventory_app/api/Photo.dart';
 import 'package:inventory_app/dto/GetCategoriesResponse.dart';
 import 'package:inventory_app/dto/GetParentItemsResponse.dart';
 import 'package:inventory_app/pages/AddItemPage/TakePhotoPage.dart';
 import 'package:inventory_app/pages/BarcodeScannerPage/BarcodeScannerPage.dart';
 import 'package:inventory_app/routes/simpleRoute.dart';
-
-import '../../utils.dart';
-
-Future<GetCategoriesResponse> getCategories() async {
-  var response = await HttpClient.getJson('/categories');
-  return GetCategoriesResponse.fromJson(response);
-}
 
 class AddItemPage extends StatefulWidget {
   const AddItemPage({
@@ -51,6 +45,8 @@ class _AddItemPageState extends State<AddItemPage> {
   String? photoId;
   String? barcode;
 
+  File? photoFile;
+
   void fetchData() {
     setState(() {
       categoriesResponse = getCategories();
@@ -81,9 +77,7 @@ class _AddItemPageState extends State<AddItemPage> {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                            "$API_URL/photos/$photoId",
-                          ),
+                          image: FileImage(photoFile!),
                         ),
                       ),
                     )
@@ -97,9 +91,11 @@ class _AddItemPageState extends State<AddItemPage> {
                         ),
                       ).then((path) async {
                         if (!mounted) return;
-                        var response = await upload(File(path));
+                        var file = File(path);
+                        var response = await uploadPhoto(file);
                         setState(() {
                           photoId = response.photoId;
+                          photoFile = file;
                         });
                       }),
                       child: Container(
@@ -336,9 +332,8 @@ class _AddItemPageState extends State<AddItemPage> {
       ),
       floatingActionButton: IconButton(
         onPressed: () async {
-          await HttpClient.postJson(
-            "/items",
-            jsonEncode({
+          await addItem(
+            {
               "itemType": widget.itemType,
               "name": name.trim(),
               "description": description.trim(),
@@ -349,7 +344,7 @@ class _AddItemPageState extends State<AddItemPage> {
               "desiredStock": desiredStock,
               "photoId": photoId,
               "barcode": barcode,
-            }),
+            },
           );
           if (!mounted) return;
           Navigator.popUntil(context, (route) => route.isFirst);
