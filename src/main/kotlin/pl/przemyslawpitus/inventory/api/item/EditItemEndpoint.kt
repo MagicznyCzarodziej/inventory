@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemParameters
 import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemUseCase
 import pl.przemyslawpitus.inventory.domain.item.ItemId
+import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
@@ -26,7 +28,7 @@ class EditItemEndpoint(
         @RequestBody request: EditItemRequest,
         @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
-        logger.api("Create item | ${request.name}")
+        logger.api("Edit item | $itemId")
 
         editItemUseCase.editItem(
             editItemParameters = request.toEditItemParameters(ItemId(itemId)),
@@ -42,14 +44,22 @@ class EditItemEndpoint(
 data class  EditItemRequest(
     val name: String,
     val description: String?,
+    val categoryId: String?,
     val brand: String?,
+    val currentStock: Int,
     val desiredStock: Int,
+    val photoId: String?,
+    val barcode: String?,
 ) {
     fun toEditItemParameters(itemId: ItemId) = EditItemParameters(
         id = itemId,
         name = this.name,
         description = this.description,
+        categoryId = CategoryId.orNull(this.categoryId),
         brand = this.brand,
+        currentStock = this.currentStock,
         desiredStock = this.desiredStock,
+        photoId = PhotoId.orNull(this.photoId),
+        barcode = this.barcode,
     )
 }

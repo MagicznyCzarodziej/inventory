@@ -1,17 +1,18 @@
 package pl.przemyslawpitus.inventory.domain.item.editItemUseCase
 
+import pl.przemyslawpitus.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.domain.item.ItemProvider
-import pl.przemyslawpitus.inventory.domain.item.Stock
+import pl.przemyslawpitus.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.logging.WithLogger
-import java.time.Instant
 
 class EditItemUseCase(
     private val itemRepository: ItemRepository,
     private val itemProvider: ItemProvider,
+    private val editItemTransformer: EditItemTransformer,
 ) {
     fun editItem(editItemParameters: EditItemParameters, userId: UserId): Item {
         logger.domain("Edit item | ${editItemParameters.name}")
@@ -21,36 +22,17 @@ class EditItemUseCase(
             userId = userId,
         )
 
-        if (!hasAnyFieldChanged(item, editItemParameters)) {
-            logger.domain("Nothing changed | ${item.id}")
-            return item
-        }
-
-        val updatedItem = item.copy(
-            name = editItemParameters.name,
-            description = editItemParameters.description,
-            brand = editItemParameters.brand,
-            stock = updateStock(currentItem = item, editItemParameters = editItemParameters),
-            updatedAt = Instant.now(),
+        val updatedItem = editItemTransformer.editItem(
+            item = item,
+            editItemParameters = editItemParameters,
+            userId = userId,
         )
 
         val savedItem = itemRepository.save(updatedItem)
         logger.domain("Saved item | ${item.id}")
+
         return savedItem
     }
-
-    private fun hasAnyFieldChanged(currentItem: Item, editItemParameters: EditItemParameters) =
-        currentItem.name != editItemParameters.name
-                || currentItem.description != editItemParameters.description
-                || currentItem.brand != editItemParameters.brand
-                || currentItem.stock.desiredStock != editItemParameters.desiredStock
-
-    private fun updateStock(currentItem: Item, editItemParameters: EditItemParameters) =
-        Stock(
-            currentStock = currentItem.stock.currentStock,
-            desiredStock = editItemParameters.desiredStock,
-            stockHistory = currentItem.stock.stockHistory,
-        )
 
     private companion object : WithLogger()
 }
@@ -59,6 +41,10 @@ data class EditItemParameters(
     val id: ItemId,
     val name: String,
     val description: String?,
+    val categoryId: CategoryId?,
     val brand: String?,
+    val currentStock: Int,
     val desiredStock: Int,
+    val photoId: PhotoId?,
+    val barcode: String?,
 )

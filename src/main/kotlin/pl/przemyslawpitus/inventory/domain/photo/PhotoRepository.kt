@@ -1,6 +1,5 @@
-package pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase
+package pl.przemyslawpitus.inventory.domain.photo
 
-import pl.przemyslawpitus.inventory.domain.photo.Photo
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
 
 interface PhotoRepository {

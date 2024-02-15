@@ -24,12 +24,14 @@ import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemUseCase
 import pl.przemyslawpitus.inventory.domain.item.geItemUseCase.GetItemUseCase
 import pl.przemyslawpitus.inventory.domain.category.getCategoriesUseCase.GetCategoriesUseCase
 import pl.przemyslawpitus.inventory.domain.item.ItemProvider
+import pl.przemyslawpitus.inventory.domain.item.editItemUseCase.EditItemTransformer
 import pl.przemyslawpitus.inventory.domain.item.getItemsUseCase.GetItemsUseCase
 import pl.przemyslawpitus.inventory.domain.parentItem.getParentItemsUseCase.GetParentItemsUseCase
 import pl.przemyslawpitus.inventory.domain.photo.getPhotoUseCase.GetPhotoUseCase
 import pl.przemyslawpitus.inventory.domain.item.removeItemUseCase.RemoveItemUseCase
 import pl.przemyslawpitus.inventory.domain.parentItem.ParentItemProvider
-import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
+import pl.przemyslawpitus.inventory.domain.photo.PhotoProvider
+import pl.przemyslawpitus.inventory.domain.photo.PhotoRepository
 import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.UploadPhotoUseCase
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.ItemEntityToDomainMapper
 import pl.przemyslawpitus.inventory.infrastructure.mongodb.MongoCategoryRepository
@@ -60,9 +62,9 @@ class DomainConfig {
 
     @Bean
     fun itemProvider(
-      itemRepository: ItemRepository,
+        itemRepository: ItemRepository,
     ) = ItemProvider(
-      itemRepository = itemRepository,
+        itemRepository = itemRepository,
     )
 
     @Bean
@@ -85,9 +87,9 @@ class DomainConfig {
 
     @Bean
     fun parentItemProvider(
-      parentItemRepository: ParentItemRepository,
+        parentItemRepository: ParentItemRepository,
     ) = ParentItemProvider(
-      parentItemRepository = parentItemRepository,
+        parentItemRepository = parentItemRepository,
     )
 
     @Bean
@@ -106,9 +108,9 @@ class DomainConfig {
 
     @Bean
     fun categoryProvider(
-      categoryRepository: CategoryRepository,
+        categoryRepository: CategoryRepository,
     ) = CategoryProvider(
-      categoryRepository = categoryRepository,
+        categoryRepository = categoryRepository,
     )
 
     @Bean
@@ -116,6 +118,13 @@ class DomainConfig {
         mongoTemplate: MongoTemplate,
     ) = MongoPhotoRepository(
         mongoTemplate = mongoTemplate,
+    )
+
+    @Bean
+    fun photoProvider(
+        photoRepository: PhotoRepository,
+    ) = PhotoProvider(
+        photoRepository = photoRepository,
     )
 
     @Bean
@@ -231,9 +240,9 @@ class DomainConfig {
 
     @Bean
     fun getPhotoUseCase(
-        photoRepository: PhotoRepository,
+        photoProvider: PhotoProvider,
     ) = GetPhotoUseCase(
-        photoRepository = photoRepository,
+        photoProvider = photoProvider,
     )
 
     @Bean
@@ -258,12 +267,23 @@ class DomainConfig {
     )
 
     @Bean
+    fun editItemTransformer(
+        categoryProvider: CategoryProvider,
+        photoProvider: PhotoProvider,
+    ) = EditItemTransformer(
+        categoryProvider = categoryProvider,
+        photoProvider = photoProvider,
+    )
+
+    @Bean
     fun editItemUseCase(
         itemRepository: ItemRepository,
         itemProvider: ItemProvider,
+        editItemTransformer: EditItemTransformer,
     ) = EditItemUseCase(
         itemRepository = itemRepository,
         itemProvider = itemProvider,
+        editItemTransformer = editItemTransformer,
     )
 
 }

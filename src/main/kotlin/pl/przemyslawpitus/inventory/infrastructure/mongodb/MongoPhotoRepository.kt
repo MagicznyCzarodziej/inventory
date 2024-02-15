@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 import pl.przemyslawpitus.inventory.domain.user.UserId
 import pl.przemyslawpitus.inventory.domain.photo.Photo
 import pl.przemyslawpitus.inventory.domain.item.PhotoId
-import pl.przemyslawpitus.inventory.domain.photo.uploadPhotoUseCase.PhotoRepository
+import pl.przemyslawpitus.inventory.domain.photo.PhotoRepository
 
 class MongoPhotoRepository(
     private val mongoTemplate: MongoTemplate,
