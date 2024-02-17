@@ -23,6 +23,13 @@ Future<void> addItem(itemDraft) async {
       );
 }
 
+Future<void> editItem(String itemId, editedItem) async {
+  await HttpClient().client.put(
+    '/items/$itemId',
+    data: jsonEncode(editedItem),
+  );
+}
+
 Future<void> deleteItem(String itemId) async {
   await HttpClient().client.delete('/items/$itemId');
 }

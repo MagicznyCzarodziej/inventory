@@ -1,15 +1,21 @@
 import 'dart:typed_data';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_app/api/Items.dart';
 import 'package:inventory_app/api/Photo.dart';
+import 'package:inventory_app/pages/ItemPage/EditItemPage.dart';
+import 'package:inventory_app/routes/simpleRoute.dart';
 
 import '../../dto/GetItemResponse.dart';
 import '../../utils.dart';
 
 class ItemPage extends StatefulWidget {
-  const ItemPage({super.key, required this.itemId});
+  const ItemPage({
+    super.key,
+    required this.itemId,
+  });
 
   final String itemId;
 
@@ -21,11 +27,17 @@ class _ItemPageState extends State<ItemPage> {
   late Future<GetItemResponse> itemResponse;
   late Future<Uint8List?> photo;
 
+  void fetchData() {
+    setState(() {
+      itemResponse = getItem(widget.itemId);
+      photo = itemResponse.then((item) => item.photoUrl != null ? getPhoto(item.photoUrl!) : null);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    itemResponse = getItem(widget.itemId);
-    photo = itemResponse.then((item) => item.photoUrl != null ? getPhoto(item.photoUrl!) : null);
+    fetchData();
   }
 
   FutureBuilder builder() => FutureBuilder<GetItemResponse>(
@@ -109,7 +121,16 @@ class _ItemPageState extends State<ItemPage> {
                                   ),
                                 ),
                                 IconButton(
-                                  onPressed: () => {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      simpleRoute(
+                                        EditItemPage(itemId: item.id),
+                                      ),
+                                    ).then((value) {
+                                      fetchData();
+                                    });
+                                  },
                                   icon: Icon(
                                     Icons.edit,
                                     color: Theme.of(context).colorScheme.primary,

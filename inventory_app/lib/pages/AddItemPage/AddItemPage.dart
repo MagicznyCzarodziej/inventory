@@ -7,7 +7,6 @@ import 'package:inventory_app/api/Categories.dart';
 import 'package:inventory_app/api/Items.dart';
 import 'package:inventory_app/api/Photo.dart';
 import 'package:inventory_app/dto/GetCategoriesResponse.dart';
-import 'package:inventory_app/dto/GetParentItemsResponse.dart';
 import 'package:inventory_app/pages/AddItemPage/TakePhotoPage.dart';
 import 'package:inventory_app/pages/BarcodeScannerPage/BarcodeScannerPage.dart';
 import 'package:inventory_app/routes/simpleRoute.dart';
@@ -33,7 +32,6 @@ class AddItemPage extends StatefulWidget {
 class _AddItemPageState extends State<AddItemPage> {
   final _formKey = GlobalKey<FormState>();
 
-  late Future<GetParentItemsResponse> parentItemsResponse;
   late Future<GetCategoriesResponse> categoriesResponse;
 
   String name = "";

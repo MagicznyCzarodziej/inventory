@@ -4,13 +4,8 @@ import 'package:inventory_app/api/Auth.dart';
 import 'package:inventory_app/pages/ItemsPage/ItemsPage.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
-
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
+  await CameraProvider().initializeCamera();
 
   await login();
 
@@ -42,6 +37,22 @@ Future<void> main() async {
       ),
       useMaterial3: true,
     ),
-    home: ItemsPage(camera: firstCamera),
+    home: ItemsPage(camera: CameraProvider().camera),
   ));
+}
+
+class CameraProvider {
+  late final CameraDescription camera;
+
+  CameraProvider._internal();
+
+  static final _singleton = CameraProvider._internal();
+
+  factory CameraProvider() => _singleton;
+
+  initializeCamera() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final cameras = await availableCameras();
+    camera = cameras.first;
+  }
 }
