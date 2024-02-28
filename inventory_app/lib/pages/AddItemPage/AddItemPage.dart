@@ -7,6 +7,7 @@ import 'package:inventory_app/api/Categories.dart';
 import 'package:inventory_app/api/Items.dart';
 import 'package:inventory_app/api/Photo.dart';
 import 'package:inventory_app/dto/GetCategoriesResponse.dart';
+import 'package:inventory_app/dto/GetParentItemsResponse.dart';
 import 'package:inventory_app/pages/AddItemPage/TakePhotoPage.dart';
 import 'package:inventory_app/pages/BarcodeScannerPage/BarcodeScannerPage.dart';
 import 'package:inventory_app/routes/simpleRoute.dart';
@@ -17,11 +18,13 @@ class AddItemPage extends StatefulWidget {
     required this.camera,
     required this.itemType,
     this.parentId,
+    this.parentName,
     this.name,
   });
 
   final String? itemType;
   final String? parentId;
+  final String? parentName;
   final String? name;
   final CameraDescription camera;
 
@@ -134,7 +137,16 @@ class _AddItemPageState extends State<AddItemPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (widget.parentId != null) Text("ParentId: ${widget.parentId}"),
+                        if (widget.parentName != null) TextFormField(
+                          initialValue: widget.parentName,
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: "Produkt nadrzędny",
+                          ),
+                          enabled: false,
+                        ),
                         TextFormField(
                           initialValue: name,
                           autofocus: true,

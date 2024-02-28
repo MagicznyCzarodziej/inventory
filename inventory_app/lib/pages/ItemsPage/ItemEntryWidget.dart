@@ -40,12 +40,16 @@ class ItemEntryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, simpleRoute(ItemPage(itemId: entry.id))).then((value) => refetchItems()),
+      onTap: () => Navigator.push(
+          context,
+          simpleRoute(ItemTestWrapper(
+            child: ItemPage(itemId: entry.id),
+          ))).then((value) => refetchItems()),
       child: Container(
         decoration: BoxDecoration(
-            border: BorderDirectional(
-              start: BorderSide(color: getColor(entry), width: 8),
-            ),
+          border: BorderDirectional(
+            start: BorderSide(color: getColor(entry), width: 8),
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.only(left: 16, top: 4, bottom: 4),

@@ -217,6 +217,7 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                                                       AddItemPage(
                                                         camera: widget.camera,
                                                         parentId: entry.id,
+                                                        parentName: entry.name,
                                                         itemType: "SUB_ITEM",
                                                       ),
                                                     ),

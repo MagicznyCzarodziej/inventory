@@ -52,7 +52,7 @@ class _EditItemPageState extends State<EditItemPage> {
         name = item.name;
         description = item.description;
         brand = item.brand;
-        categoryId = item.parentItem != null ? item.category.id : null;
+        categoryId = item.parentItem == null ? item.category.id : null;
         currentStock = item.currentStock;
         desiredStock = item.desiredStock;
         barcode = item.barcode;
@@ -61,6 +61,8 @@ class _EditItemPageState extends State<EditItemPage> {
       return item.photoUrl;
     }).then((photoUrl) async {
       if (photoUrl == null) return;
+
+      if (!context.mounted) return;
 
       var p = await getPhoto(photoUrl);
       setState(() {
@@ -118,51 +120,53 @@ class _EditItemPageState extends State<EditItemPage> {
                               photoFile = file;
                             });
                           }),
-                          child: photo != null ? Container(
-                            height: 270,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: MemoryImage(photo!),
-                              ),
-                            ),
-                          ) : photoFile != null
+                          child: photo != null
                               ? Container(
                                   height: 270,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: FileImage(photoFile!),
+                                      image: MemoryImage(photo!),
                                     ),
                                   ),
                                 )
-                              : Container(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  height: 270,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 24),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        const Icon(
-                                          Icons.photo_camera_back,
-                                          size: 48,
+                              : photoFile != null
+                                  ? Container(
+                                      height: 270,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: FileImage(photoFile!),
                                         ),
-                                        const SizedBox(
-                                          height: 16,
+                                      ),
+                                    )
+                                  : Container(
+                                      color: Theme.of(context).colorScheme.surface,
+                                      height: 270,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 24),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              Icons.photo_camera_back,
+                                              size: 48,
+                                            ),
+                                            const SizedBox(
+                                              height: 16,
+                                            ),
+                                            Text(
+                                              "Zrób zdjęcie",
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        Text(
-                                          "Zrób zdjęcie",
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                            color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(
@@ -174,7 +178,17 @@ class _EditItemPageState extends State<EditItemPage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              if (item.parentItem?.id != null) Text("ParentId: ${item.parentItem!.id}"),
+                              if (item.parentItem?.id != null)
+                                TextFormField(
+                                  initialValue: item.parentItem!.name,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    labelText: "Produkt nadrzędny",
+                                  ),
+                                  enabled: false,
+                                ),
                               TextFormField(
                                 initialValue: name,
                                 autofocus: true,
@@ -191,6 +205,7 @@ class _EditItemPageState extends State<EditItemPage> {
                                 textInputAction: TextInputAction.next,
                               ),
                               TextFormField(
+                                initialValue: description,
                                 style: const TextStyle(
                                   fontSize: 24,
                                 ),
@@ -204,6 +219,7 @@ class _EditItemPageState extends State<EditItemPage> {
                                 textInputAction: TextInputAction.next,
                               ),
                               TextFormField(
+                                initialValue: brand,
                                 style: const TextStyle(
                                   fontSize: 24,
                                 ),
@@ -220,7 +236,7 @@ class _EditItemPageState extends State<EditItemPage> {
                                 FutureBuilder(
                                   future: categoriesResponse,
                                   builder: (context, snapshot) {
-                                    return DropdownMenu(
+                                    return DropdownMenu<String>(
                                       label: const Text("Kategoria"),
                                       textStyle: const TextStyle(
                                         fontSize: 24,
@@ -236,10 +252,12 @@ class _EditItemPageState extends State<EditItemPage> {
                                           categoryId = value;
                                         });
                                       },
+                                      enabled: snapshot.data != null,
+                                      initialSelection: snapshot.data != null ? item.category.id : null,
                                       dropdownMenuEntries: snapshot.data?.categories
                                               .map((e) => DropdownMenuEntry(value: e.id, label: e.name))
                                               .toList() ??
-                                          const Iterable<DropdownMenuEntry>.empty().toList(),
+                                          const Iterable<DropdownMenuEntry<String>>.empty().toList(),
                                     );
                                   },
                                 ),
