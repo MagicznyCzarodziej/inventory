@@ -16,7 +16,7 @@ class RefreshTokenEndpoint(
     private val refreshTokenUseCase: RefreshTokenUseCase,
     private val authenticationProperties: AuthenticationProperties
 ) {
-    @PostMapping("/refreshToken")
+    @PostMapping("/refresh-token")
     fun refreshToken(request: HttpServletRequest): ResponseEntity<*> {
         logger.api("Refresh token")
         try {
