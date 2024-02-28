@@ -42,7 +42,7 @@ class ItemEntryWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.push(
           context,
-          simpleRoute(ItemTestWrapper(
+          simpleRoute(ItemPageWrapper(
             child: ItemPage(itemId: entry.id),
           ))).then((value) => refetchItems()),
       child: Container(

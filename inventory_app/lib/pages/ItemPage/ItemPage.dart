@@ -264,8 +264,8 @@ class _ItemPageState extends State<ItemPage> {
   }
 }
 
-class ItemTestWrapper extends StatelessWidget {
-  const ItemTestWrapper({super.key, required this.child});
+class ItemPageWrapper extends StatelessWidget {
+  const ItemPageWrapper({super.key, required this.child});
 
   final Widget child;
 

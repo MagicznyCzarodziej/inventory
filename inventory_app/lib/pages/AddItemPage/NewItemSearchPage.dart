@@ -84,7 +84,7 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8, bottom: 8,left: 16, right: 16),
+                padding: const EdgeInsets.only(top: 8, bottom: 8, left: 16, right: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -161,7 +161,9 @@ class _NewItemSearchPageState extends State<NewItemSearchPage> {
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.push(context, CupertinoPageRoute(builder: (_) {
-                                                    return ItemPage(itemId: entry.id);
+                                                    return ItemPageWrapper(
+                                                      child: ItemPage(itemId: entry.id),
+                                                    );
                                                   }));
                                                 },
                                                 style: TextButton.styleFrom(
