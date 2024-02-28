@@ -1,5 +1,5 @@
 ### Update current stock
-PUT http://localhost:8080/items/91060a49-75a4-4743-bd9d-ff683c6c6bf4/stock/current
+PUT {{host}}/items/91060a49-75a4-4743-bd9d-ff683c6c6bf4/stock/current
 Content-Type: application/json
 
 {

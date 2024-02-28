@@ -1,2 +1,2 @@
 ### Remove item
-DELETE http://localhost:8080/items/2c197dec-357a-4f93-a5ab-ea6c8de2d701
+DELETE {{host}}/items/2c197dec-357a-4f93-a5ab-ea6c8de2d701
