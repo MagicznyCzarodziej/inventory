@@ -8,3 +8,7 @@ mongodb:
   authenticationDatabase: admin
   host: localhost
   port: 55000
+
+authentication:
+  jwt:
+    secret: secret123
