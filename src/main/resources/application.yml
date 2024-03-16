@@ -22,7 +22,7 @@ spring:
 authentication:
   jwt:
     issuer: pl.przemyslawpitus.inventory
-    secret: secret
+    secret: ${JWT_SECRET}
     accessTokenCookieName: accessToken
     refreshTokenCookieName: refreshToken
     accessTokenExpirationTime: PT15M

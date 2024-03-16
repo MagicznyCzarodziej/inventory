@@ -1,5 +1,5 @@
 ### Edit item
-PUT http://localhost:8080/items/85015687-df53-4ed1-8fe3-249740757b25
+PUT {{host}}/items/85015687-df53-4ed1-8fe3-249740757b25
 Content-Type: application/json
 
 {

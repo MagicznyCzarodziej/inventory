@@ -1,2 +1,2 @@
 ### Get item
-GET http://localhost:8080/items/xd
+GET {{host}}/items/xd

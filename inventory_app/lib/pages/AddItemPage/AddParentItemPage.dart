@@ -85,7 +85,7 @@ class _AddParentItemPageState extends State<AddParentItemPage> {
         onPressed: () async {
           await addParentItem(
             {
-              "name": name,
+              "name": name.trim(),
               "categoryId": categoryId,
             },
           );

@@ -1,5 +1,5 @@
 ### Login
-POST http://localhost:8080/auth/login
+POST {{host}}/auth/login
 Content-Type: application/json
 Accept: application/json
 
@@ -9,4 +9,4 @@ Accept: application/json
 }
 
 ### Refresh token
-POST http://localhost:8080/auth/refreshToken
+POST {{host}}/auth/refreshToken

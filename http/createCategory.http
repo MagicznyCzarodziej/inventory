@@ -1,9 +1,9 @@
 ### Create category
 
-POST http://localhost:8080/category
+POST {{host}}/categories
 Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Jedzenie"
+  "name": "Narzędzia i elektronika"
 }

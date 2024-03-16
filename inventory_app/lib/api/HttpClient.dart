@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:inventory_app/api/Auth.dart';
 
-const API_URL = 'http://192.168.0.66:8080';
-// const String API_URL = "http://inventory-api.przemyslawpitus.pl";
+// const API_URL = 'http://192.168.0.66:8080';
+const String API_URL = "http://inventory-api.przemyslawpitus.pl";
 
 class HttpClient {
   final client = _createDio();
@@ -23,6 +24,13 @@ class HttpClient {
     );
 
     dio.interceptors.add(CookieManager(cookieJar));
+    dio.interceptors.add(InterceptorsWrapper(onError: (DioException exception, handler) async {
+      if (exception.response?.statusCode == 403 && !exception.requestOptions.path.startsWith("/auth")) {
+        await refreshToken();
+        return handler.resolve(await HttpClient().client.fetch(exception.requestOptions));
+      }
+      return handler.next(exception);
+    }));
 
     return dio;
   }

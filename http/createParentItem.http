@@ -1,5 +1,5 @@
 ### Create ParentItem
-POST http://localhost:8080/parent-items
+POST {{host}}/parent-items
 Content-Type: application/json
 
 {

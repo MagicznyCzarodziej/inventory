@@ -1,0 +1,10 @@
+### Create sponge
+
+POST {{host}}/sponges
+Content-Type: application/json
+Accept: application/json
+
+{
+  "color": "00FF55",
+  "purpose": "Umywalka"
+}

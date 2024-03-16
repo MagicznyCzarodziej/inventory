@@ -18,11 +18,13 @@ class AddItemPage extends StatefulWidget {
     required this.camera,
     required this.itemType,
     this.parentId,
+    this.parentName,
     this.name,
   });
 
   final String? itemType;
   final String? parentId;
+  final String? parentName;
   final String? name;
   final CameraDescription camera;
 
@@ -33,7 +35,6 @@ class AddItemPage extends StatefulWidget {
 class _AddItemPageState extends State<AddItemPage> {
   final _formKey = GlobalKey<FormState>();
 
-  late Future<GetParentItemsResponse> parentItemsResponse;
   late Future<GetCategoriesResponse> categoriesResponse;
 
   String name = "";
@@ -136,7 +137,16 @@ class _AddItemPageState extends State<AddItemPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        if (widget.parentId != null) Text("ParentId: ${widget.parentId}"),
+                        if (widget.parentName != null) TextFormField(
+                          initialValue: widget.parentName,
+                          style: const TextStyle(
+                            fontSize: 24,
+                          ),
+                          decoration: const InputDecoration(
+                            labelText: "Produkt nadrzędny",
+                          ),
+                          enabled: false,
+                        ),
                         TextFormField(
                           initialValue: name,
                           autofocus: true,

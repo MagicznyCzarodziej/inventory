@@ -1,0 +1,10 @@
+### Update sponge
+
+PUT {{host}}/sponges/20c8f499-8fa9-48b3-b540-ed7c168c9c94
+Content-Type: application/json
+Accept: application/json
+
+{
+  "color": "00FF66",
+  "purpose": "Lustro"
+}
