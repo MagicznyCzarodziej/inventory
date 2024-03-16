@@ -1,4 +1,4 @@
-package pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb
+package pl.przemyslawpitus.inventory.common.infrastructure.mongodb
 
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query

@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.mapping.Document
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
+import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryRepository
 import pl.przemyslawpitus.inventory.inventory.domain.category.Category
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId

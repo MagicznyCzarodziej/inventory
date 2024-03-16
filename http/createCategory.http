@@ -1,6 +1,6 @@
 ### Create category
 
-POST {{host}}/category
+POST {{host}}/categories
 Content-Type: application/json
 Accept: application/json
 

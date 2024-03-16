@@ -16,7 +16,7 @@ class CreateCategoryEndpoint(
     private val createCategoryUseCase: CreateCategoryUseCase,
 ) {
     @PostMapping(
-        "/category",
+        "/categories",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
         produces = [MediaType.APPLICATION_JSON_VALUE],
     )

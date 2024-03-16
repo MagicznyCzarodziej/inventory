@@ -1,0 +1,4 @@
+### Get sponges
+
+GET {{host}}/sponges
+Accept: application/json

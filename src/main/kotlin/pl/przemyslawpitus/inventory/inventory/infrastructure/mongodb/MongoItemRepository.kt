@@ -11,6 +11,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
+import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 

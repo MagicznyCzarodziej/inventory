@@ -7,6 +7,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemRepository
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
+import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
 import java.time.Instant
 
 class MongoParentItemRepository(
