@@ -9,7 +9,8 @@ fun createSecureCookie(name: String, value: String) =
             name,
             value,
         )
-        .secure(true)
+        .secure(false)
+//        .secure(true)
         .httpOnly(true)
         .path("/")
         .build()
