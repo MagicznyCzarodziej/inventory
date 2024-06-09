@@ -39,6 +39,8 @@ class SpongesEndpoint(
         return ResponseEntity.ok(
             sponges.toGetSpongesResponse()
         )
+
+        // TODO Add errors handling
     }
 
     @PostMapping(
@@ -58,6 +60,8 @@ class SpongesEndpoint(
         )
 
         return ResponseEntity.noContent().build<Unit>()
+
+        // TODO Add errors handling
     }
 
     @PutMapping(
@@ -78,6 +82,8 @@ class SpongesEndpoint(
         )
 
         return ResponseEntity.noContent().build<Unit>()
+
+        // TODO Add errors handling
     }
 
     private companion object : WithLogger()

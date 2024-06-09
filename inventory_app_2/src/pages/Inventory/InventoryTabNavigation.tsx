@@ -1,24 +1,35 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
-import { InventoryPage } from './InventoryList/InventoryPage';
 import { ShoppingListPage } from './ShoppingList/ShoppingListPage';
 import {
   CategoriesAndGroupsParamsList,
   CategoriesAndGroupsTabNavigation
 } from './CategoriesAndGroups/CategoriesAndGroupsTabNavigation';
+import { InventoryNavigation, InventoryStackParamList } from './InventoryList/InventoryNavigation';
+import { Colors } from '../../app/Theme';
 
 export type InventoryTabsParamList = {
-  INVENTORY_LIST: undefined;
+  INVENTORY_NAVIGATION: { screen: keyof InventoryStackParamList };
   SHOPPING_LIST: undefined;
   CATEGORIES_AND_GROUPS: { screen: keyof CategoriesAndGroupsParamsList };
-  ITEM: undefined;
-  ADD_ITEM: undefined;
 }
 
 const Tab = createMaterialBottomTabNavigator<InventoryTabsParamList>();
 
 export const InventoryTabNavigation = () => {
-  return <Tab.Navigator initialRouteName="INVENTORY_LIST">
+  return <Tab.Navigator
+    initialRouteName="INVENTORY_NAVIGATION"
+    shifting
+    activeColor={Colors.accent}
+    inactiveColor={Colors.white}
+    barStyle={{
+      height: 70,
+      backgroundColor: Colors.secondary,
+    }}
+    activeIndicatorStyle={{
+      backgroundColor: Colors.primary,
+    }}
+  >
     <Tab.Screen
       options={{ tabBarIcon: "basket-outline", tabBarLabel: "Lista zakupów" }}
       name="SHOPPING_LIST"
@@ -26,8 +37,8 @@ export const InventoryTabNavigation = () => {
     />
     <Tab.Screen
       options={{ tabBarIcon: "clipboard-list-outline", tabBarLabel: "Inwentarz" }}
-      name="INVENTORY_LIST"
-      component={InventoryPage}
+      name="INVENTORY_NAVIGATION"
+      component={InventoryNavigation}
     />
     <Tab.Screen
       options={{ tabBarIcon: "shape-outline", tabBarLabel: "Kategorie i grupy" }}

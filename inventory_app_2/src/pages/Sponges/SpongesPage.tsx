@@ -1,42 +1,22 @@
 import { View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { client } from '../../api/api';
 import { useContext, useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
-import { Appbar } from 'react-native-paper';
+import { Appbar, Icon, IconButton } from 'react-native-paper';
 import { DrawerContext } from '../../context/DrawerContext';
+import chroma from 'chroma-js'
+import { useGetSponges } from '../../api/useGetSponges';
 
 export const SpongesPage = () => {
-  // const query = useQuery({
-  //   queryKey: ['todos'], queryFn: () => {
-  //     return client.get("/sponges")
-  //   },
-  //   refetchOnMount: false,
-  // })
-  //
-
-  const [sponges, setSponges] = useState<{color: string, id: string, purpose: string}[]>([])
+  const [sponges, setSponges] = useState<{ color: string, id: string, purpose: string }[]>([])
   const drawer = useContext(DrawerContext)
 
-  const getSponges = async () => {
-    return client.get(
-      "/sponges",
-    )
-  }
+  const getSpongesQuery = useGetSponges()
 
   useEffect(() => {
-    const x = async () => {
-      try {
-        const s = await getSponges()
-        console.log(s.data)
-        setSponges(s.data.sponges)
-
-      } catch (e: AxiosError) {
-        console.log(e.message)
-      }
+    if (getSpongesQuery.isSuccess) {
+      setSponges(getSpongesQuery.data.sponges)
     }
-    x().then()
-  }, [])
+  }, [getSpongesQuery.isSuccess])
 
   return <SafeAreaView>
     <Appbar>
@@ -46,9 +26,41 @@ export const SpongesPage = () => {
       <Appbar.Content title="Zmywaki" />
     </Appbar>
 
-    <FlatList data={sponges} renderItem={(item) => <View style={{display: "flex", flexDirection: "row"}}>
-      <Text>{item.item.purpose}</Text>
-      <View style={{backgroundColor: `#${item.item.color}`, width: 20, height: 20}} />
-    </View>} />
+    <FlatList data={sponges} style={{ marginTop: 16, }} renderItem={(item) => {
+      const color = chroma(item.item.color).luminance(0.4)
+      const contrastToWhite = chroma.contrast(color, chroma("white"))
+      const contrastToBlack = chroma.contrast(color, chroma("black"))
+      const textColor = contrastToWhite > contrastToBlack ? "white" : "black"
+
+      return <View style={{
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: color.hex(),
+        marginHorizontal: 16,
+        marginVertical: 8,
+        padding: 16,
+        borderRadius: 10,
+        alignItems: 'center',
+        gap: 16
+      }}>
+        <View style={{ backgroundColor: `${item.item.color}`, width: 50, height: 50, borderRadius: 5 }} />
+        <Text style={{ fontSize: 20, color: textColor }}>{item.item.purpose}</Text>
+        <IconButton icon={"delete"} style={{ marginLeft: "auto", opacity: 0.5}} />
+      </View>;
+    }} />
+    <View style={{
+      display: "flex",
+      flexDirection: "row",
+      backgroundColor: '#E0E0E0',
+      marginHorizontal: 16,
+      marginVertical: 8,
+      padding: 16,
+      borderRadius: 10,
+      alignItems: 'center',
+      gap: 16,
+    }}>
+      <Icon size={24} source="plus" />
+      <Text style={{ fontSize: 20 }}>Dodaj</Text>
+    </View>
   </SafeAreaView>
 }

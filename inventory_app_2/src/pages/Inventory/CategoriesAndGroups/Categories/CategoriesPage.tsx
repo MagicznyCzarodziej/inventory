@@ -1,5 +1,6 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
+import { Page } from '../../../../layouts/Page';
 
 export const CategoriesPage = () => {
-  return <View><Text>Categories</Text></View>
+  return <Page safeArea={false}><Text>Categories</Text></Page>
 }

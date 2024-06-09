@@ -45,7 +45,7 @@ export const Drawer = (props: Props) => {
         label="Inwentarz"
         icon="clipboard-list-outline"
         onPress={() => {
-          navigate("INVENTORY", { screen: "INVENTORY_LIST" })
+            navigate("INVENTORY", { screen: "INVENTORY_NAVIGATION" })
           closeDrawer()
         }}
       />

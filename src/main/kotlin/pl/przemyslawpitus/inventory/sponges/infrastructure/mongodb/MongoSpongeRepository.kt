@@ -1,6 +1,7 @@
 package pl.przemyslawpitus.inventory.sponges.infrastructure.mongodb
 
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.mapping.Document
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
 import pl.przemyslawpitus.inventory.sponges.domain.Sponge
@@ -24,6 +25,7 @@ class MongoSpongeRepository(
     }
 }
 
+@Document("sponges")
 data class SpongeEntity(
     val id: String,
     val userId: String,

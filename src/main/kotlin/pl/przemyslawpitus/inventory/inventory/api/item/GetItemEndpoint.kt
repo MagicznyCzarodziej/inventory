@@ -1,21 +1,27 @@
 package pl.przemyslawpitus.inventory.inventory.api.item
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.common.api.ErrorHandler
 import pl.przemyslawpitus.inventory.inventory.domain.item.geItemUseCase.GetItemUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.item.Item
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemDoesNotBelongToUser
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemNotFound
 import pl.przemyslawpitus.inventory.logging.WithLogger
+import java.lang.Exception
 
 @RestController
 class GetItemEndpoint(
     private val getItemUseCase: GetItemUseCase,
+    private val errorHandler: ErrorHandler,
 ) {
     @GetMapping(
         "/items/{itemId}",
@@ -27,15 +33,29 @@ class GetItemEndpoint(
     ): ResponseEntity<*> {
         logger.api("Get item | $itemId")
 
-        val item = getItemUseCase.getItem(
-            itemId = ItemId(itemId),
-            userId = userDetails.id,
-        )
+        try {
+            val item = getItemUseCase.getItem(
+                itemId = ItemId(itemId),
+                userId = userDetails.id,
+            )
 
-        return ResponseEntity.ok(
-            item.toGetItemResponse()
-        )
+            return ResponseEntity.ok(
+                item.toGetItemResponse()
+            )
+        } catch (exception: ItemNotFound) {
+            return handleItemNotFound(exception)
+        } catch (exception: ItemDoesNotBelongToUser) {
+            return handleItemNotFound(exception)
+        }
     }
+
+    private fun handleItemNotFound(exception: Exception) =
+        errorHandler.handleError(
+            code = "ITEM_NOT_FOUND",
+            status = HttpStatus.NOT_FOUND,
+            message = "Item not found",
+            exception = exception,
+        )
 
     private companion object : WithLogger()
 }

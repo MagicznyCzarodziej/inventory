@@ -1,5 +1,6 @@
 import { Text, View } from 'react-native';
+import { Page } from '../../../layouts/Page';
 
 export const ShoppingListPage = () => {
-  return <View><Text>ShoppingList</Text></View>
+  return <Page><Text>ShoppingList</Text></Page>
 }
