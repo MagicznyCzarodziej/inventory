@@ -1,5 +1,6 @@
 import { api } from './api';
 import { useQuery } from '@tanstack/react-query';
+import { Category, ParentItem } from './common';
 
 const getItem = (itemId: string) => () => api.get<GetItemResponse>(`/items/${itemId}`);
 
@@ -20,14 +21,4 @@ export interface GetItemResponse {
   lastRestockedAt: string | null;
   photoUrl: string | null;
   barcode: string | null;
-}
-
-export interface Category {
-  id: string;
-  name: string;
-}
-
-export interface ParentItem {
-  id: string;
-  name: string;
 }

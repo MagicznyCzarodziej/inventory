@@ -7,12 +7,16 @@ import { Colors } from '../../../app/Theme';
 import { Button } from '../../../components/Button';
 import { ListEntry } from './ListEntry';
 import { useState } from 'react';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
 
 export const InventoryManagerPage = () => {
   const [searchPhrase, setSearchPhrase] = useState("")
   const itemsQuery = useGetItems(searchPhrase)
 
-  if (itemsQuery.isPending) {
+  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
+
+  if (itemsQuery.isLoading) {
     return <Page safeArea={false} style={{ paddingTop: 128 }}>
       <Spinner />
     </Page>
@@ -45,6 +49,7 @@ export const InventoryManagerPage = () => {
       paddingHorizontal: 16,
     }}>
       <Button small fullWidth onPress={() => {
+        navigate("ADD_ITEM", { nameDraft: searchPhrase })
       }} title="Utwórz produkt" />
       <Button small fullWidth onPress={() => {
       }} title="Utwórz grupę" />
@@ -57,7 +62,7 @@ export const InventoryManagerPage = () => {
         flexBasis: 0, // fix for hiding under menu
       }}
       data={sortedItems}
-      renderItem={({ item }) => <ListEntry entry={item} searchPhrase={searchPhrase}/>}
+      renderItem={({ item }) => <ListEntry key={item.id} entry={item} searchPhrase={searchPhrase} />}
     />
   </Page>
 }

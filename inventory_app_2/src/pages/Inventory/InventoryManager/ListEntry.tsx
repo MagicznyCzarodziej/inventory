@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Entry } from '../../../api/useGetItems';
 import { isParentEntry } from '../itemsUtils';
@@ -40,7 +40,6 @@ export const ListEntry = (props: Props) => {
   </>
 }
 
-
 interface AddSubItemButtonProps {
   itemId: string;
   searchPhrase: string;
@@ -53,7 +52,7 @@ const AddSubItemButton = (props: AddSubItemButtonProps) => {
   return <Pressable
     style={styles.button}
     onPress={() => {
-      navigate("ADD_ITEM", { parentItemId: itemId, name: searchPhrase })
+      navigate("ADD_ITEM", { parentId: itemId, nameDraft: searchPhrase })
     }}
   >
     <Text style={styles.buttonText}>Dodaj podprodukt</Text>

@@ -26,8 +26,13 @@ export const Colors = {
   }
 }
 
+export const Shapes = {
+  inputRadius: 4,
+}
+
 const Theme = {
-  colors: Colors
+  colors: Colors,
+  shapes: Shapes,
 }
 
 export default Theme
