@@ -53,7 +53,10 @@ export const CameraPage = () => {
             return
           }
 
-          const photo = await camera.current?.takePictureAsync()
+          const photo = await camera.current?.takePictureAsync({
+            quality: 0
+          })
+
           if (!photo?.uri) {
             console.log("Błąd")
             return;
