@@ -3,9 +3,10 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Page } from '../../../../layouts/Page';
-import { IconButton, Text } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../../../app/Theme';
+import { MissingCameraPermissions } from './MissingCameraPermissions';
 
 export const CameraPage = () => {
   const [cameraPermission, requestPermission] = useCameraPermissions();
@@ -18,11 +19,8 @@ export const CameraPage = () => {
     requestPermission()
   }, []);
 
-
   if (!cameraPermission?.granted) {
-    return <Page>
-      <Text>Brak uprawnień kamery</Text>
-    </Page>
+    return <MissingCameraPermissions />
   }
 
   return <Page safeArea={false}>
@@ -81,5 +79,4 @@ const styles = StyleSheet.create({
     zIndex: 1,
     alignItems: "center",
   },
-
 })

@@ -6,6 +6,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import { Colors } from '../../../../app/Theme';
 import { StyleSheet, View } from 'react-native';
+import { MissingCameraPermissions } from './MissingCameraPermissions';
 
 const BARCODE_TYPES: BarcodeType[] = ['upc_a', 'upc_e', 'ean8', 'ean13'];
 
@@ -20,11 +21,8 @@ export const BarcodeScannerPage = () => {
     requestPermission()
   }, []);
 
-
   if (!cameraPermission?.granted) {
-    return <Page>
-      <Text>Brak uprawnień kamery</Text>
-    </Page>
+    return <MissingCameraPermissions />
   }
 
   return <Page safeArea={false}>
@@ -46,18 +44,21 @@ export const BarcodeScannerPage = () => {
     />
     <View style={styles.controls}>
       <IconButton
-        icon={isTorchEnabled ? "flash" : "flash-off"}
-        onPress={() => {
-          setIsTorchEnabled(previous => !previous)
-        }}
-      />
-      <IconButton
         icon="close"
         onPress={() => {
           navigate("ADD_ITEM", {})
         }}
       />
       <IconButton
+        icon={isTorchEnabled ? "flash" : "flash-off"}
+        onPress={() => {
+          setIsTorchEnabled(previous => !previous)
+        }}
+      />
+      <IconButton
+        style={{
+          marginLeft: 'auto'
+        }}
         icon="check"
         onPress={() => {
           navigate("ADD_ITEM", { barcode })
