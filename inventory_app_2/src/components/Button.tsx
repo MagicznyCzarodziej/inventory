@@ -9,10 +9,11 @@ interface Props {
   variant?: 'filled' | 'text'
   small?: boolean
   fullWidth?: boolean
+  disabled?: boolean
 }
 
 export const Button = (props: Props) => {
-  const { onPress, title, spinner, variant = 'filled', small = false, fullWidth = false } = props;
+  const { onPress, title, spinner, variant = 'filled', small = false, fullWidth = false, disabled = false } = props;
   return (
     <Pressable
       style={{
@@ -20,8 +21,10 @@ export const Button = (props: Props) => {
         ...(small ? styles.button_small : {}),
         ...(fullWidth ? { flexGrow: 1 } : {}),
         ...styles[`variant_${variant}`],
+        ...(disabled ? styles.button_disabled : {}),
       }}
       onPress={onPress}
+      disabled={disabled}
     >
       {
         spinner
@@ -29,6 +32,7 @@ export const Button = (props: Props) => {
           : <Text style={{
             ...styles.text,
             ...(small ? styles.text_small : {}),
+            ...(disabled ? styles.text_disabled : {}),
           }}>{title}</Text>
       }
     </Pressable>
@@ -46,6 +50,9 @@ const styles = StyleSheet.create({
   button_small: {
     height: 40,
   },
+  button_disabled: {
+    backgroundColor: Colors.gray.light,
+  },
   variant_filled: {
     elevation: 1,
     backgroundColor: Colors.primary,
@@ -60,4 +67,7 @@ const styles = StyleSheet.create({
   text_small: {
     fontSize: 12,
   },
+  text_disabled: {
+    color: Colors.white,
+  }
 });

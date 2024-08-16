@@ -22,7 +22,8 @@ export const Select = (props: Props) => {
         borderWidth: 1,
         borderColor: Colors.input.outline,
         borderRadius: Theme.shapes.inputRadius,
-        backgroundColor: Colors.white
+        backgroundColor: Colors.white,
+        marginBottom: 18
       }
     }}
   />

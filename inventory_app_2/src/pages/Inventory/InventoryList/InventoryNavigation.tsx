@@ -8,7 +8,12 @@ export type InventoryStackParamList = {
   INVENTORY_LIST: undefined;
   INVENTORY_MANAGER: undefined;
   ITEM: { itemId: string };
-  ADD_ITEM: { parentId?: string, nameDraft?: string };
+  ADD_ITEM: {
+    parentId?: string,
+    nameDraft?: string,
+    barcode?: string,
+    photoPath?: string,
+  };
 }
 
 const Stack = createNativeStackNavigator<InventoryStackParamList>()

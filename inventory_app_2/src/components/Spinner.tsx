@@ -1,6 +1,13 @@
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, StyleProp } from 'react-native';
 import { Colors } from '../app/Theme';
+import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 
-export const Spinner = () => {
-  return <ActivityIndicator size={64} color={Colors.primary} />;
+interface Props {
+  style?: StyleProp<ViewStyle>
+}
+
+export const Spinner = (props: Props) => {
+  const { style } = props;
+
+  return <ActivityIndicator style={style} size={64} color={Colors.primary} />;
 };

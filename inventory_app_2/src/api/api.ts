@@ -70,6 +70,15 @@ const api = {
     });
     return response.data;
   },
+  uploadImage: async <R, B>(url: string, body: B) => {
+    const response = await axiosInstance.post<R>(url, body, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
+  },
   put: async <R, B>(url: string, body: B) => {
     const response = await axiosInstance.put<R>(url, body, {
       headers: {
