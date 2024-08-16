@@ -13,10 +13,21 @@ interface Props {
   error?: string;
   autofocus?: boolean;
   nextTextFieldRef?: any;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
 }
 
 export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextInput>) => {
-  const { label, value, right, onChangeText, secureTextEntry, error, autofocus = false, nextTextFieldRef } = props;
+  const {
+    label,
+    value,
+    right,
+    onChangeText,
+    secureTextEntry,
+    error,
+    autofocus = false,
+    nextTextFieldRef,
+    autoCapitalize
+  } = props;
 
   const handleFocusToNextField = () => {
     if (!nextTextFieldRef?.current) {
@@ -28,6 +39,7 @@ export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextI
   return (
     <View>
       <TextInput
+        autoCapitalize={autoCapitalize}
         activeOutlineColor={Colors.secondary}
         outlineColor={Colors.input.outline}
         style={{ backgroundColor: Colors.white }}

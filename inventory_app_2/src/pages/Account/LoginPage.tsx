@@ -47,6 +47,7 @@ export const LoginPage = () => {
       <TextField
         label="Nazwa uzytkownika"
         value={username}
+        autoCapitalize="none"
         onChangeText={value => {
           setUsername(value)
           loginMutation.reset()
@@ -55,6 +56,7 @@ export const LoginPage = () => {
       <TextField
         label="Hasło"
         secureTextEntry={true}
+        autoCapitalize="none"
         onChangeText={value => {
           setPassword(value)
           loginMutation.reset()
