@@ -8,12 +8,13 @@ interface Props {
   label: string;
   value?: string;
   right?: ReactNode
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   error?: string;
   autofocus?: boolean;
   nextTextFieldRef?: any;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
+  disabled?: boolean;
 }
 
 export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextInput>) => {
@@ -26,7 +27,8 @@ export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextI
     error,
     autofocus = false,
     nextTextFieldRef,
-    autoCapitalize
+    autoCapitalize,
+    disabled = false,
   } = props;
 
   const handleFocusToNextField = () => {
@@ -61,6 +63,7 @@ export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextI
         returnKeyType={nextTextFieldRef ? "next" : 'default'}
         blurOnSubmit={!nextTextFieldRef} // Prevent hiding keyboard when refocusing between fields
         onSubmitEditing={handleFocusToNextField}
+        disabled={disabled}
       />
       <Text style={styles.error}>{error}</Text>
     </View>

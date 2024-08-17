@@ -10,7 +10,10 @@ export type InventoryStackParamList = {
   INVENTORY_MANAGER: undefined;
   ITEM: { itemId: string };
   ADD_ITEM: {
-    parentId?: string,
+    parent?: {
+      parentId: string,
+      parentName: string,
+    }
     nameDraft?: string,
     barcode?: string,
     photoPath?: string,
@@ -18,6 +21,7 @@ export type InventoryStackParamList = {
   EDIT_ITEM: {
     itemId?: string,
     photoPath?: string
+    barcode?: string,
   };
 }
 
@@ -28,7 +32,7 @@ export const InventoryNavigation = () => {
     <Stack.Screen options={{ headerShown: false }} name="INVENTORY_LIST" component={InventoryPage} />
     <Stack.Screen options={{ headerShown: false }} name="INVENTORY_MANAGER" component={InventoryManagerPage} />
     <Stack.Screen options={{ headerShown: false }} name="ITEM" component={ItemPreviewPage} />
-    <Stack.Screen options={{ headerShown: false }} name="ADD_ITEM" component={ItemCreatorPage} />
-    <Stack.Screen options={{ headerShown: false }} name="EDIT_ITEM" component={ItemEditorPage} />
+    <Stack.Screen options={{ headerShown: false, animation: 'fade' }} name="ADD_ITEM" component={ItemCreatorPage} />
+    <Stack.Screen options={{ headerShown: false, animation: 'none' }} name="EDIT_ITEM" component={ItemEditorPage} />
   </Stack.Navigator>
 }

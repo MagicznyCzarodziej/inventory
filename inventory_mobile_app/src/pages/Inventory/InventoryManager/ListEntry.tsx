@@ -24,7 +24,7 @@ export const ListEntry = (props: Props) => {
         <Text style={styles.itemName}>{entry.name}</Text>
         <View>
           {isParentItem
-            ? <AddSubItemButton itemId={entry.id} searchPhrase={searchPhrase} />
+            ? <AddSubItemButton itemId={entry.id} itemName={entry.name} searchPhrase={searchPhrase} />
             : <SeeItemButton itemId={entry.id} />}
         </View>
       </View>
@@ -42,11 +42,12 @@ export const ListEntry = (props: Props) => {
 
 interface AddSubItemButtonProps {
   itemId: string;
+  itemName: string;
   searchPhrase: string;
 }
 
 const AddSubItemButton = (props: AddSubItemButtonProps) => {
-  const { itemId, searchPhrase } = props;
+  const { itemId, itemName, searchPhrase } = props;
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
 
   return <Pressable
@@ -54,7 +55,7 @@ const AddSubItemButton = (props: AddSubItemButtonProps) => {
     onPress={() => {
       navigate({
         name: "ADD_ITEM",
-        params: { parentId: itemId, nameDraft: searchPhrase },
+        params: { parent: { parentId: itemId, parentName: itemName }, nameDraft: searchPhrase },
         merge: true
       })
     }}

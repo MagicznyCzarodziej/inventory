@@ -1,16 +1,28 @@
 import { BarcodeType, CameraView, useCameraPermissions } from 'expo-camera';
 import React, { useEffect, useState } from 'react';
-import { Page } from '../../../../layouts/Page';
+import { Page } from '../layouts/Page';
 import { Icon, IconButton, Text } from 'react-native-paper';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
-import { Colors } from '../../../../app/Theme';
+import { CompositeScreenProps, NavigationProp, useNavigation } from '@react-navigation/native';
+import { InventoryStackParamList } from './Inventory/InventoryList/InventoryNavigation';
+import { Colors } from '../app/Theme';
 import { StyleSheet, View } from 'react-native';
-import { MissingCameraPermissions } from './MissingCameraPermissions';
+import { MissingCameraPermissions } from './Inventory/InventoryManager/ItemCreator/MissingCameraPermissions';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../app/Root';
 
 const BARCODE_TYPES: BarcodeType[] = ['upc_a', 'upc_e', 'ean8', 'ean13'];
 
-export const BarcodeScannerPage = () => {
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "BARCODE_SCANNER">,
+  CompositeScreenProps<
+    NativeStackScreenProps<InventoryStackParamList, 'ADD_ITEM'>,
+    NativeStackScreenProps<InventoryStackParamList, 'EDIT_ITEM'>
+  >
+>
+
+export const BarcodeScannerPage = (props: Props) => {
+  const { from } = props.route.params;
+  
   const [cameraPermission, requestPermission] = useCameraPermissions();
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
 
@@ -46,7 +58,7 @@ export const BarcodeScannerPage = () => {
         icon="close"
         onPress={() => {
           navigate({
-            name: "ADD_ITEM",
+            name: from,
             params: {},
             merge: true
           })
@@ -65,7 +77,7 @@ export const BarcodeScannerPage = () => {
         icon="check"
         onPress={() => {
           navigate({
-            name: "ADD_ITEM",
+            name: from,
             params: { barcode },
             merge: true
           })

@@ -29,6 +29,7 @@ export const InventoryTabNavigation = () => {
     activeIndicatorStyle={{
       backgroundColor: Colors.primary,
     }}
+    sceneAnimationType="shifting"
   >
     <Tab.Screen
       options={{ tabBarIcon: "basket-outline", tabBarLabel: "Lista zakupów" }}

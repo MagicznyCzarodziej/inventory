@@ -74,6 +74,7 @@ export const InventoryPage = () => {
       sections={[{
         data: sortedEntries
       }]}
+      extraData={getItemsQuery.dataUpdatedAt} // Remember that ListItemEntry has memo with custom `areEqual`
       renderSectionHeader={() => Search}
       renderItem={({ item }) => {
         return <ItemListEntry entry={item} key={item.id} />

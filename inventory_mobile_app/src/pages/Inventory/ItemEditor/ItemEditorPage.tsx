@@ -1,48 +1,36 @@
-import { Page } from '../../../layouts/Page';
+import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
-import { Text } from 'react-native-paper';
-import { EditablePhoto } from './EditablePhoto';
 import { useGetItem } from '../../../api/useGetItem';
-import { useEffect } from 'react';
-import { useUploadPhoto } from '../../../api/useUploadPhoto';
+import { useGetCategories } from '../../../api/useGetCategories';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { RootStackParamList } from '../../../app/Root';
+import { ItemEditor } from './ItemEditor';
+import { Page } from '../../../layouts/Page';
+import { Spinner } from '../../../components/Spinner';
 
-type Props = NativeStackScreenProps<InventoryStackParamList, "EDIT_ITEM">;
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<InventoryStackParamList, 'EDIT_ITEM'>,
+  NativeStackScreenProps<RootStackParamList, "BARCODE_SCANNER">
+>
 
 export const ItemEditorPage = (props: Props) => {
-  const itemId = props.route.params.itemId
-  const { photoPath } = props.route.params
-
-  const uploadPhotoMutation = useUploadPhoto()
-
-  useEffect(() => {
-    if (photoPath) {
-      uploadPhotoMutation.mutate({ path: photoPath })
-    }
-  }, [photoPath]);
-
-  if (!itemId) {
-    return <Page>
-      <Text>Brakuje itemId</Text>
-    </Page>
-  }
+  const itemId = props.route.params.itemId!
+  const { photoPath, barcode } = props.route.params
 
   const itemQuery = useGetItem(itemId)
+  const categoriesQuery = useGetCategories();
 
-  if (!itemQuery.isSuccess) {
-    return <Page>
-      <Text>Ładowanie</Text>
-    </Page>
+  if (itemQuery.isSuccess && categoriesQuery.isSuccess) {
+    return <ItemEditor
+      item={itemQuery.data}
+      categories={categoriesQuery.data.categories}
+      newPhotoPath={photoPath}
+      newBarcode={barcode}
+    />
   }
 
   return <Page>
-    <EditablePhoto
-      originScreen="EDIT_ITEM"
-      isLoading={uploadPhotoMutation.isPending}
-      remotePhotoUrl={itemQuery.data.photoUrl}
-      localPhotoPath={photoPath}
-    />
-
-    <Text>ItemEditorPage</Text>
+    <Spinner />
   </Page>
 }

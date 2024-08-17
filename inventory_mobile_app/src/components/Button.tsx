@@ -13,13 +13,21 @@ interface Props {
 }
 
 export const Button = (props: Props) => {
-  const { onPress, title, spinner, variant = 'filled', small = false, fullWidth = false, disabled = false } = props;
+  const {
+    onPress,
+    title,
+    spinner,
+    variant = 'filled',
+    small = false,
+    fullWidth = false,
+    disabled = false,
+  } = props;
   return (
     <Pressable
       style={{
         ...styles.button,
         ...(small ? styles.button_small : {}),
-        ...(fullWidth ? { flexGrow: 1 } : {}),
+        ...(fullWidth ? { flex: 1 } : {}),
         ...styles[`variant_${variant}`],
         ...(disabled ? styles.button_disabled : {}),
       }}
