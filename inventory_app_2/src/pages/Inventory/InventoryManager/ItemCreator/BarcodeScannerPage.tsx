@@ -38,7 +38,6 @@ export const BarcodeScannerPage = () => {
       }}
       facing="back"
       onBarcodeScanned={(scanningResult) => {
-        console.log(scanningResult.data)
         setBarcode(scanningResult.data)
       }}
     />

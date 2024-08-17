@@ -1,5 +1,5 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Page } from '../../../../layouts/Page';
@@ -7,10 +7,22 @@ import { IconButton } from 'react-native-paper';
 import { StyleSheet, View } from 'react-native';
 import { Colors } from '../../../../app/Theme';
 import { MissingCameraPermissions } from './MissingCameraPermissions';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../../../app/Root';
 
-export const CameraPage = () => {
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "CAMERA">,
+  CompositeScreenProps<
+    NativeStackScreenProps<InventoryStackParamList, 'ADD_ITEM'>,
+    NativeStackScreenProps<InventoryStackParamList, 'EDIT_ITEM'>
+  >
+>
+
+export const CameraPage = (props: Props) => {
+  const { from } = props.route.params;
+  const navigation = props.navigation
+
   const [cameraPermission, requestPermission] = useCameraPermissions();
-  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
   const camera = useRef<CameraView>(null)
 
   const [isTorchEnabled, setIsTorchEnabled] = useState(false)
@@ -34,7 +46,11 @@ export const CameraPage = () => {
       <IconButton
         icon="close"
         onPress={() => {
-          navigate("ADD_ITEM", {})
+          navigation.navigate({
+            name: from,
+            params: {},
+            merge: true,
+          })
         }}
       />
       <IconButton
@@ -58,11 +74,14 @@ export const CameraPage = () => {
           })
 
           if (!photo?.uri) {
-            console.log("Błąd")
             return;
           }
 
-          navigate("ADD_ITEM", { photoPath: photo.uri })
+          navigation.navigate({
+            name: from,
+            params: { photoPath: photo.uri },
+            merge: true,
+          })
         }}
       />
     </View>

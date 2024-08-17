@@ -9,21 +9,25 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useGetCategories } from '../../../../api/useGetCategories';
 import { Select } from '../../../../components/Select';
 import { useCreateItem } from '../../../../api/useCreateItem';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { CompositeScreenProps } from '@react-navigation/native';
 import { InventoryTabsParamList } from '../../InventoryTabNavigation';
 import { Colors } from '../../../../app/Theme';
 import { useUploadPhoto } from '../../../../api/useUploadPhoto';
-import { Photo } from './Photo';
+import { PhotoUpload } from './PhotoUpload';
 import { WheelPicker } from './WheelPicker';
 import { RootStackParamList } from '../../../../app/Root';
 
-type Props = NativeStackScreenProps<InventoryStackParamList, "ADD_ITEM">;
+type Props = CompositeScreenProps<
+  CompositeScreenProps<
+    NativeStackScreenProps<InventoryStackParamList, 'ADD_ITEM'>,
+    NativeStackScreenProps<InventoryTabsParamList, "INVENTORY_NAVIGATION">
+  >,
+  NativeStackScreenProps<RootStackParamList, "INVENTORY_ADD_ITEM_BARCODE_SCANNER">
+>
 
 export const ItemCreatorPage = (props: Props) => {
   const { nameDraft, barcode: scannedBarcode, photoPath } = props.route.params;
-
-  const { navigate } = useNavigation<NavigationProp<InventoryTabsParamList>>()
-  const { navigate: navigateRoot } = useNavigation<NavigationProp<RootStackParamList>>()
+  const { navigate } = props.navigation
 
   const descriptionRef = useRef(null);
   const brandRef = useRef(null);
@@ -94,7 +98,7 @@ export const ItemCreatorPage = (props: Props) => {
         photoId: uploadPhotoMutation.data?.photoId,
       });
 
-      navigate("INVENTORY_NAVIGATION", { screen: "INVENTORY_LIST" })
+      navigate("INVENTORY_LIST")
     } catch (error) {
       console.log(error)
     }
@@ -104,7 +108,7 @@ export const ItemCreatorPage = (props: Props) => {
     <KeyboardAvoidingView behavior="height" style={styles.keyboardAvoidingView}>
       <ScrollView contentContainerStyle={styles.container}>
 
-        <Photo photoPath={photo} isPhotoUploaded={uploadPhotoMutation.isSuccess} />
+        <PhotoUpload photoPath={photo} isPhotoUploaded={uploadPhotoMutation.isSuccess} />
 
         <View style={styles.paddedContainer}>
           <TextField
@@ -148,7 +152,7 @@ export const ItemCreatorPage = (props: Props) => {
             right={
               <TextInput.Icon
                 icon="barcode-scan"
-                onPress={() => navigateRoot("INVENTORY_ADD_ITEM_BARCODE_SCANNER")}
+                onPress={() => navigate("INVENTORY_ADD_ITEM_BARCODE_SCANNER")}
               />
             }
           />

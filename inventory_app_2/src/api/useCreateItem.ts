@@ -1,7 +1,7 @@
 import { api } from './api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const createItem = (request: CreateItemRequest) => api.post<undefined, CreateItemRequest>(`/items`,  request);
+const createItem = (request: CreateItemRequest) => api.post<undefined, CreateItemRequest>(`/items`, request);
 
 export const useCreateItem = () => {
   const queryClient = useQueryClient()

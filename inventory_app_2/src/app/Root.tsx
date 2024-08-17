@@ -14,11 +14,11 @@ import { CameraPage } from '../pages/Inventory/InventoryManager/ItemCreator/Came
 import { BarcodeScannerPage } from '../pages/Inventory/InventoryManager/ItemCreator/BarcodeScannerPage';
 
 export type RootStackParamList = {
-  INVENTORY: { screen: keyof InventoryTabsParamList };
+  INVENTORY: InventoryTabsParamList;
   SPONGES: undefined;
   ACCOUNT: undefined;
   SETTINGS: undefined;
-  INVENTORY_ADD_ITEM_CAMERA: undefined;
+  CAMERA: { from: 'ADD_ITEM' | 'EDIT_ITEM' }
   INVENTORY_ADD_ITEM_BARCODE_SCANNER: undefined;
 }
 
@@ -34,7 +34,7 @@ export const Root = () => {
               <Stack.Screen options={{ headerShown: false }} name="INVENTORY" component={InventoryTabNavigation} />
               <Stack.Screen options={{ headerShown: false }} name="SPONGES" component={SpongesPage} />
               <Stack.Screen options={{ headerShown: false }} name="ACCOUNT" component={LoginPage} />
-              <Stack.Screen options={{ headerShown: false }} name="INVENTORY_ADD_ITEM_CAMERA" component={CameraPage} />
+              <Stack.Screen options={{ headerShown: false }} name="CAMERA" component={CameraPage} />
               <Stack.Screen
                 options={{ headerShown: false }}
                 name="INVENTORY_ADD_ITEM_BARCODE_SCANNER"

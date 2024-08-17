@@ -4,21 +4,29 @@ import { Button } from "../../components/Button";
 import { TextField } from '../../components/TextInput';
 import { useLogin } from '../../api/useLogin';
 import { AxiosError } from 'axios';
-import { useNavigation } from '@react-navigation/native';
 import { Page } from '../../layouts/Page';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { InventoryStackParamList } from '../Inventory/InventoryList/InventoryNavigation';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { RootStackParamList } from '../../app/Root';
 
-export const LoginPage = () => {
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "ACCOUNT">,
+  NativeStackScreenProps<InventoryStackParamList, "INVENTORY_LIST">
+>
+
+export const LoginPage = (props: Props) => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
 
   const loginMutation = useLogin()
   const loginError = getError(loginMutation.error)
 
-  const { navigate } = useNavigation()
+  const { navigate } = props.navigation
 
   useEffect(() => {
     if (loginMutation.status === "success") {
-      navigate("INVENTORY", { screen: "INVENTORY_NAVIGATION" })
+      navigate("INVENTORY_LIST")
     }
   }, [loginMutation.status]);
 

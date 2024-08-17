@@ -9,9 +9,9 @@ import { InventoryNavigation, InventoryStackParamList } from './InventoryList/In
 import { Colors } from '../../app/Theme';
 
 export type InventoryTabsParamList = {
-  INVENTORY_NAVIGATION: { screen: keyof InventoryStackParamList };
+  INVENTORY_NAVIGATION: InventoryStackParamList;
   SHOPPING_LIST: undefined;
-  CATEGORIES_AND_GROUPS: { screen: keyof CategoriesAndGroupsParamsList };
+  CATEGORIES_AND_GROUPS: CategoriesAndGroupsParamsList;
 }
 
 const Tab = createMaterialBottomTabNavigator<InventoryTabsParamList>();

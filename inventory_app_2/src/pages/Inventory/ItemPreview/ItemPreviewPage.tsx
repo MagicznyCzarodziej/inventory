@@ -3,7 +3,6 @@ import { useGetItem } from '../../../api/useGetItem';
 import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IconButton } from 'react-native-paper';
-import { ItemPreviewPhoto } from './ItemPreviewPhoto';
 import { Colors } from '../../../app/Theme';
 import { Spinner } from '../../../components/Spinner';
 import { Page } from '../../../layouts/Page';
@@ -11,12 +10,16 @@ import { ItemEntry } from '../../../api/useGetItems';
 import { ItemPreviewBarcode } from './ItemPreviewBarcode';
 import { Button } from "../../../components/Button";
 import { useUpdateCurrentStock } from '../../../api/useUpdateCurrentStock';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RemoteItemPhoto } from '../../../components/Photo/RemoteItemPhoto';
 
 type Props = NativeStackScreenProps<InventoryStackParamList, "ITEM">;
 
 export const ItemPreviewPage = (props: Props) => {
   const itemId = props.route.params.itemId
   const itemQuery = useGetItem(itemId)
+
+  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
 
   const photoUrl = itemQuery.data?.photoUrl ?? null
   const hasPhoto = photoUrl !== null
@@ -32,15 +35,21 @@ export const ItemPreviewPage = (props: Props) => {
   }
 
   return <Page safeArea={!hasPhoto}>
-    <ItemPreviewPhoto photoUrl={photoUrl} />
+    {hasPhoto && <RemoteItemPhoto photoUrl={photoUrl} />}
 
     <View style={{
       ...styles.card,
       elevation: hasPhoto ? 10 : 0,
     }}>
-      <Text style={styles.category}>
-        {itemQuery.data.category.name}
-      </Text>
+      <View style={styles.categoryAndEdit}>
+        <Text style={styles.category}>{itemQuery.data.category.name}</Text>
+        <IconButton
+          icon="pencil"
+          onPress={() => {
+            navigate("EDIT_ITEM", { itemId })
+          }}
+        />
+      </View>
 
       {itemQuery.data.parentItem &&
         <Text style={styles.parentItemName}>
@@ -138,6 +147,11 @@ const styles = StyleSheet.create({
     borderRadius: 0,
     display: "flex",
     flexDirection: "column",
+  },
+  categoryAndEdit: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   category: {
     fontSize: 20,

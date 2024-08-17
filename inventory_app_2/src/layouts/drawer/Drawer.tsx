@@ -1,15 +1,27 @@
-import { useNavigation } from '@react-navigation/native';
+import { CompositeNavigationProp, NavigationProp, useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Drawer as PaperDrawer } from 'react-native-paper';
+import { RootStackParamList } from '../../app/Root';
+import { InventoryStackParamList } from '../../pages/Inventory/InventoryList/InventoryNavigation';
+import { InventoryTabsParamList } from '../../pages/Inventory/InventoryTabNavigation';
 
 interface Props {
   closeDrawer: () => void
 }
 
+type Navigation =
+  CompositeNavigationProp<
+    CompositeNavigationProp<
+      NavigationProp<RootStackParamList, 'INVENTORY'>,
+      NavigationProp<InventoryTabsParamList, 'INVENTORY_NAVIGATION'>
+    >,
+    NavigationProp<InventoryStackParamList, 'INVENTORY_LIST'>
+  >
+
 export const Drawer = (props: Props) => {
   const { closeDrawer } = props;
-  const { navigate } = useNavigation()
+  const { navigate } = useNavigation<Navigation>()
 
   return <SafeAreaView>
     <Text
@@ -45,7 +57,7 @@ export const Drawer = (props: Props) => {
         label="Inwentarz"
         icon="clipboard-list-outline"
         onPress={() => {
-          navigate("INVENTORY", { screen: "INVENTORY_NAVIGATION" })
+          navigate("INVENTORY_LIST")
           closeDrawer()
         }}
       />
@@ -53,7 +65,7 @@ export const Drawer = (props: Props) => {
         label="Lista zakupów"
         icon="basket-outline"
         onPress={() => {
-          navigate("INVENTORY", { screen: "SHOPPING_LIST" })
+          navigate("SHOPPING_LIST")
           closeDrawer()
         }}
       />
