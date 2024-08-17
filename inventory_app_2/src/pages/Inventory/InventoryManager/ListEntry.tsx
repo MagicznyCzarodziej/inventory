@@ -52,7 +52,11 @@ const AddSubItemButton = (props: AddSubItemButtonProps) => {
   return <Pressable
     style={styles.button}
     onPress={() => {
-      navigate("ADD_ITEM", { parentId: itemId, nameDraft: searchPhrase })
+      navigate({
+        name: "ADD_ITEM",
+        params: { parentId: itemId, nameDraft: searchPhrase },
+        merge: true
+      })
     }}
   >
     <Text style={styles.buttonText}>Dodaj podprodukt</Text>

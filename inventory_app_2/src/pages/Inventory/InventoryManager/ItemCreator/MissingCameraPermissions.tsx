@@ -14,7 +14,11 @@ export const MissingCameraPermissions = () => {
       <Text style={styles.cameraPermissionsHint}>Zezwól na używanie aparatu w ustawieniach aplikacji</Text>
       <Button
         onPress={() => {
-          navigate("ADD_ITEM", {})
+          navigate({
+            name: "ADD_ITEM",
+            params: {},
+            merge: true,
+          })
         }}
         title="Wróć" />
     </View>

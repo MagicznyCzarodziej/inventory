@@ -49,7 +49,11 @@ export const InventoryManagerPage = () => {
       paddingHorizontal: 16,
     }}>
       <Button small fullWidth onPress={() => {
-        navigate("ADD_ITEM", { nameDraft: searchPhrase })
+        navigate({
+          name: "ADD_ITEM",
+          params: { nameDraft: searchPhrase },
+          merge: true
+        })
       }} title="Utwórz produkt" />
       <Button small fullWidth onPress={() => {
       }} title="Utwórz grupę" />

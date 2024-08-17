@@ -26,7 +26,7 @@ type Props = CompositeScreenProps<
 >
 
 export const ItemCreatorPage = (props: Props) => {
-  const { nameDraft, barcode: scannedBarcode, photoPath } = props.route.params;
+  const { nameDraft, barcode: scannedBarcode, photoPath, parentId } = props.route.params;
   const { navigate } = props.navigation
 
   const descriptionRef = useRef(null);
@@ -37,7 +37,6 @@ export const ItemCreatorPage = (props: Props) => {
   const [description, setDescription] = useState<string>();
   const [brand, setBrand] = useState<string>();
   const [categoryId, setCategoryId] = useState<string>();
-  const [parentId] = useState<string | undefined>(props.route.params.parentId); // prevent from resetting after taking a photo/scanning a barcode
   const [currentStock, setCurrentStock] = useState<number>(1);
   const [desiredStock, setDesiredStock] = useState<number>(1);
   const [barcode, setBarcode] = useState<string>(scannedBarcode ?? "");

@@ -45,7 +45,11 @@ export const BarcodeScannerPage = () => {
       <IconButton
         icon="close"
         onPress={() => {
-          navigate("ADD_ITEM", {})
+          navigate({
+            name: "ADD_ITEM",
+            params: {},
+            merge: true
+          })
         }}
       />
       <IconButton
@@ -60,7 +64,11 @@ export const BarcodeScannerPage = () => {
         }}
         icon="check"
         onPress={() => {
-          navigate("ADD_ITEM", { barcode })
+          navigate({
+            name: "ADD_ITEM",
+            params: { barcode },
+            merge: true
+          })
         }}
       />
     </View>
