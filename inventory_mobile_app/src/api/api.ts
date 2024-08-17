@@ -87,7 +87,16 @@ const api = {
       }
     });
     return response.data;
-  }
+  },
+  delete: async <R>(url: string) => {
+    const response = await axiosInstance.delete<R>(url, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    });
+    return response.data;
+  },
 };
 
 export { api }

@@ -45,6 +45,8 @@ export const ItemPreviewPage = (props: Props) => {
         <Text style={styles.category}>{itemQuery.data.category.name}</Text>
         <IconButton
           icon="pencil"
+          style={styles.editButton}
+          iconColor={Colors.accent}
           onPress={() => {
             navigate("EDIT_ITEM", { itemId })
           }}
@@ -152,6 +154,10 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  editButton: {
+    margin: 0,
   },
   category: {
     fontSize: 20,

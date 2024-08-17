@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Wheely from 'react-native-wheely';
+import { LogBox } from 'react-native';
 
 interface Props {
   selectedIndex: number;
   onChange: (index: number) => void;
 }
 
+const range = Array.from({ length: 100 }, (_, i) => `${i}`);
+
 export const WheelPicker = (props: Props) => {
   const { selectedIndex, onChange } = props;
+
+  // Ignore warning about using WheelPicker inside ScrollView
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, [])
 
   return <Wheely
     flatListProps={{
@@ -15,7 +23,7 @@ export const WheelPicker = (props: Props) => {
     }}
     visibleRest={0}
     selectedIndex={selectedIndex}
-    options={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+    options={range}
     onChange={onChange}
     rotationFunction={() => 1.1}
     scaleFunction={x => 1 - 0.5 * x}

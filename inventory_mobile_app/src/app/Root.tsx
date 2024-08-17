@@ -10,8 +10,8 @@ import { DrawerContext } from '../context/DrawerContext';
 import { LoginPage } from '../pages/Account/LoginPage';
 import { StatusBar } from 'expo-status-bar';
 import { WrapWithQueryClient } from './QueryClientProvider';
-import { CameraPage } from '../pages/Inventory/InventoryManager/ItemCreator/CameraPage';
-import { BarcodeScannerPage } from '../pages/Inventory/InventoryManager/ItemCreator/BarcodeScannerPage';
+import { CameraPage } from '../pages/CameraPage';
+import { BarcodeScannerPage } from '../pages/BarcodeScannerPage';
 
 export type RootStackParamList = {
   INVENTORY: InventoryTabsParamList;
@@ -19,7 +19,7 @@ export type RootStackParamList = {
   ACCOUNT: undefined;
   SETTINGS: undefined;
   CAMERA: { from: 'ADD_ITEM' | 'EDIT_ITEM' }
-  INVENTORY_ADD_ITEM_BARCODE_SCANNER: undefined;
+  BARCODE_SCANNER: { from: 'ADD_ITEM' | 'EDIT_ITEM' };
 }
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
@@ -37,7 +37,7 @@ export const Root = () => {
               <Stack.Screen options={{ headerShown: false }} name="CAMERA" component={CameraPage} />
               <Stack.Screen
                 options={{ headerShown: false }}
-                name="INVENTORY_ADD_ITEM_BARCODE_SCANNER"
+                name="BARCODE_SCANNER"
                 component={BarcodeScannerPage}
               />
             </Stack.Navigator>

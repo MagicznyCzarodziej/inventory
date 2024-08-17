@@ -1,5 +1,5 @@
 import { Page } from '../../../../layouts/Page';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import { TextField } from '../../../../components/TextInput';
@@ -14,19 +14,20 @@ import { InventoryTabsParamList } from '../../InventoryTabNavigation';
 import { Colors } from '../../../../app/Theme';
 import { useUploadPhoto } from '../../../../api/useUploadPhoto';
 import { PhotoUpload } from './PhotoUpload';
-import { WheelPicker } from './WheelPicker';
+import { WheelPicker } from '../../../../components/WheelPicker';
 import { RootStackParamList } from '../../../../app/Root';
+import { ParallaxScrollView } from '../../../../components/ParallaxScrollView';
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
     NativeStackScreenProps<InventoryStackParamList, 'ADD_ITEM'>,
     NativeStackScreenProps<InventoryTabsParamList, "INVENTORY_NAVIGATION">
   >,
-  NativeStackScreenProps<RootStackParamList, "INVENTORY_ADD_ITEM_BARCODE_SCANNER">
+  NativeStackScreenProps<RootStackParamList, "BARCODE_SCANNER">
 >
 
 export const ItemCreatorPage = (props: Props) => {
-  const { nameDraft, barcode: scannedBarcode, photoPath, parentId } = props.route.params;
+  const { nameDraft, barcode: scannedBarcode, photoPath, parent } = props.route.params;
   const { navigate } = props.navigation
 
   const descriptionRef = useRef(null);
@@ -50,7 +51,7 @@ export const ItemCreatorPage = (props: Props) => {
 
   // Set initial category
   useEffect(() => {
-    if (categoriesQuery.isSuccess && parentId === undefined) {
+    if (categoriesQuery.isSuccess && parent === undefined) {
       setCategoryId(categoriesQuery.data.categories[0].id)
     }
   }, [categoriesQuery.isSuccess]);
@@ -73,8 +74,6 @@ export const ItemCreatorPage = (props: Props) => {
 
   const isValid =
     name !== undefined &&
-    description !== undefined &&
-    brand !== undefined &&
     !uploadPhotoMutation.isPending
 
   const createItemMutation = useCreateItem();
@@ -85,12 +84,12 @@ export const ItemCreatorPage = (props: Props) => {
 
     try {
       await createItemMutation.mutateAsync({
-        itemType: !!parentId ? 'SUB_ITEM' : 'ITEM',
+        itemType: !!parent ? 'SUB_ITEM' : 'ITEM',
         name: name!,
         description: description!,
         brand: brand!,
         categoryId,
-        parentId,
+        parentId: parent?.parentId,
         currentStock,
         desiredStock,
         barcode,
@@ -104,99 +103,99 @@ export const ItemCreatorPage = (props: Props) => {
   }
 
   return <Page style={styles.page} safeArea={false}>
-    <KeyboardAvoidingView behavior="height" style={styles.keyboardAvoidingView}>
-      <ScrollView contentContainerStyle={styles.container}>
-
+    <ParallaxScrollView
+      parallaxHeaderHeight={240}
+      parallaxHeaderContent={
         <PhotoUpload photoPath={photo} isPhotoUploaded={uploadPhotoMutation.isSuccess} />
+      }>
+      <View style={styles.paddedContainer}>
+        {parent &&
+          <TextField
+            label="Produkt nadrzędny"
+            disabled
+            value={parent.parentName}
+          />
+        }
+        <TextField
+          label="Nazwa"
+          value={name}
+          nextTextFieldRef={descriptionRef}
+          onChangeText={(value) => {
+            setName(value)
+          }}
+        />
+        <TextField
+          label="Opis"
+          value={description}
+          ref={descriptionRef}
+          nextTextFieldRef={brandRef}
+          onChangeText={(value) => {
+            setDescription(value)
+          }}
+        />
+        <TextField
+          label="Firma/Producent"
+          value={brand}
+          ref={brandRef}
+          nextTextFieldRef={barcodeRef}
+          onChangeText={(value) => {
+            setBrand(value)
+          }}
+        />
 
-        <View style={styles.paddedContainer}>
-          <TextField
-            label="Nazwa"
-            value={name}
-            nextTextFieldRef={descriptionRef}
-            onChangeText={(value) => {
-              setName(value)
-            }}
-          />
-          <TextField
-            label="Opis"
-            value={description}
-            ref={descriptionRef}
-            nextTextFieldRef={brandRef}
-            onChangeText={(value) => {
-              setDescription(value)
-            }}
-          />
-          <TextField
-            label="Firma/Producent"
-            value={brand}
-            ref={brandRef}
-            nextTextFieldRef={barcodeRef}
-            onChangeText={(value) => {
-              setBrand(value)
-            }}
-          />
+        {!parent &&
+          <Select value={categoryId} onValueChange={setCategoryId} items={categorySelectItems} />
+        }
 
-          {!parentId &&
-            <Select value={categoryId} onValueChange={setCategoryId} items={categorySelectItems} />
+        <TextField
+          label="Kod kreskowy"
+          value={barcode}
+          ref={barcodeRef}
+          onChangeText={(value) => {
+            setBarcode(value);
+          }}
+          right={
+            <TextInput.Icon
+              icon="barcode-scan"
+              onPress={() => navigate("BARCODE_SCANNER", { from: 'ADD_ITEM' })}
+            />
           }
+        />
 
-          <TextField
-            label="Kod kreskowy"
-            value={barcode}
-            ref={barcodeRef}
-            onChangeText={(value) => {
-              setBarcode(value);
-            }}
-            right={
-              <TextInput.Icon
-                icon="barcode-scan"
-                onPress={() => navigate("INVENTORY_ADD_ITEM_BARCODE_SCANNER")}
-              />
-            }
+        <View style={styles.stockControls}>
+          <WheelPicker
+            selectedIndex={currentStock}
+            onChange={(index) => setCurrentStock(index)}
           />
-
-          <View style={styles.stockControls}>
-            <WheelPicker
-              selectedIndex={currentStock}
-              onChange={(index) => setCurrentStock(index)}
-            />
-            <Text style={styles.stockControlsDivider}>/</Text>
-            <WheelPicker
-              selectedIndex={desiredStock}
-              onChange={(index) => setDesiredStock(index)}
-            />
-          </View>
-
-          <View style={styles.saveButton}>
-            <Button
-              onPress={() => {
-                handleCreateItem()
-              }}
-              title="Zapisz"
-              disabled={!isValid}
-            />
-          </View>
-
+          <Text style={styles.stockControlsDivider}>/</Text>
+          <WheelPicker
+            selectedIndex={desiredStock}
+            onChange={(index) => setDesiredStock(index)}
+          />
         </View>
-      </ScrollView>
-    </KeyboardAvoidingView>
+
+        <View style={styles.saveButton}>
+          <Button
+            onPress={() => {
+              handleCreateItem()
+            }}
+            title="Zapisz"
+            disabled={!isValid}
+          />
+        </View>
+
+      </View>
+    </ParallaxScrollView>
   </Page>
 }
 
 const styles = StyleSheet.create({
   page: {},
-  keyboardAvoidingView: {
-    flexGrow: 1,
-  },
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    flexGrow: 1,
-  },
   paddedContainer: {
+    backgroundColor: Colors.background,
     flexGrow: 1,
     padding: 16,
+    elevation: 10,
   },
   header: {
     display: 'flex',

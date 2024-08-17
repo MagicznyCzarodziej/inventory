@@ -17,10 +17,10 @@ export const useCreateItem = () => {
 interface CreateItemRequest {
   itemType: 'ITEM' | 'SUB_ITEM',
   name: string,
-  description: string,
+  description?: string,
   categoryId?: string,
   parentId?: string,
-  brand: string,
+  brand?: string,
   currentStock: number,
   desiredStock: number,
   photoId?: string,

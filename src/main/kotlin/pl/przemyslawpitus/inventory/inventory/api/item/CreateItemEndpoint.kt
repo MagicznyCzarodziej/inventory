@@ -45,10 +45,10 @@ class CreateItemEndpoint(
 data class CreateItemRequest(
     val itemType: String,
     val name: String,
-    val description: String,
+    val description: String?,
     val categoryId: String?,
     val parentId: String?,
-    val brand: String,
+    val brand: String?,
     val currentStock: Int,
     val desiredStock: Int,
     val photoId: String?,
