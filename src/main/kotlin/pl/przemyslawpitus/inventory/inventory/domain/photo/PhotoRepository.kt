@@ -4,5 +4,5 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.PhotoId
 
 interface PhotoRepository {
     fun save(photo: Photo): Photo
-    fun getById(photoId: pl.przemyslawpitus.inventory.inventory.domain.item.PhotoId): Photo?
+    fun getById(photoId: PhotoId): Photo?
 }

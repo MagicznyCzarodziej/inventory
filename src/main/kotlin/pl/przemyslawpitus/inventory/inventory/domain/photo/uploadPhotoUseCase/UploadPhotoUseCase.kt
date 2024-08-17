@@ -4,6 +4,7 @@ import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.inventory.domain.photo.Photo
 import pl.przemyslawpitus.inventory.inventory.domain.photo.PhotoRepository
 import pl.przemyslawpitus.inventory.common.domain.utils.randomUuid
+import pl.przemyslawpitus.inventory.inventory.domain.item.PhotoId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
 class UploadPhotoUseCase(
@@ -11,7 +12,7 @@ class UploadPhotoUseCase(
 ) {
     fun uploadPhoto(fileContent: ByteArray, userId: UserId): Photo {
         val photo = Photo(
-            id = pl.przemyslawpitus.inventory.inventory.domain.item.PhotoId(randomUuid()),
+            id = PhotoId(randomUuid()),
             userId = userId,
             file = fileContent,
         )

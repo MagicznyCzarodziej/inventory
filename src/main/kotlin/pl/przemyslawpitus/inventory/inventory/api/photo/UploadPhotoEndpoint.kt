@@ -27,7 +27,7 @@ class UploadPhotoEndpoint(
         @RequestParam file: MultipartFile,
         @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
-        logger.api("Upload file | ${file.name}")
+        logger.api("Upload file")
 
         val photo = uploadPhotoUseCase.uploadPhoto(
             fileContent = file.bytes,

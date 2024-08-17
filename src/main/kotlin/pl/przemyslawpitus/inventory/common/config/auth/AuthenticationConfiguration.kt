@@ -1,5 +1,6 @@
 package pl.przemyslawpitus.inventory.common.config.auth
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -40,10 +41,12 @@ class SecurityConfiguration {
     fun jwtVerifierFilter(
         authTokenVerifier: AuthTokenVerifier,
         authenticationProperties: AuthenticationProperties,
+        objectMapper: ObjectMapper,
     ) = JwtVerifierFilter(
         authTokenVerifier = authTokenVerifier,
         authenticationProperties = authenticationProperties,
-        ignoredPaths = unprotectedPaths
+        ignoredPaths = unprotectedPaths,
+        objectMapper = objectMapper,
     )
 
     @Bean

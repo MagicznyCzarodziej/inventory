@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.common.api.ErrorHandler
 import pl.przemyslawpitus.inventory.common.config.auth.AuthenticationProperties
 import pl.przemyslawpitus.inventory.common.domain.auth.AuthenticationDetails
 import pl.przemyslawpitus.inventory.common.domain.auth.loginUseCase.Credentials
@@ -21,6 +22,7 @@ import pl.przemyslawpitus.inventory.logging.WithLogger
 class LoginEndpoint(
     private val loginUseCase: LoginUseCase,
     private val authenticationProperties: AuthenticationProperties,
+    private val errorHandler: ErrorHandler,
 ) {
     @PostMapping(
         "/login",
@@ -42,18 +44,18 @@ class LoginEndpoint(
                 .header(HttpHeaders.SET_COOKIE, refreshTokenCookie)
                 .body(authentication.toResponse())
         } catch (exception: InvalidPasswordException) {
-            logger.api("Invalid password for username ${exception.username}")
-            return invalidCredentialsResponse()
+            return handleInvalidCredentials(exception)
         } catch (exception: UserNotFoundException) {
-            logger.api("User not found for username ${exception.username}")
-            return invalidCredentialsResponse()
+            return handleInvalidCredentials(exception)
         }
     }
 
-    private fun invalidCredentialsResponse() = ResponseEntity
-        .status(HttpStatus.FORBIDDEN)
-        .body(
-            InvalidLoginCredentialsResponse(error = "Invalid username or password")
+    private fun handleInvalidCredentials(exception: Exception) =
+        errorHandler.handleError(
+            code = "INVALID_CREDENTIALS",
+            status = HttpStatus.FORBIDDEN,
+            message = "Invalid credentials",
+            exception = exception,
         )
 
     private companion object : WithLogger()
@@ -75,8 +77,4 @@ private data class LoginResponse(
 
 private fun AuthenticationDetails.toResponse() = LoginResponse(
     username = this.username
-)
-
-private data class InvalidLoginCredentialsResponse(
-    val error: String,
 )

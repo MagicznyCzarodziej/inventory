@@ -5,6 +5,6 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "color": "00FF55",
-  "purpose": "Umywalka"
+  "color": "#EBD200",
+  "purpose": "Lustro"
 }

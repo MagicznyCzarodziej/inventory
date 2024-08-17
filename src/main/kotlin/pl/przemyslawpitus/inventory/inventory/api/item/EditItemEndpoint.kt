@@ -1,5 +1,6 @@
 package pl.przemyslawpitus.inventory.inventory.api.item
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -7,16 +8,23 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.common.api.ErrorHandler
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.EditItemParameters
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.EditItemUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemDoesNotBelongToUser
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemNotFound
+import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.CannotEditCategoryInSubItem
+import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.MissingCategoryId
 import pl.przemyslawpitus.inventory.logging.WithLogger
+import java.lang.Exception
 
 @RestController
 class EditItemEndpoint(
     private val editItemUseCase: EditItemUseCase,
+    private val errorHandler: ErrorHandler,
 ) {
     @PutMapping(
         "/items/{itemId}",
@@ -29,18 +37,46 @@ class EditItemEndpoint(
     ): ResponseEntity<*> {
         logger.api("Edit item | $itemId")
 
-        editItemUseCase.editItem(
-            editItemParameters = request.toEditItemParameters(ItemId(itemId)),
-            userId = userDetails.id,
-        )
+        try {
+            editItemUseCase.editItem(
+                editItemParameters = request.toEditItemParameters(ItemId(itemId)),
+                userId = userDetails.id,
+            )
 
-        return ResponseEntity.noContent().build<Unit>()
+            return ResponseEntity.noContent().build<Unit>()
+        } catch (exception: ItemNotFound) {
+            return handleItemNotFound(exception)
+        } catch (exception: ItemDoesNotBelongToUser) {
+            return handleItemNotFound(exception)
+        } catch (exception: MissingCategoryId) {
+            return errorHandler.handleError(
+                code = "MISSING_CATEGORY_ID",
+                status = HttpStatus.BAD_REQUEST,
+                message = exception.message!!,
+                exception = exception,
+            )
+        } catch (exception: CannotEditCategoryInSubItem) {
+            return errorHandler.handleError(
+                code = "CANNOT_EDIT_CATEGORY_IN_SUB_ITEM",
+                status = HttpStatus.BAD_REQUEST,
+                message = exception.message!!,
+                exception = exception,
+            )
+        }
     }
+
+    private fun handleItemNotFound(exception: Exception) =
+        errorHandler.handleError(
+            code = "ITEM_NOT_FOUND",
+            status = HttpStatus.NOT_FOUND,
+            message = "Item not found",
+            exception = exception,
+        )
 
     private companion object : WithLogger()
 }
 
-data class  EditItemRequest(
+data class EditItemRequest(
     val name: String,
     val description: String?,
     val categoryId: String?,

@@ -61,11 +61,11 @@ class CreateItemUseCase(
 
     private fun getRoot(itemDraft: ItemDraft, userId: UserId): Root =
         when (itemDraft.itemType) {
-            ItemDraft.ItemType.ITEM -> createCategoryRoom(itemDraft, userId)
+            ItemDraft.ItemType.ITEM -> createCategoryRoot(itemDraft, userId)
             ItemDraft.ItemType.SUB_ITEM -> createParentItemRoot(itemDraft, userId)
         }
 
-    private fun createCategoryRoom(
+    private fun createCategoryRoot(
         itemDraft: ItemDraft,
         userId: UserId,
     ): Root.CategoryRoot {
