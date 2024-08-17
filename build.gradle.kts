@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "pl.przemyslawpitus"
-version = "1.1.0"
+version = "1.2.0"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_19
