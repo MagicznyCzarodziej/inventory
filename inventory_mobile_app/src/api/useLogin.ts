@@ -1,5 +1,5 @@
 import { api } from './api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const login = ({ username, password }: LoginRequest) => api.post<undefined, LoginRequest>("/auth/login",
   {
@@ -7,7 +7,16 @@ const login = ({ username, password }: LoginRequest) => api.post<undefined, Logi
     password,
   });
 
-export const useLogin = () => useMutation({ mutationFn: login });
+export const useLogin = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: login,
+    onSuccess: () => {
+      queryClient.invalidateQueries()
+    }
+  });
+};
 
 interface LoginRequest {
   username: string;
