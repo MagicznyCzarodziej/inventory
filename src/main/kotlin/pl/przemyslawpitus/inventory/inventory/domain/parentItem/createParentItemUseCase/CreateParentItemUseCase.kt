@@ -26,7 +26,7 @@ class CreateParentItemUseCase(
         val item = ParentItem(
             id = ParentItemId(value = randomUuid()),
             userId = userId,
-            name = itemDraft.name,
+            name = itemDraft.name, // TODO Check if name is not an empty string
             category = category,
             createdAt = now,
             updatedAt = now,

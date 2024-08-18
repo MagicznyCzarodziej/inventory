@@ -18,6 +18,7 @@ import { ParallaxScrollView } from '../../../components/ParallaxScrollView';
 import { Colors } from '../../../app/Theme';
 import { WheelPicker } from '../../../components/WheelPicker';
 import { useRemoveItem } from '../../../api/useRemoveItem';
+import { mapCategoriesToCategorySelectItems } from '../utils/categoryUtils';
 
 interface ItemEditorProps {
   item: GetItemResponse
@@ -35,10 +36,7 @@ export const ItemEditor = (props: ItemEditorProps) => {
   const { item, categories, newPhotoPath, newBarcode } = props
   const { navigate } = useNavigation<Navigation>()
 
-  const categorySelectItems = categories.map(category => ({
-    value: category.id,
-    label: category.name
-  })) ?? []
+  const categorySelectItems = mapCategoriesToCategorySelectItems(categories)
 
   const [name, setName] = useState<string>(item.name)
   const [description, setDescription] = useState<string | null>(item.description)

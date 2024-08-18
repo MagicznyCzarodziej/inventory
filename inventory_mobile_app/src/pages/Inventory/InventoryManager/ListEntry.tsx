@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Entry } from '../../../api/useGetItems';
-import { isParentEntry } from '../itemsUtils';
+import { isParentEntry } from '../utils/itemsUtils';
 import { Divider, Icon } from 'react-native-paper';
 import Theme from '../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
