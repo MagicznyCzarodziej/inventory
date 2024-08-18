@@ -6,6 +6,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.inventory.domain.item.Stock
 import pl.przemyslawpitus.inventory.inventory.domain.photo.PhotoProvider
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemValidations
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
@@ -19,14 +20,16 @@ class EditItemTransformer(
             return item
         }
 
+        ItemValidations.validateName(editItemParameters.name)
+
         return item.copy(
-            name = editItemParameters.name, // TODO Check if name and other fields are not an empty string
+            name = editItemParameters.name.trim(),
             root = updateRoot(currentItem = item, editItemParameters = editItemParameters, userId = userId),
-            description = editItemParameters.description,
-            brand = editItemParameters.brand,
+            description = editItemParameters.description?.trim(),
+            brand = editItemParameters.brand?.trim(),
             stock = updateStock(currentItem = item, editItemParameters = editItemParameters),
             photo = updatePhoto(editItemParameters, userId),
-            barcode = editItemParameters.barcode,
+            barcode = editItemParameters.barcode?.trim(),
             updatedAt = Instant.now(),
         )
     }

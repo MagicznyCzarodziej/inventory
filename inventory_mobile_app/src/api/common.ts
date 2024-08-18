@@ -6,4 +6,5 @@ export interface Category {
 export interface ParentItem {
   id: string;
   name: string;
+  category: Category;
 }

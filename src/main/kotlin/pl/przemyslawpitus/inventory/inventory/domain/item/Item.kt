@@ -15,7 +15,7 @@ data class Item(
     val root: Root,
     val brand: String?,
     val barcode: String?,
-    val photo: pl.przemyslawpitus.inventory.inventory.domain.item.ItemPhoto?,
+    val photo: ItemPhoto?,
     val stock: Stock,
     val createdAt: Instant,
     val updatedAt: Instant,
@@ -27,3 +27,13 @@ sealed interface Root {
     data class ParentRoot(val parentItem: ParentItem) : Root
     data class CategoryRoot(val category: Category) : Root
 }
+
+object ItemValidations {
+    fun validateName(name: String) {
+        if (name.isBlank()) {
+            throw ItemValidationException("Name cannot be blank")
+        }
+    }
+}
+
+class ItemValidationException(message: String) : RuntimeException(message)

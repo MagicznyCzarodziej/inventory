@@ -31,6 +31,9 @@ import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoItemRe
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoParentItemRepository
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoPhotoRepository
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.MongoUserRepository
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemTransformer
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.GetParentItemUseCase
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.ParentItemEntityToDomainMapper
 
 @Configuration
@@ -233,5 +236,29 @@ class InventoryDomainConfig {
         editItemTransformer = editItemTransformer,
     )
 
+    @Bean
+    fun getParentItemUseCase(
+        parentItemProvider: ParentItemProvider,
+    ) = GetParentItemUseCase(
+        parentItemProvider = parentItemProvider,
+    )
+
+    @Bean
+    fun editParentItemTransformer(
+        categoryProvider: CategoryProvider,
+    ) = EditParentItemTransformer(
+        categoryProvider = categoryProvider,
+    )
+
+    @Bean
+    fun editParentItemUseCase(
+        parentItemProvider: ParentItemProvider,
+        editParentItemTransformer: EditParentItemTransformer,
+        parentItemRepository: ParentItemRepository,
+    ) = EditParentItemUseCase(
+        parentItemProvider = parentItemProvider,
+        editParentItemTransformer = editParentItemTransformer,
+        parentItemRepository = parentItemRepository,
+    )
 }
 
