@@ -21,3 +21,12 @@ data class ParentItemId(val value: String) {
     }
 }
 
+object ParentItemValidations {
+    fun validateName(name: String) {
+        if (name.isBlank()) {
+            throw ParentItemValidationException("Name cannot be blank")
+        }
+    }
+}
+
+class ParentItemValidationException(message: String) : RuntimeException(message)

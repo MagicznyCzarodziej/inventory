@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   safeAreaView: {
-    marginTop: 8,
+    paddingTop: 8,
     flexGrow: 1,
   },
 })

@@ -14,6 +14,8 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.EditIt
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.EditItemUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
+import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryDoesNotBelongToUser
+import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryNotFound
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemDoesNotBelongToUser
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemNotFound
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.CannotEditCategoryInSubItem
@@ -30,7 +32,7 @@ class EditItemEndpoint(
         "/items/{itemId}",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
     )
-    fun createItem(
+    fun editItem(
         @PathVariable itemId: String,
         @RequestBody request: EditItemRequest,
         @AuthenticationPrincipal userDetails: UserDetails,
@@ -62,8 +64,20 @@ class EditItemEndpoint(
                 message = exception.message!!,
                 exception = exception,
             )
+        } catch (exception: CategoryNotFound) {
+            return handleCategoryNotFound(exception)
+        } catch (exception: CategoryDoesNotBelongToUser) {
+            return handleCategoryNotFound(exception)
         }
     }
+
+    private fun handleCategoryNotFound(exception: Exception) =
+        errorHandler.handleError(
+            code = "CATEGORY_NOT_FOUND",
+            status = HttpStatus.NOT_FOUND,
+            message = "Category not found",
+            exception = exception,
+        )
 
     private fun handleItemNotFound(exception: Exception) =
         errorHandler.handleError(

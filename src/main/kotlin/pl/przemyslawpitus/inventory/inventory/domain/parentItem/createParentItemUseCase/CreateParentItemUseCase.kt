@@ -7,6 +7,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryProvider
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.common.domain.utils.randomUuid
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemValidations
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
@@ -23,10 +24,12 @@ class CreateParentItemUseCase(
             userId = userId
         )
 
+        ParentItemValidations.validateName(itemDraft.name)
+
         val item = ParentItem(
             id = ParentItemId(value = randomUuid()),
             userId = userId,
-            name = itemDraft.name, // TODO Check if name is not an empty string
+            name = itemDraft.name.trim(),
             category = category,
             createdAt = now,
             updatedAt = now,

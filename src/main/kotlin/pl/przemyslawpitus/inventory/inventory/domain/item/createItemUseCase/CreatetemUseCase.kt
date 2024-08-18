@@ -15,6 +15,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.Stock
 import pl.przemyslawpitus.inventory.inventory.domain.item.StockHistoryEntry
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemProvider
 import pl.przemyslawpitus.inventory.common.domain.utils.randomUuid
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemValidations
 import java.time.Instant
 
 class CreateItemUseCase(
@@ -29,14 +30,16 @@ class CreateItemUseCase(
         val itemPhoto = itemDraft.photoId?.let { getPhoto(it) }
         val root = getRoot(itemDraft, userId)
 
+        ItemValidations.validateName(itemDraft.name)
+
         val item = Item(
             id = ItemId(value = randomUuid()),
             userId = userId,
-            name = itemDraft.name, // TODO Check if name and other fields are not an empty string
-            description = itemDraft.description,
+            name = itemDraft.name.trim(),
+            description = itemDraft.description?.trim(),
             root = root,
-            brand = itemDraft.brand,
-            barcode = itemDraft.barcode,
+            brand = itemDraft.brand?.trim(),
+            barcode = itemDraft.barcode?.trim(),
             photo = itemPhoto,
             stock = createNewStock(
                 currentStock = itemDraft.currentStock,

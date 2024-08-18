@@ -39,6 +39,12 @@ data class GetParentItemsResponse(
     data class ParentItemDto(
         val id: String,
         val name: String,
+        val category: CategoryDto,
+    )
+
+    data class CategoryDto(
+        val id: String,
+        val name: String,
     )
 }
 
@@ -47,6 +53,10 @@ fun List<ParentItem>.toGetParentItemsResponse() = GetParentItemsResponse(
         GetParentItemsResponse.ParentItemDto(
             id = it.id.value,
             name = it.name,
+            category = GetParentItemsResponse.CategoryDto(
+                id = it.category.id.value,
+                name = it.category.name,
+            )
         )
     }
 )
