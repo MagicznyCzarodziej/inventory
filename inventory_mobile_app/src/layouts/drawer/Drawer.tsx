@@ -2,9 +2,7 @@ import { CompositeNavigationProp, NavigationProp, useNavigation } from '@react-n
 import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Drawer as PaperDrawer } from 'react-native-paper';
-import { RootStackParamList } from '../../app/Root';
-import { InventoryStackParamList } from '../../pages/Inventory/InventoryList/InventoryNavigation';
-import { InventoryTabsParamList } from '../../pages/Inventory/InventoryTabNavigation';
+import { InventoryStackParamList, InventoryTabsParamList, RootStackParamList } from '../../navigation/navigationTypes';
 
 interface Props {
   closeDrawer: () => void

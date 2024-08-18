@@ -7,7 +7,7 @@ import { IconButton, TextInput, } from 'react-native-paper';
 import { Colors } from '../../../app/Theme';
 import { Page } from '../../../layouts/Page';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from './InventoryNavigation';
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 export const InventoryPage = () => {
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TextField } from '../../../components/TextInput';
-import { Category, ParentItem } from '../../../api/common';
-import { StyleSheet, View } from 'react-native';
+import { Category } from '../../../api/common';
+import { StyleSheet, Text, View } from 'react-native';
 import { Page } from '../../../layouts/Page';
 import { Select } from '../../../components/Select';
 import { mapCategoriesToCategorySelectItems } from '../utils/categoryUtils';
@@ -9,14 +9,16 @@ import { Button } from '../../../components/Button';
 import { useEditParentItem } from '../../../api/useEditParentItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CategoriesAndGroupsParamsList } from '../CategoriesAndGroups/CategoriesAndGroupsTabNavigation';
+import { useRemoveParentItem } from '../../../api/useRemoveParentItem';
+import { GetParentItemResponse } from '../../../api/useGetParentItem';
+import { CategoriesAndParentItemsTabsParamsList } from '../../../navigation/navigationTypes';
 
 interface Props {
-  parentItem: ParentItem;
+  parentItem: GetParentItemResponse;
   categories: Category[]
 }
 
-type Navigation = NativeStackNavigationProp<CategoriesAndGroupsParamsList, 'GROUPS'>
+type Navigation = NativeStackNavigationProp<CategoriesAndParentItemsTabsParamsList, 'PARENT_ITEMS_LIST'>
 
 export const ParentItemEditor = (props: Props) => {
   const { parentItem, categories } = props;
@@ -27,11 +29,19 @@ export const ParentItemEditor = (props: Props) => {
   const [name, setName] = useState<string>(parentItem.name)
   const [categoryId, setCategoryId] = useState<string>(parentItem.category.id)
 
+  const hasSubItems = parentItem.subItemsCount > 0
+
   const categorySelectItems = mapCategoriesToCategorySelectItems(categories)
 
   const editParentItemMutations = useEditParentItem()
+  const removeParentItemMutations = useRemoveParentItem()
 
   const isValid = name.trim().length > 0
+
+  const handleRemove = async () => {
+    await removeParentItemMutations.mutateAsync(parentItem.id)
+    navigate("PARENT_ITEMS_LIST")
+  }
 
   const handleSave = async () => {
     if (!isValid) {
@@ -46,7 +56,7 @@ export const ParentItemEditor = (props: Props) => {
       }
     })
 
-    navigate("GROUPS")
+    navigate("PARENT_ITEMS_LIST")
   }
 
   return <Page style={styles.page}>
@@ -62,7 +72,30 @@ export const ParentItemEditor = (props: Props) => {
 
     <Select value={categoryId ?? undefined} onValueChange={setCategoryId} items={categorySelectItems} />
 
-    <View style={styles.saveButton}>
+    {hasSubItems
+      ? <Text>
+        {`Grupa zawiera ${parentItem.subItemsCount} ${parentItem.subItemsCount === 1
+          ? "produkt"
+          : parentItem.subItemsCount < 5
+            ? "produkty"
+            : "produktów"
+        }`}
+      </Text>
+      : <Text>
+        Grupa nie zawiera żadnych produktów
+      </Text>
+    }
+
+    <View style={styles.controls}>
+      <Button
+        onPress={() => {
+          handleRemove()
+        }}
+        title="Usuń"
+        spinner={removeParentItemMutations.isPending}
+        fullWidth
+        disabled={hasSubItems}
+      />
       <Button
         onPress={() => {
           handleSave()
@@ -70,6 +103,7 @@ export const ParentItemEditor = (props: Props) => {
         title="Zapisz"
         disabled={!isValid}
         spinner={editParentItemMutations.isPending}
+        fullWidth
       />
     </View>
   </Page>
@@ -79,7 +113,10 @@ const styles = StyleSheet.create({
   page: {
     padding: 16,
   },
-  saveButton: {
+  controls: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16,
     marginTop: "auto"
-  }
+  },
 })

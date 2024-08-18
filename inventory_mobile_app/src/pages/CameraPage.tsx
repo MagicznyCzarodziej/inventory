@@ -1,6 +1,5 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { InventoryStackParamList } from './Inventory/InventoryList/InventoryNavigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Page } from '../layouts/Page';
 import { IconButton } from 'react-native-paper';
@@ -8,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 import { Colors } from '../app/Theme';
 import { MissingCameraPermissions } from './Inventory/InventoryManager/ItemCreator/MissingCameraPermissions';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../app/Root';
+import { InventoryStackParamList, RootStackParamList } from '../navigation/navigationTypes';
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList, "CAMERA">,

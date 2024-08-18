@@ -1,17 +1,13 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { CategoriesPage } from './Categories/CategoriesPage';
-import { ParentItemsPage } from './Groups/ParentItemsPage';
 import { Page } from '../../../layouts/Page';
 import { Colors } from '../../../app/Theme';
+import { CategoriesPage } from './Categories/CategoriesPage';
+import { ParentItemsPage } from './Groups/ParentItemsPage';
+import { CategoriesAndParentItemsTabsParamsList } from '../../../navigation/navigationTypes';
 
-export type CategoriesAndGroupsParamsList = {
-  CATEGORIES: undefined;
-  GROUPS: undefined;
-}
+const Tab = createMaterialTopTabNavigator<CategoriesAndParentItemsTabsParamsList>();
 
-const Tab = createMaterialTopTabNavigator<CategoriesAndGroupsParamsList>();
-
-export const CategoriesAndGroupsTabNavigation = () => {
+export const CategoriesAndParentItemsTabsNavigation = () => {
   return (
     <Page style={{ flex: 1, backgroundColor: Colors.primary }}>
       <Tab.Navigator
@@ -19,7 +15,7 @@ export const CategoriesAndGroupsTabNavigation = () => {
           tabBarStyle: {
             backgroundColor: Colors.primary
           },
-          tabBarLabelStyle:{
+          tabBarLabelStyle: {
             fontSize: 18
           },
           tabBarIndicatorStyle: {
@@ -28,9 +24,10 @@ export const CategoriesAndGroupsTabNavigation = () => {
           tabBarActiveTintColor: Colors.secondary,
           tabBarInactiveTintColor: Colors.secondary,
         }}
+        backBehavior="none"
       >
         <Tab.Screen options={{ tabBarLabel: "Kategorie" }} name="CATEGORIES" component={CategoriesPage} />
-        <Tab.Screen options={{ tabBarLabel: "Grupy" }} name="GROUPS" component={ParentItemsPage} />
+        <Tab.Screen options={{ tabBarLabel: "Grupy" }} name="PARENT_ITEMS_LIST" component={ParentItemsPage} />
       </Tab.Navigator>
     </Page>
   )

@@ -1,13 +1,12 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
 import { useGetItem } from '../../../api/useGetItem';
 import { useGetCategories } from '../../../api/useGetCategories';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { RootStackParamList } from '../../../app/Root';
 import { ItemEditor } from './ItemEditor';
 import { Page } from '../../../layouts/Page';
 import { Spinner } from '../../../components/Spinner';
+import { InventoryStackParamList, RootStackParamList } from '../../../navigation/navigationTypes';
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<InventoryStackParamList, 'EDIT_ITEM'>,

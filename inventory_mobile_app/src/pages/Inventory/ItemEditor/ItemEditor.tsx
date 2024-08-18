@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { GetItemResponse } from '../../../api/useGetItem';
 import { Category } from '../../../api/common';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../../app/Root';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
 import { useUploadPhoto } from '../../../api/useUploadPhoto';
 import { useEditItem } from '../../../api/useEditItem';
@@ -12,13 +11,13 @@ import { TextField } from '../../../components/TextInput';
 import { Select } from '../../../components/Select';
 import { TextInput } from 'react-native-paper';
 import { Button } from '../../../components/Button';
-import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
 import { StyleSheet, View, Text } from 'react-native';
 import { ParallaxScrollView } from '../../../components/ParallaxScrollView';
 import { Colors } from '../../../app/Theme';
 import { WheelPicker } from '../../../components/WheelPicker';
 import { useRemoveItem } from '../../../api/useRemoveItem';
 import { mapCategoriesToCategorySelectItems } from '../utils/categoryUtils';
+import { InventoryStackParamList, RootStackParamList } from '../../../navigation/navigationTypes';
 
 interface ItemEditorProps {
   item: GetItemResponse

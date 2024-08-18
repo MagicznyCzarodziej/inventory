@@ -5,8 +5,8 @@ import { getColor } from './inventoryListUtils';
 import { Divider, IconButton } from 'react-native-paper';
 import { useUpdateCurrentStock } from '../../../api/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from './InventoryNavigation';
 import { Colors } from '../../../app/Theme';
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 interface Props {
   entry: ItemEntry;

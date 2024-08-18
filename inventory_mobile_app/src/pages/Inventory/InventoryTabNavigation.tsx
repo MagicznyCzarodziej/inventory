@@ -2,22 +2,17 @@ import React from 'react';
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { ShoppingListPage } from './ShoppingList/ShoppingListPage';
 import {
-  CategoriesAndGroupsParamsList,
-  CategoriesAndGroupsTabNavigation
-} from './CategoriesAndGroups/CategoriesAndGroupsTabNavigation';
-import { InventoryNavigation, InventoryStackParamList } from './InventoryList/InventoryNavigation';
+  CategoriesAndParentItemsStackNavigation
+} from './CategoriesAndGroups/CategoriesAndParentItemsStackNavigation';
+import { InventoryNavigation } from './InventoryList/InventoryNavigation';
 import { Colors } from '../../app/Theme';
-
-export type InventoryTabsParamList = {
-  INVENTORY_NAVIGATION: InventoryStackParamList;
-  SHOPPING_LIST: undefined;
-  CATEGORIES_AND_GROUPS: CategoriesAndGroupsParamsList;
-}
+import { InventoryTabsParamList } from '../../navigation/navigationTypes';
 
 const Tab = createMaterialBottomTabNavigator<InventoryTabsParamList>();
 
 export const InventoryTabNavigation = () => {
   return <Tab.Navigator
+    backBehavior={"initialRoute"}
     initialRouteName="INVENTORY_NAVIGATION"
     shifting
     activeColor={Colors.accent}
@@ -43,8 +38,8 @@ export const InventoryTabNavigation = () => {
     />
     <Tab.Screen
       options={{ tabBarIcon: "shape-outline", tabBarLabel: "Kategorie i grupy" }}
-      name="CATEGORIES_AND_GROUPS"
-      component={CategoriesAndGroupsTabNavigation}
+      name="CATEGORIES_AND_PARENT_ITEMS_STACK_NAVIGATION"
+      component={CategoriesAndParentItemsStackNavigation}
     />
   </Tab.Navigator>
 }

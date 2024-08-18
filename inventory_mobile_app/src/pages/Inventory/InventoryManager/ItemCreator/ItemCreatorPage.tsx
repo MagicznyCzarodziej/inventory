@@ -1,7 +1,6 @@
 import { Page } from '../../../../layouts/Page';
 import { StyleSheet, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import { TextField } from '../../../../components/TextInput';
 import { Button } from '../../../../components/Button';
 import { Text, TextInput } from 'react-native-paper';
@@ -9,14 +8,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Select } from '../../../../components/Select';
 import { useCreateItem } from '../../../../api/useCreateItem';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { InventoryTabsParamList } from '../../InventoryTabNavigation';
 import { Colors } from '../../../../app/Theme';
 import { useUploadPhoto } from '../../../../api/useUploadPhoto';
 import { PhotoUpload } from './PhotoUpload';
 import { WheelPicker } from '../../../../components/WheelPicker';
-import { RootStackParamList } from '../../../../app/Root';
 import { ParallaxScrollView } from '../../../../components/ParallaxScrollView';
 import { useCategorySelect } from '../../utils/categoryUtils';
+import {
+  InventoryStackParamList,
+  InventoryTabsParamList,
+  RootStackParamList
+} from '../../../../navigation/navigationTypes';
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<

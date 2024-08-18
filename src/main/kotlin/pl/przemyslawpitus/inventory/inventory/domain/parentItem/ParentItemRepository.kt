@@ -7,4 +7,5 @@ interface ParentItemRepository {
     fun getById(parentItemId: ParentItemId): ParentItem?
     fun getByUserId(userId: UserId): List<ParentItem>
     fun getAll(): List<ParentItem>
+    fun removeById(parentItemId: ParentItemId)
 }

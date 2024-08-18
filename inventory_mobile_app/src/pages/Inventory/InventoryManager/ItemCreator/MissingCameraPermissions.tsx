@@ -4,7 +4,7 @@ import { Button } from '../../../../components/Button';
 import { Page } from '../../../../layouts/Page';
 import React from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
+import { InventoryStackParamList } from '../../../../navigation/navigationTypes';
 
 export const MissingCameraPermissions = () => {
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()

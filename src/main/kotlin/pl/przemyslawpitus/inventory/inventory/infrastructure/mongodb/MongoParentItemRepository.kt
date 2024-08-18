@@ -3,6 +3,9 @@ package pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItem
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemRepository
@@ -30,8 +33,15 @@ class MongoParentItemRepository(
         return mongoTemplate.findAll(ParentItemEntity::class.java).toDomain()
     }
 
+    override fun removeById(parentItemId: ParentItemId) {
+        mongoTemplate.remove(queryById(parentItemId), ParentItemEntity::class.java)
+    }
+
     private fun ParentItemEntity.toDomain() = parentItemEntityToDomainMapper.mapToDomain(this)
     private fun List<ParentItemEntity>.toDomain() = this.map { parentItemEntityToDomainMapper.mapToDomain(it) }
+
+    private fun queryById(parentItemId: ParentItemId) =
+        Query().addCriteria(Criteria.where("_id").isEqualTo(parentItemId.value))
 }
 
 @Document("parentItems")

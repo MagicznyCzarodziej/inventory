@@ -2,7 +2,7 @@ import { ParentItem } from '../../../../api/common';
 import { View, Text, StyleSheet } from 'react-native';
 import { Colors } from '../../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
+import { CategoriesAndParentItemsStackParamsList } from '../../../../navigation/navigationTypes';
 
 interface Props {
   parentItem: ParentItem;
@@ -11,7 +11,7 @@ interface Props {
 export const ParentItemEntry = (props: Props) => {
   const { parentItem } = props;
 
-  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
+  const { navigate } = useNavigation<NavigationProp<CategoriesAndParentItemsStackParamsList>>()
 
   return <View style={styles.entry}>
     <Text style={styles.name}>{parentItem.name}</Text>

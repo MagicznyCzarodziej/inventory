@@ -5,9 +5,9 @@ import { StyleSheet, View } from 'react-native';
 import { TextField } from '../../../../components/TextInput';
 import { Select } from '../../../../components/Select';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { InventoryStackParamList } from '../../InventoryList/InventoryNavigation';
 import { useCreateParentItem } from '../../../../api/useCreateParentItem';
 import { useCategorySelect } from '../../utils/categoryUtils';
+import { InventoryStackParamList } from '../../../../navigation/navigationTypes';
 
 type Props = NativeStackScreenProps<InventoryStackParamList, 'ADD_PARENT_ITEM'>
 

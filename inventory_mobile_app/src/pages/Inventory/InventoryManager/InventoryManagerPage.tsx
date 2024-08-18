@@ -1,4 +1,4 @@
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { Entry, useGetItems } from '../../../api/useGetItems';
 import { Page } from '../../../layouts/Page';
 import { Spinner } from '../../../components/Spinner';
@@ -8,7 +8,7 @@ import { Button } from '../../../components/Button';
 import { ListEntry } from './ListEntry';
 import { useState } from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 export const InventoryManagerPage = () => {
   const [searchPhrase, setSearchPhrase] = useState("")

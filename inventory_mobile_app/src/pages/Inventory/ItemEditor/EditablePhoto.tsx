@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text, Pressable, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../app/Root';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ItemPhoto } from '../../../components/Photo/ItemPhoto';
 import { Icon } from 'react-native-paper';
 import { Colors } from '../../../app/Theme';
+import { RootStackParamList } from '../../../navigation/navigationTypes';
 
 interface Props {
   originScreen: "ADD_ITEM" | "EDIT_ITEM"
