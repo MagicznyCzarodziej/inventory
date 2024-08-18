@@ -6,7 +6,6 @@ import { TextField } from '../../../../components/TextInput';
 import { Button } from '../../../../components/Button';
 import { Text, TextInput } from 'react-native-paper';
 import React, { useEffect, useRef, useState } from 'react';
-import { useGetCategories } from '../../../../api/useGetCategories';
 import { Select } from '../../../../components/Select';
 import { useCreateItem } from '../../../../api/useCreateItem';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -17,6 +16,7 @@ import { PhotoUpload } from './PhotoUpload';
 import { WheelPicker } from '../../../../components/WheelPicker';
 import { RootStackParamList } from '../../../../app/Root';
 import { ParallaxScrollView } from '../../../../components/ParallaxScrollView';
+import { useCategorySelect } from '../../utils/categoryUtils';
 
 type Props = CompositeScreenProps<
   CompositeScreenProps<
@@ -34,27 +34,15 @@ export const ItemCreatorPage = (props: Props) => {
   const brandRef = useRef(null);
   const barcodeRef = useRef(null);
 
-  const [name, setName] = useState(nameDraft);
+  const [name, setName] = useState<string>(nameDraft ?? "");
   const [description, setDescription] = useState<string>();
   const [brand, setBrand] = useState<string>();
-  const [categoryId, setCategoryId] = useState<string>();
   const [currentStock, setCurrentStock] = useState<number>(1);
   const [desiredStock, setDesiredStock] = useState<number>(1);
   const [barcode, setBarcode] = useState<string>(scannedBarcode ?? "");
   const [photo, setPhoto] = useState<string | undefined>(photoPath);
 
-  const categoriesQuery = useGetCategories();
-  const categorySelectItems = categoriesQuery.data?.categories.map(category => ({
-    value: category.id,
-    label: category.name
-  })) ?? []
-
-  // Set initial category
-  useEffect(() => {
-    if (categoriesQuery.isSuccess && parent === undefined) {
-      setCategoryId(categoriesQuery.data.categories[0].id)
-    }
-  }, [categoriesQuery.isSuccess]);
+  const { categoryId, setCategoryId, categorySelectItems } = useCategorySelect()
 
   const uploadPhotoMutation = useUploadPhoto()
   // Set photo after taking a photo
@@ -73,7 +61,7 @@ export const ItemCreatorPage = (props: Props) => {
   }, [scannedBarcode]);
 
   const isValid =
-    name !== undefined &&
+    name.trim().length > 0 &&
     !uploadPhotoMutation.isPending
 
   const createItemMutation = useCreateItem();
@@ -88,7 +76,7 @@ export const ItemCreatorPage = (props: Props) => {
         name: name!,
         description: description!,
         brand: brand!,
-        categoryId,
+        categoryId: parent ? undefined : categoryId,
         parentId: parent?.parentId,
         currentStock,
         desiredStock,

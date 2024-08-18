@@ -32,7 +32,7 @@ class CreateItemUseCase(
         val item = Item(
             id = ItemId(value = randomUuid()),
             userId = userId,
-            name = itemDraft.name,
+            name = itemDraft.name, // TODO Check if name and other fields are not an empty string
             description = itemDraft.description,
             root = root,
             brand = itemDraft.brand,

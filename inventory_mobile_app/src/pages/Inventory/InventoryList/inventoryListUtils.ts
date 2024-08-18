@@ -1,6 +1,6 @@
 import { Entry, ItemEntry } from '../../../api/useGetItems';
 import { Colors } from '../../../app/Theme';
-import { isParentEntry } from '../itemsUtils';
+import { isParentEntry } from '../utils/itemsUtils';
 
 export const getColor = (entry: ItemEntry) => {
   if (entry.currentStock < 1 && entry.desiredStock > 0)

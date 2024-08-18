@@ -1,6 +1,6 @@
 import { api } from './api';
 import { useQuery } from '@tanstack/react-query';
-import { isParentEntry } from '../pages/Inventory/itemsUtils';
+import { isParentEntry } from '../pages/Inventory/utils/itemsUtils';
 
 const getItems = () => api.get<GetItemsResponse>(`/items`);
 

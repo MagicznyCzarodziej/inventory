@@ -20,7 +20,7 @@ class EditItemTransformer(
         }
 
         return item.copy(
-            name = editItemParameters.name,
+            name = editItemParameters.name, // TODO Check if name and other fields are not an empty string
             root = updateRoot(currentItem = item, editItemParameters = editItemParameters, userId = userId),
             description = editItemParameters.description,
             brand = editItemParameters.brand,

@@ -48,15 +48,30 @@ export const InventoryManagerPage = () => {
       marginTop: 16,
       paddingHorizontal: 16,
     }}>
-      <Button small fullWidth onPress={() => {
-        navigate({
-          name: "ADD_ITEM",
-          params: { nameDraft: searchPhrase },
-          merge: true
-        })
-      }} title="Utwórz produkt" />
-      <Button small fullWidth onPress={() => {
-      }} title="Utwórz grupę" />
+      <Button
+        small
+        fullWidth
+        onPress={() => {
+          navigate({
+            name: "ADD_ITEM",
+            params: { nameDraft: searchPhrase },
+            merge: true
+          })
+        }}
+        title="Utwórz produkt"
+      />
+      <Button
+        small
+        fullWidth
+        onPress={() => {
+          navigate({
+            name: "ADD_PARENT_ITEM",
+            params: { nameDraft: searchPhrase },
+            merge: true
+          })
+        }}
+        title="Utwórz grupę"
+      />
     </View>
 
     <FlatList<Entry>
