@@ -1,6 +1,6 @@
 import { api } from './api';
 import { useQuery } from '@tanstack/react-query';
-import { ParentItem } from './common';
+import { Category } from './common';
 
 const getParentItem = (parentItemId: string) => () => api.get<GetParentItemResponse>(`/parent-items/${parentItemId}`);
 
@@ -9,4 +9,9 @@ export const useGetParentItem = (parentItemId: string) => useQuery({
   queryKey: ['getParentItem', parentItemId],
 });
 
-export type GetParentItemResponse = ParentItem;
+export interface GetParentItemResponse {
+  id: string;
+  name: string;
+  category: Category;
+  subItemsCount: number;
+}

@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { useGetItem } from '../../../api/useGetItem';
-import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IconButton } from 'react-native-paper';
 import { Colors } from '../../../app/Theme';
@@ -12,6 +11,7 @@ import { Button } from "../../../components/Button";
 import { useUpdateCurrentStock } from '../../../api/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RemoteItemPhoto } from '../../../components/Photo/RemoteItemPhoto';
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 type Props = NativeStackScreenProps<InventoryStackParamList, "ITEM">;
 

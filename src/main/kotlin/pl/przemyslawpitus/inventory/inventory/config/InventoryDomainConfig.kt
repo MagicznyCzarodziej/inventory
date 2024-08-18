@@ -33,7 +33,8 @@ import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoPhotoR
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.MongoUserRepository
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemTransformer
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemUseCase
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.GetParentItemUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.GetParentItemWIthSubItemsCountUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.removeParentItemUseCase.RemoveParentItemUseCase
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.ParentItemEntityToDomainMapper
 
 @Configuration
@@ -237,10 +238,12 @@ class InventoryDomainConfig {
     )
 
     @Bean
-    fun getParentItemUseCase(
+    fun getParentItemWIthSubItemsCountUseCase(
         parentItemProvider: ParentItemProvider,
-    ) = GetParentItemUseCase(
+        itemRepository: ItemRepository,
+    ) = GetParentItemWIthSubItemsCountUseCase(
         parentItemProvider = parentItemProvider,
+        itemRepository = itemRepository,
     )
 
     @Bean
@@ -259,6 +262,17 @@ class InventoryDomainConfig {
         parentItemProvider = parentItemProvider,
         editParentItemTransformer = editParentItemTransformer,
         parentItemRepository = parentItemRepository,
+    )
+
+    @Bean
+    fun removeParentItemUseCase(
+        parentItemRepository: ParentItemRepository,
+        parentItemProvider: ParentItemProvider,
+        itemRepository: ItemRepository,
+    ) = RemoveParentItemUseCase(
+        parentItemRepository = parentItemRepository,
+        parentItemProvider = parentItemProvider,
+        itemRepository = itemRepository,
     )
 }
 

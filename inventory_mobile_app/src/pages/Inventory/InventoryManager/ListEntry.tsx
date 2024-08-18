@@ -5,7 +5,7 @@ import { isParentEntry } from '../utils/itemsUtils';
 import { Divider, Icon } from 'react-native-paper';
 import Theme from '../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../InventoryList/InventoryNavigation';
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 interface Props {
   entry: Entry;

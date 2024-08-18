@@ -5,22 +5,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Drawer as DrawerLayout } from 'react-native-drawer-layout';
 import { Drawer } from '../layouts/drawer/Drawer';
 import { SpongesPage } from '../pages/Sponges/SpongesPage';
-import { InventoryTabNavigation, InventoryTabsParamList } from '../pages/Inventory/InventoryTabNavigation';
+import { InventoryTabNavigation } from '../pages/Inventory/InventoryTabNavigation';
 import { DrawerContext } from '../context/DrawerContext';
 import { LoginPage } from '../pages/Account/LoginPage';
 import { StatusBar } from 'expo-status-bar';
 import { WrapWithQueryClient } from './QueryClientProvider';
 import { CameraPage } from '../pages/CameraPage';
 import { BarcodeScannerPage } from '../pages/BarcodeScannerPage';
-
-export type RootStackParamList = {
-  INVENTORY: InventoryTabsParamList;
-  SPONGES: undefined;
-  ACCOUNT: undefined;
-  SETTINGS: undefined;
-  CAMERA: { from: 'ADD_ITEM' | 'EDIT_ITEM' }
-  BARCODE_SCANNER: { from: 'ADD_ITEM' | 'EDIT_ITEM' };
-}
+import { RootStackParamList } from '../navigation/navigationTypes';
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 

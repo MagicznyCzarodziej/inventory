@@ -2,9 +2,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 import React from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../../../app/Root';
 import { Colors } from '../../../../app/Theme';
 import { PhotoPreview } from '../../../../components/Photo/PhotoPreview';
+import { RootStackParamList } from '../../../../navigation/navigationTypes';
 
 interface Props {
   photoPath?: string;

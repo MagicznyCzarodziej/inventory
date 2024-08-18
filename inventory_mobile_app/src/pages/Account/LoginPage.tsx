@@ -6,9 +6,8 @@ import { useLogin } from '../../api/useLogin';
 import { AxiosError } from 'axios';
 import { Page } from '../../layouts/Page';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { InventoryStackParamList } from '../Inventory/InventoryList/InventoryNavigation';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { RootStackParamList } from '../../app/Root';
+import { InventoryStackParamList, RootStackParamList } from '../../navigation/navigationTypes';
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList, "ACCOUNT">,

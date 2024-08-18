@@ -2,6 +2,7 @@ package pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb
 
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.count
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
@@ -12,6 +13,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
 
@@ -34,6 +36,16 @@ class MongoItemRepository(
         return mongoTemplate.findAll(ItemEntity::class.java).toDomain()
     }
 
+    override fun getByParentItemId(parentItemId: ParentItemId): List<Item> {
+        logger.infra("Get items for parent item | $parentItemId")
+        return mongoTemplate.find(queryByParentItemId(parentItemId), ItemEntity::class.java).toDomain()
+    }
+
+    override fun countByParentItemId(parentItemId: ParentItemId): Long {
+        logger.infra("Count items for parent item | $parentItemId")
+        return mongoTemplate.count(queryByParentItemId(parentItemId), ItemEntity::class.java)
+    }
+
     override fun save(item: Item): Item {
         logger.infra("Save item | ${item.id}")
         return mongoTemplate.save(item.toEntity()).toDomain()
@@ -41,13 +53,15 @@ class MongoItemRepository(
 
     override fun removeById(itemId: ItemId) {
         logger.infra("Remove item | $itemId")
-        mongoTemplate.remove(queryById(itemId.value), ItemEntity::class.java)
+        mongoTemplate.remove(queryById(itemId), ItemEntity::class.java)
     }
 
     private fun ItemEntity.toDomain() = itemEntityToDomainMapper.mapToDomain(this)
     private fun List<ItemEntity>.toDomain() = this.map { itemEntityToDomainMapper.mapToDomain(it) }
 
-    private fun queryById(id: String) = Query().addCriteria(Criteria.where("_id").isEqualTo(id))
+    private fun queryById(id: ItemId) = Query().addCriteria(Criteria.where("_id").isEqualTo(id.value))
+    private fun queryByParentItemId(parentItemId: ParentItemId) =
+        Query().addCriteria(Criteria.where("root.parentItemId").isEqualTo(parentItemId.value))
 
     private companion object : WithLogger()
 }

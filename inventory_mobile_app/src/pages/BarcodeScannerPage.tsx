@@ -3,12 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Page } from '../layouts/Page';
 import { Icon, IconButton, Text } from 'react-native-paper';
 import { CompositeScreenProps, NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from './Inventory/InventoryList/InventoryNavigation';
 import { Colors } from '../app/Theme';
 import { StyleSheet, View } from 'react-native';
 import { MissingCameraPermissions } from './Inventory/InventoryManager/ItemCreator/MissingCameraPermissions';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../app/Root';
+import { InventoryStackParamList, RootStackParamList } from '../navigation/navigationTypes';
 
 const BARCODE_TYPES: BarcodeType[] = ['upc_a', 'upc_e', 'ean8', 'ean13'];
 

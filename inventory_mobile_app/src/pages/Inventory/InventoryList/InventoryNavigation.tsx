@@ -5,33 +5,7 @@ import { InventoryManagerPage } from '../InventoryManager/InventoryManagerPage';
 import { ItemCreatorPage } from '../InventoryManager/ItemCreator/ItemCreatorPage';
 import { ItemEditorPage } from '../ItemEditor/ItemEditorPage';
 import { ParentItemCreatorPage } from '../InventoryManager/ParentItemCreator/ParentItemCreatorPage';
-import { ParentItemEditorPage } from '../ParentItemEditor/ParentItemEditorPage';
-
-export type InventoryStackParamList = {
-  INVENTORY_LIST: undefined;
-  INVENTORY_MANAGER: undefined;
-  ITEM: { itemId: string };
-  ADD_ITEM: {
-    parent?: {
-      parentId: string,
-      parentName: string,
-    }
-    nameDraft?: string,
-    barcode?: string,
-    photoPath?: string,
-  };
-  EDIT_ITEM: {
-    itemId?: string,
-    photoPath?: string
-    barcode?: string,
-  };
-  ADD_PARENT_ITEM: {
-    nameDraft?: string,
-  };
-  EDIT_PARENT_ITEM: {
-    parentItemId: string,
-  };
-}
+import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
 const Stack = createNativeStackNavigator<InventoryStackParamList>()
 
@@ -46,11 +20,6 @@ export const InventoryNavigation = () => {
       options={{ headerShown: false, animation: 'none' }}
       name="ADD_PARENT_ITEM"
       component={ParentItemCreatorPage}
-    />
-    <Stack.Screen
-      options={{ headerShown: false, animation: 'none' }}
-      name="EDIT_PARENT_ITEM"
-      component={ParentItemEditorPage}
     />
   </Stack.Navigator>
 }
