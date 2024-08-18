@@ -1,5 +1,10 @@
 import React, { PropsWithChildren } from 'react';
-import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated'
+import Animated, {
+  interpolate,
+  useAnimatedRef,
+  useAnimatedStyle,
+  useScrollViewOffset,
+} from 'react-native-reanimated'
 
 interface Props {
   parallaxHeaderContent: React.ReactNode
@@ -37,6 +42,7 @@ export const ParallaxScrollView = (props: PropsWithChildren<Props>) => {
     <Animated.ScrollView
       ref={scrollRef}
       scrollEventThrottle={16}
+      showsVerticalScrollIndicator={false}
     >
       <Animated.View style={[imageAnimatedStyle]}>
         {parallaxHeaderContent}
