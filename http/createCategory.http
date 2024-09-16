@@ -5,5 +5,5 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "name": "Narzędzia i elektronika"
+  "name": "TestCat"
 }

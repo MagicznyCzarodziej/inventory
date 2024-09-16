@@ -18,6 +18,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryDoesNotBel
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryNotFound
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemDoesNotBelongToUser
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemNotFound
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemValidationException
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.lang.Exception
 
@@ -52,6 +53,13 @@ class EditParentItemEndpoint(
             return handleCategoryNotFound(exception)
         } catch (exception: CategoryDoesNotBelongToUser) {
             return handleCategoryNotFound(exception)
+        } catch (exception: ParentItemValidationException) {
+            return errorHandler.handleError(
+                code = "INVALID_REQUEST",
+                status = HttpStatus.BAD_REQUEST,
+                message = exception.message!!,
+                exception = exception,
+            )
         }
     }
 

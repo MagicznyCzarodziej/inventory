@@ -31,9 +31,13 @@ import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoItemRe
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoParentItemRepository
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.MongoPhotoRepository
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.MongoUserRepository
+import pl.przemyslawpitus.inventory.inventory.domain.category.editCategoryUseCase.EditCategoryTransformer
+import pl.przemyslawpitus.inventory.inventory.domain.category.editCategoryUseCase.EditCategoryUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.category.getCategoryWithItemsCountUseCase.GetCategoryWithItemsCountUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.category.removeCategoryUseCase.RemoveCategoryUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemTransformer
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.editParentItemUseCase.EditParentItemUseCase
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.GetParentItemWIthSubItemsCountUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemWithSubItemsCountUseCase.GetParentItemWithSubItemsCountUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.removeParentItemUseCase.RemoveParentItemUseCase
 import pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb.ParentItemEntityToDomainMapper
 
@@ -218,6 +222,40 @@ class InventoryDomainConfig {
     )
 
     @Bean
+    fun getCategoryWithItemsCountUseCase(
+        categoryProvider: CategoryProvider,
+        itemRepository: ItemRepository,
+    ) = GetCategoryWithItemsCountUseCase(
+        categoryProvider = categoryProvider,
+        itemRepository = itemRepository,
+    )
+
+    @Bean
+    fun editCategoryTransformer() = EditCategoryTransformer()
+
+    @Bean
+    fun removeCategoryUseCase(
+        categoryRepository: CategoryRepository,
+        categoryProvider: CategoryProvider,
+        itemRepository: ItemRepository,
+    ) = RemoveCategoryUseCase(
+        categoryRepository = categoryRepository,
+        categoryProvider = categoryProvider,
+        itemRepository = itemRepository,
+    )
+
+    @Bean
+    fun editCategoryUseCase(
+        categoryProvider: CategoryProvider,
+        categoryRepository: CategoryRepository,
+        editCategoryTransformer: EditCategoryTransformer,
+    ) = EditCategoryUseCase(
+        categoryProvider = categoryProvider,
+        categoryRepository = categoryRepository,
+        editCategoryTransformer = editCategoryTransformer,
+    )
+
+    @Bean
     fun editItemTransformer(
         categoryProvider: CategoryProvider,
         photoProvider: PhotoProvider,
@@ -238,10 +276,10 @@ class InventoryDomainConfig {
     )
 
     @Bean
-    fun getParentItemWIthSubItemsCountUseCase(
+    fun getParentItemWithSubItemsCountUseCase(
         parentItemProvider: ParentItemProvider,
         itemRepository: ItemRepository,
-    ) = GetParentItemWIthSubItemsCountUseCase(
+    ) = GetParentItemWithSubItemsCountUseCase(
         parentItemProvider = parentItemProvider,
         itemRepository = itemRepository,
     )

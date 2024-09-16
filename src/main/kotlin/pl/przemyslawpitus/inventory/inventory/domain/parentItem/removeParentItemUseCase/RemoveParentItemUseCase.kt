@@ -19,8 +19,8 @@ class RemoveParentItemUseCase(
             userId = userId,
         )
 
-        val items = itemRepository.getByParentItemId(parentItemId)
-        if (items.isNotEmpty()) {
+        val subItemsCount = itemRepository.countByParentItemId(parentItemId)
+        if (subItemsCount > 0) {
             throw CannotDeleteParentItemWithSubItems(parentItemId)
         }
 

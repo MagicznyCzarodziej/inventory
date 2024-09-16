@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { GetItemResponse } from '../../../api/useGetItem';
+import { GetItemResponse } from '../../../api/item/useGetItem';
 import { Category } from '../../../api/common';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { CompositeNavigationProp, useNavigation } from '@react-navigation/native';
-import { useUploadPhoto } from '../../../api/useUploadPhoto';
-import { useEditItem } from '../../../api/useEditItem';
+import { useUploadPhoto } from '../../../api/photo/useUploadPhoto';
+import { useEditItem } from '../../../api/item/useEditItem';
 import { Page } from '../../../layouts/Page';
 import { EditablePhoto } from './EditablePhoto';
 import { TextField } from '../../../components/TextInput';
@@ -15,7 +15,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { ParallaxScrollView } from '../../../components/ParallaxScrollView';
 import { Colors } from '../../../app/Theme';
 import { WheelPicker } from '../../../components/WheelPicker';
-import { useRemoveItem } from '../../../api/useRemoveItem';
+import { useRemoveItem } from '../../../api/item/useRemoveItem';
 import { mapCategoriesToCategorySelectItems } from '../utils/categoryUtils';
 import { InventoryStackParamList, RootStackParamList } from '../../../navigation/navigationTypes';
 

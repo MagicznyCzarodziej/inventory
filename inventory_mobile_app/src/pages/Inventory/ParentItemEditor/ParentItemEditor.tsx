@@ -6,11 +6,11 @@ import { Page } from '../../../layouts/Page';
 import { Select } from '../../../components/Select';
 import { mapCategoriesToCategorySelectItems } from '../utils/categoryUtils';
 import { Button } from '../../../components/Button';
-import { useEditParentItem } from '../../../api/useEditParentItem';
+import { useEditParentItem } from '../../../api/parentItem/useEditParentItem';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useRemoveParentItem } from '../../../api/useRemoveParentItem';
-import { GetParentItemResponse } from '../../../api/useGetParentItem';
+import { useRemoveParentItem } from '../../../api/parentItem/useRemoveParentItem';
+import { GetParentItemResponse } from '../../../api/parentItem/useGetParentItem';
 import { CategoriesAndParentItemsTabsParamsList } from '../../../navigation/navigationTypes';
 
 interface Props {

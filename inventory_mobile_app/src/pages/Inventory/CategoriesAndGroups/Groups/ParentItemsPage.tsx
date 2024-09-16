@@ -1,7 +1,7 @@
 import React from 'react';
 import { SectionList, StyleSheet, Text, View } from 'react-native';
 import { Page } from '../../../../layouts/Page';
-import { useGetParentItems } from '../../../../api/useGetParentItems';
+import { useGetParentItems } from '../../../../api/parentItem/useGetParentItems';
 import { Spinner } from '../../../../components/Spinner';
 import { ParentItemEntry } from './ParentItemEntry';
 import { ParentItem } from '../../../../api/common';

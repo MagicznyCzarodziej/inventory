@@ -1,5 +1,5 @@
 import { Category } from '../../../api/common';
-import { useGetCategories } from '../../../api/useGetCategories';
+import { useGetCategories } from '../../../api/category/useGetCategories';
 import { useEffect, useState } from 'react';
 
 export const mapCategoriesToCategorySelectItems = (categories?: Category[]) => categories?.map(category => ({

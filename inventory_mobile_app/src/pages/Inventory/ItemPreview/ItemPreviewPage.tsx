@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { useGetItem } from '../../../api/useGetItem';
+import { useGetItem } from '../../../api/item/useGetItem';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IconButton } from 'react-native-paper';
 import { Colors } from '../../../app/Theme';
 import { Spinner } from '../../../components/Spinner';
 import { Page } from '../../../layouts/Page';
-import { ItemEntry } from '../../../api/useGetItems';
+import { ItemEntry } from '../../../api/item/useGetItems';
 import { ItemPreviewBarcode } from './ItemPreviewBarcode';
 import { Button } from "../../../components/Button";
-import { useUpdateCurrentStock } from '../../../api/useUpdateCurrentStock';
+import { useUpdateCurrentStock } from '../../../api/item/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RemoteItemPhoto } from '../../../components/Photo/RemoteItemPhoto';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';

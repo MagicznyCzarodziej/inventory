@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
-import { useGetPhoto } from '../../api/useGetPhoto';
+import { useGetPhoto } from '../../api/photo/useGetPhoto';
 import { PhotoPreview } from './PhotoPreview';
 
 interface Props {

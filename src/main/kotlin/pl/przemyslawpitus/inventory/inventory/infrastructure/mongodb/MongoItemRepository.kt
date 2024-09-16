@@ -13,6 +13,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.ItemId
 import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
+import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.time.Instant
@@ -46,6 +47,11 @@ class MongoItemRepository(
         return mongoTemplate.count(queryByParentItemId(parentItemId), ItemEntity::class.java)
     }
 
+    override fun countByCategoryId(categoryId: CategoryId): Long {
+        logger.infra("Count items for category | $categoryId")
+        return mongoTemplate.count(queryByCategoryId(categoryId), ItemEntity::class.java)
+    }
+
     override fun save(item: Item): Item {
         logger.infra("Save item | ${item.id}")
         return mongoTemplate.save(item.toEntity()).toDomain()
@@ -60,8 +66,12 @@ class MongoItemRepository(
     private fun List<ItemEntity>.toDomain() = this.map { itemEntityToDomainMapper.mapToDomain(it) }
 
     private fun queryById(id: ItemId) = Query().addCriteria(Criteria.where("_id").isEqualTo(id.value))
+
     private fun queryByParentItemId(parentItemId: ParentItemId) =
         Query().addCriteria(Criteria.where("root.parentItemId").isEqualTo(parentItemId.value))
+
+    private fun queryByCategoryId(categoryId: CategoryId) =
+        Query().addCriteria(Criteria.where("root.categoryId").isEqualTo(categoryId.value))
 
     private companion object : WithLogger()
 }

@@ -12,14 +12,14 @@ import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemDoesNotBelongToUser
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemNotFound
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.GetParentItemWIthSubItemsCountUseCase
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase.ParentItemWithSubItemsCount
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemWithSubItemsCountUseCase.GetParentItemWithSubItemsCountUseCase
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemWithSubItemsCountUseCase.ParentItemWithSubItemsCount
 import pl.przemyslawpitus.inventory.logging.WithLogger
 import java.lang.Exception
 
 @RestController
 class GetParentItemEndpoint(
-    private val getParentItemWIthSubItemsCountUseCase: GetParentItemWIthSubItemsCountUseCase,
+    private val getParentItemWithSubItemsCountUseCase: GetParentItemWithSubItemsCountUseCase,
     private val errorHandler: ErrorHandler,
 ) {
     @GetMapping(
@@ -33,7 +33,7 @@ class GetParentItemEndpoint(
         logger.api("Get parent item | $parentItemId")
 
         try {
-            val parentItem = getParentItemWIthSubItemsCountUseCase.getParentItem(
+            val parentItem = getParentItemWithSubItemsCountUseCase.getParentItem(
                 parentItemId = ParentItemId(parentItemId),
                 userId = userDetails.id,
             )

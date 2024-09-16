@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useGetItem } from '../../../api/useGetItem';
-import { useGetCategories } from '../../../api/useGetCategories';
+import { useGetItem } from '../../../api/item/useGetItem';
+import { useGetCategories } from '../../../api/category/useGetCategories';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { ItemEditor } from './ItemEditor';
 import { Page } from '../../../layouts/Page';

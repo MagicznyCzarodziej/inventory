@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
-import { Entry } from '../../../api/useGetItems';
+import { Entry } from '../../../api/item/useGetItems';
 import { isParentEntry } from '../utils/itemsUtils';
 import { Divider, Icon } from 'react-native-paper';
 import Theme from '../../../app/Theme';

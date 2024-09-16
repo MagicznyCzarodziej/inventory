@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const updateCurrentStock = ({ itemId, stockChange }: {

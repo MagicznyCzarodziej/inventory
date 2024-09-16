@@ -5,36 +5,37 @@ import { StyleSheet, View } from 'react-native';
 import { TextField } from '../../../../components/TextInput';
 import { Select } from '../../../../components/Select';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { useCreateParentItem } from '../../../../api/parentItem/useCreateParentItem';
-import { useCategorySelect } from '../../utils/categoryUtils';
-import { InventoryStackParamList } from '../../../../navigation/navigationTypes';
+import {
+  CategoriesAndParentItemsStackParamsList, CategoriesAndParentItemsTabsParamsList,
+} from '../../../../navigation/navigationTypes';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { useCreateCategory } from '../../../../api/category/useCreateCategory';
 
-type Props = NativeStackScreenProps<InventoryStackParamList, 'ADD_PARENT_ITEM'>
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<CategoriesAndParentItemsStackParamsList, "ADD_CATEGORY">,
+  NativeStackScreenProps<CategoriesAndParentItemsTabsParamsList, "CATEGORIES">
+  >
 
-export const ParentItemCreatorPage = (props: Props) => {
-  const { nameDraft } = props.route.params;
+export const CategoryCreatorPage = (props: Props) => {
   const { navigate } = props.navigation
 
   const [isFormDirty, setIsFormDirty] = useState(false);
-  const [name, setName] = useState<string>(nameDraft ?? "");
+  const [name, setName] = useState<string>("");
 
-  const { categoryId, setCategoryId, categorySelectItems } = useCategorySelect()
+  const createCategoryMutation = useCreateCategory()
 
-  const createParentItemMutation = useCreateParentItem()
+  const isValid = name.trim().length > 0
 
-  const isValid = name.trim().length > 0 && categoryId !== undefined;
-
-  const handleCreateParentItem = async () => {
+  const handleCreateCategory = async () => {
     if (!isValid) {
       return
     }
 
-    await createParentItemMutation.mutateAsync({
+    await createCategoryMutation.mutateAsync({
       name,
-      categoryId
     })
 
-    navigate("INVENTORY_MANAGER")
+    navigate("CATEGORIES")
   }
 
   return (
@@ -49,16 +50,14 @@ export const ParentItemCreatorPage = (props: Props) => {
         error={isFormDirty && name.trim().length < 1 ? "Nazwa nie może być pusta" : undefined}
       />
 
-      <Select value={categoryId} onValueChange={setCategoryId} items={categorySelectItems} />
-
       <View style={styles.saveButton}>
         <Button
           onPress={() => {
-            handleCreateParentItem()
+            handleCreateCategory()
           }}
           title="Zapisz"
           disabled={!isValid}
-          spinner={createParentItemMutation.isPending}
+          spinner={createCategoryMutation.isPending}
         />
       </View>
     </Page>
