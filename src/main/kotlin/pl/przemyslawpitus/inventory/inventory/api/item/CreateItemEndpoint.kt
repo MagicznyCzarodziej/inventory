@@ -1,22 +1,26 @@
 package pl.przemyslawpitus.inventory.inventory.api.item
 
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
+import pl.przemyslawpitus.inventory.common.api.ErrorHandler
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
-import pl.przemyslawpitus.inventory.logging.WithLogger
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.inventory.domain.item.Item
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemValidationException
 import pl.przemyslawpitus.inventory.inventory.domain.item.createItemUseCase.CreateItemUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.item.createItemUseCase.ItemDraft
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
+import pl.przemyslawpitus.inventory.logging.WithLogger
 
 @RestController
 class CreateItemEndpoint(
     private val createItemUseCase: CreateItemUseCase,
+    private val errorHandler: ErrorHandler,
 ) {
     @PostMapping(
         "/items",
@@ -29,14 +33,23 @@ class CreateItemEndpoint(
     ): ResponseEntity<*> {
         logger.api("Create item | ${request.name}")
 
-        val item = createItemUseCase.createItem(
-            itemDraft = request.toItemDraft(),
-            userId = userDetails.id,
-        )
+        try {
+            val item = createItemUseCase.createItem(
+                itemDraft = request.toItemDraft(),
+                userId = userDetails.id,
+            )
 
-        return ResponseEntity.ok(
-            item.toCreateItemResponse()
-        )
+            return ResponseEntity.ok(
+                item.toCreateItemResponse()
+            )
+        } catch (exception: ItemValidationException) {
+            return errorHandler.handleError(
+                code = "INVALID_REQUEST",
+                status = HttpStatus.BAD_REQUEST,
+                message = exception.message!!,
+                exception = exception,
+            )
+        }
     }
 
     private companion object : WithLogger()

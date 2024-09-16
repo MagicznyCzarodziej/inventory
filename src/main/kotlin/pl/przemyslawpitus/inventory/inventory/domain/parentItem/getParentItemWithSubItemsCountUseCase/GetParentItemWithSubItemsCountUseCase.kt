@@ -1,4 +1,4 @@
-package pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemUseCase
+package pl.przemyslawpitus.inventory.inventory.domain.parentItem.getParentItemWithSubItemsCountUseCase
 
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.inventory.domain.category.Category
@@ -6,7 +6,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.item.ItemRepository
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemProvider
 
-class GetParentItemWIthSubItemsCountUseCase(
+class GetParentItemWithSubItemsCountUseCase(
     private val parentItemProvider: ParentItemProvider,
     private val itemRepository: ItemRepository,
 ) {

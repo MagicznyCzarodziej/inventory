@@ -1,10 +1,10 @@
 import React from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Page } from '../../../layouts/Page';
-import { useGetCategories } from '../../../api/useGetCategories';
+import { useGetCategories } from '../../../api/category/useGetCategories';
 import { Spinner } from '../../../components/Spinner';
 import { ParentItemEditor } from './ParentItemEditor';
-import { useGetParentItem } from '../../../api/useGetParentItem';
+import { useGetParentItem } from '../../../api/parentItem/useGetParentItem';
 import { CategoriesAndParentItemsStackParamsList } from '../../../navigation/navigationTypes';
 
 type Props = NativeStackScreenProps<CategoriesAndParentItemsStackParamsList, "EDIT_PARENT_ITEM">

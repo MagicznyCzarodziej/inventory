@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const removeItem = (itemId: string) => api.delete<undefined>(`/items/${itemId}`);
@@ -10,6 +10,7 @@ export const useRemoveItem = () => {
     mutationFn: removeItem,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["getItems"] })
+      queryClient.invalidateQueries({ queryKey: ["getCategory"] })
     }
   });
 }

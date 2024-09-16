@@ -7,4 +7,5 @@ interface CategoryRepository {
     fun getAll(): List<Category>
     fun save(category: Category): Category
     fun getByUserId(userId: UserId): List<Category>
+    fun removeById(categoryId: CategoryId)
 }

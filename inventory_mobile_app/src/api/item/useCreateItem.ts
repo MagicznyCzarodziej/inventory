@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const createItem = (request: CreateItemRequest) => api.post<undefined, CreateItemRequest>(`/items`, request);
@@ -10,6 +10,7 @@ export const useCreateItem = () => {
     mutationFn: createItem,
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["getItems"] })
+      queryClient.invalidateQueries({ queryKey: ["getCategory"] })
     }
   });
 }

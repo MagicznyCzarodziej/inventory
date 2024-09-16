@@ -18,6 +18,7 @@ import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryDoesNotBel
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryNotFound
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemDoesNotBelongToUser
 import pl.przemyslawpitus.inventory.inventory.domain.item.ItemNotFound
+import pl.przemyslawpitus.inventory.inventory.domain.item.ItemValidationException
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.CannotEditCategoryInSubItem
 import pl.przemyslawpitus.inventory.inventory.domain.item.editItemUseCase.MissingCategoryId
 import pl.przemyslawpitus.inventory.logging.WithLogger
@@ -68,6 +69,13 @@ class EditItemEndpoint(
             return handleCategoryNotFound(exception)
         } catch (exception: CategoryDoesNotBelongToUser) {
             return handleCategoryNotFound(exception)
+        } catch (exception: ItemValidationException) {
+            return errorHandler.handleError(
+                code = "INVALID_REQUEST",
+                status = HttpStatus.BAD_REQUEST,
+                message = exception.message!!,
+                exception = exception,
+            )
         }
     }
 

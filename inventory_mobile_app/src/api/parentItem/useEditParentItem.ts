@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const editParentItem = ({ parentItemId, request }: {
@@ -14,6 +14,7 @@ export const useEditParentItem = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["getParentItems"] })
       queryClient.invalidateQueries({ queryKey: ["getParentItem", variables.parentItemId], exact: true })
+      queryClient.invalidateQueries({ queryKey: ["getCategory"] })
     }
   });
 }

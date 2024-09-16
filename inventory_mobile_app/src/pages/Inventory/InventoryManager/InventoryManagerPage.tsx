@@ -1,5 +1,5 @@
 import { FlatList, View } from 'react-native';
-import { Entry, useGetItems } from '../../../api/useGetItems';
+import { Entry, useGetItems } from '../../../api/item/useGetItems';
 import { Page } from '../../../layouts/Page';
 import { Spinner } from '../../../components/Spinner';
 import { TextInput } from 'react-native-paper';

@@ -1,4 +1,4 @@
-import { Entry, ItemEntry } from '../../../api/useGetItems';
+import { Entry, ItemEntry } from '../../../api/item/useGetItems';
 import { Colors } from '../../../app/Theme';
 import { isParentEntry } from '../utils/itemsUtils';
 

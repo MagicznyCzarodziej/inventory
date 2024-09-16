@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation } from '@tanstack/react-query';
 import { Image } from 'react-native-compressor';
 

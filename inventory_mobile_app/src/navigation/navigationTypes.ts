@@ -41,6 +41,10 @@ export type CategoriesAndParentItemsStackParamsList = {
   EDIT_PARENT_ITEM: {
     parentItemId: string,
   };
+  EDIT_CATEGORY: {
+    categoryId: string,
+  };
+  ADD_CATEGORY: undefined,
 }
 
 export type CategoriesAndParentItemsTabsParamsList = {

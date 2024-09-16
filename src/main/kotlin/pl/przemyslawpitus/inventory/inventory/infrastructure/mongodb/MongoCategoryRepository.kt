@@ -3,11 +3,15 @@ package pl.przemyslawpitus.inventory.inventory.infrastructure.mongodb
 import org.springframework.data.annotation.Version
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.query.Criteria
+import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.isEqualTo
 import pl.przemyslawpitus.inventory.common.domain.user.UserId
 import pl.przemyslawpitus.inventory.common.infrastructure.mongodb.queryByUserId
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryRepository
 import pl.przemyslawpitus.inventory.inventory.domain.category.Category
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId
+import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemId
 
 class MongoCategoryRepository(
     private val mongoTemplate: MongoTemplate,
@@ -27,6 +31,13 @@ class MongoCategoryRepository(
     override fun getByUserId(userId: UserId): List<Category> {
         return mongoTemplate.find(queryByUserId(userId), CategoryEntity::class.java).toDomain()
     }
+
+    override fun removeById(categoryId: CategoryId) {
+        mongoTemplate.remove(queryById(categoryId), CategoryEntity::class.java)
+    }
+
+    private fun queryById(categoryId: CategoryId) =
+        Query().addCriteria(Criteria.where("_id").isEqualTo(categoryId.value))
 }
 
 

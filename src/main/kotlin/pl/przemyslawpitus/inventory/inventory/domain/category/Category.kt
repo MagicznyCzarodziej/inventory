@@ -15,3 +15,12 @@ data class CategoryId(val value: String) {
     }
 }
 
+object CategoryValidations {
+    fun validateName(name: String) {
+        if (name.isBlank()) {
+            throw CategoryValidationException("Name cannot be blank")
+        }
+    }
+}
+
+class CategoryValidationException(message: String) : RuntimeException(message)

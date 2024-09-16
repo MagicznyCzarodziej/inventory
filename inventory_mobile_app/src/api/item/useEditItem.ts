@@ -1,4 +1,4 @@
-import { api } from './api';
+import { api } from '../api';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const editItem = ({ itemId, request }: {
@@ -14,6 +14,7 @@ export const useEditItem = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["getItems"] })
       queryClient.invalidateQueries({ queryKey: ["getItem", variables.itemId], exact: true })
+      queryClient.invalidateQueries({ queryKey: ["getCategory"] })
     }
   });
 }

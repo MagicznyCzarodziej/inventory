@@ -1,5 +1,5 @@
 import { RefreshControl, SectionList, View } from 'react-native';
-import { ItemEntry, useGetItems } from '../../../api/useGetItems';
+import { ItemEntry, useGetItems } from '../../../api/item/useGetItems';
 import { useEffect, useState } from 'react';
 import { flattenParentEntries, sortEntries } from './inventoryListUtils';
 import { ItemListEntry } from './ItemListEntry';

@@ -1,9 +1,9 @@
 import React from 'react';
-import { ItemEntry } from '../../../api/useGetItems';
+import { ItemEntry } from '../../../api/item/useGetItems';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { getColor } from './inventoryListUtils';
 import { Divider, IconButton } from 'react-native-paper';
-import { useUpdateCurrentStock } from '../../../api/useUpdateCurrentStock';
+import { useUpdateCurrentStock } from '../../../api/item/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Colors } from '../../../app/Theme';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';

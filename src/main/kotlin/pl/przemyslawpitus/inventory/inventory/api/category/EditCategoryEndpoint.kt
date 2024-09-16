@@ -1,55 +1,51 @@
-package pl.przemyslawpitus.inventory.inventory.api.parentItem
+package pl.przemyslawpitus.inventory.inventory.api.category
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import pl.przemyslawpitus.inventory.common.api.ErrorHandler
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryDoesNotBelongToUser
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.createParentItemUseCase.CreateParentItemUseCase
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.createParentItemUseCase.ParentItemDraft
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryId
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryNotFound
 import pl.przemyslawpitus.inventory.inventory.domain.category.CategoryValidationException
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItem
-import pl.przemyslawpitus.inventory.inventory.domain.parentItem.ParentItemValidationException
+import pl.przemyslawpitus.inventory.inventory.domain.category.editCategoryUseCase.EditCategoryParameters
+import pl.przemyslawpitus.inventory.inventory.domain.category.editCategoryUseCase.EditCategoryUseCase
 import pl.przemyslawpitus.inventory.logging.WithLogger
-import java.lang.Exception
 
 @RestController
-class CreateParentItemEndpoint(
-    private val createParentItemUseCase: CreateParentItemUseCase,
+class EditCategoryEndpoint(
+    private val editCategoryUseCase: EditCategoryUseCase,
     private val errorHandler: ErrorHandler,
 ) {
-    @PostMapping(
-        "/parent-items",
+    @PutMapping(
+        "/categories/{categoryId}",
         consumes = [MediaType.APPLICATION_JSON_VALUE],
-        produces = [MediaType.APPLICATION_JSON_VALUE]
     )
-    fun createItem(
-        @RequestBody request: CreateParentItemRequest,
+    fun editCategory(
+        @PathVariable categoryId: String,
+        @RequestBody request: EditCategoryRequest,
         @AuthenticationPrincipal userDetails: UserDetails,
     ): ResponseEntity<*> {
-        logger.api("Create parent item | ${request.name}")
+        logger.api("Edit category | $categoryId")
 
         try {
-            val item = createParentItemUseCase.createParentItem(
-                itemDraft = request.toParentItemDraft(),
+            editCategoryUseCase.editCategory(
+                editCategoryParameters = request.toEditCategoryParameters(CategoryId(categoryId)),
                 userId = userDetails.id,
             )
 
-            return ResponseEntity.ok(
-                item.toCreateParentItemResponse()
-            )
+            return ResponseEntity.noContent().build<Unit>()
         } catch (exception: CategoryNotFound) {
             return handleCategoryNotFound(exception)
         } catch (exception: CategoryDoesNotBelongToUser) {
             return handleCategoryNotFound(exception)
-        } catch (exception: ParentItemValidationException) {
+        } catch (exception: CategoryValidationException) {
             return errorHandler.handleError(
                 code = "INVALID_REQUEST",
                 status = HttpStatus.BAD_REQUEST,
@@ -70,23 +66,11 @@ class CreateParentItemEndpoint(
     private companion object : WithLogger()
 }
 
-data class CreateParentItemRequest(
+data class EditCategoryRequest(
     val name: String,
-    val categoryId: String,
 ) {
-    fun toParentItemDraft() = ParentItemDraft(
-        name = name,
-        categoryId = CategoryId(categoryId),
+    fun toEditCategoryParameters(categoryId: CategoryId) = EditCategoryParameters(
+        id = categoryId,
+        name = this.name,
     )
 }
-
-data class CreateParentItemResponse(
-    val id: String,
-    val name: String,
-)
-
-private fun ParentItem.toCreateParentItemResponse() =
-    CreateParentItemResponse(
-        id = this.id.value,
-        name = this.name
-    )
