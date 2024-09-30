@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Wheely from 'react-native-wheely';
 import { LogBox } from 'react-native';
+import Theme, { Colors } from '../app/Theme';
 
 interface Props {
   selectedIndex: number;
@@ -27,8 +28,10 @@ export const WheelPicker = (props: Props) => {
     onChange={onChange}
     rotationFunction={() => 1.1}
     scaleFunction={x => 1 - 0.5 * x}
-    itemTextStyle={{ fontSize: 24 }}
+    itemTextStyle={{ fontSize: 24, color: Colors.text.main }}
     itemHeight={80}
-    itemStyle={{ width: 80 }}
+    containerStyle={{ backgroundColor: Colors.secondary}}
+    itemStyle={{ width: 80, backgroundColor: Colors.secondary }}
+    selectedIndicatorStyle={{backgroundColor: Colors.secondary, borderRadius: Theme.shapes.inputRadius}}
   />
 }

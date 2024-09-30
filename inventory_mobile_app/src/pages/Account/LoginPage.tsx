@@ -8,6 +8,7 @@ import { Page } from '../../layouts/Page';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { InventoryStackParamList, RootStackParamList } from '../../navigation/navigationTypes';
+import { Colors } from '../../app/Theme';
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList, "ACCOUNT">,
@@ -38,6 +39,7 @@ export const LoginPage = (props: Props) => {
       <Text
         style={{
           fontSize: 50,
+          color: Colors.text.main,
           fontWeight: "bold",
           textAlign: "center"
         }}

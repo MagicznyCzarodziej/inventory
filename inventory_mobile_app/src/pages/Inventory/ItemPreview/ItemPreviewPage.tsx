@@ -34,7 +34,7 @@ export const ItemPreviewPage = (props: Props) => {
     </Page>
   }
 
-  return <Page safeArea={!hasPhoto}>
+  return <Page safeArea={!hasPhoto} style={styles.page}>
     {hasPhoto && <RemoteItemPhoto photoUrl={photoUrl} />}
 
     <View style={{
@@ -46,7 +46,7 @@ export const ItemPreviewPage = (props: Props) => {
         <IconButton
           icon="pencil"
           style={styles.editButton}
-          iconColor={Colors.accent}
+          iconColor={Colors.text.gray}
           onPress={() => {
             navigate("EDIT_ITEM", { itemId })
           }}
@@ -142,10 +142,13 @@ export const getColor = (entry: ItemEntry) => {
 }
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: Colors.secondary,
+  },
   card: {
     flexGrow: 1,
     padding: 24,
-    backgroundColor: Colors.background,
+    backgroundColor: Colors.secondary,
     borderRadius: 0,
     display: "flex",
     flexDirection: "column",
@@ -161,7 +164,7 @@ const styles = StyleSheet.create({
   },
   category: {
     fontSize: 20,
-    color: Colors.text.gray,
+    color: Colors.text.main,
     paddingBottom: 8,
   },
   header: {
@@ -172,14 +175,17 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 32,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: Colors.text.main,
   },
   brand: {
     fontSize: 32,
+    color: Colors.text.main,
   },
   description: {
     marginTop: 8,
     fontSize: 22,
+    color: Colors.text.main,
   },
   parentItemName: {
     fontSize: 40,

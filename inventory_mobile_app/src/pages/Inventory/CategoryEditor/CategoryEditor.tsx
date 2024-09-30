@@ -51,7 +51,7 @@ export const CategoryEditor = (props: Props) => {
     navigate("CATEGORIES")
   }
 
-  return <Page style={styles.page}>
+  return <Page safeArea={false} style={styles.page}>
     <TextField
       label="Nazwa"
       value={name}

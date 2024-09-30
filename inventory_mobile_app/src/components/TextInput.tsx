@@ -2,7 +2,7 @@ import React, { ForwardedRef, forwardRef, ReactNode } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput } from 'react-native-paper';
 import { TextInput as NativeTextInput } from 'react-native';
-import { Colors } from '../app/Theme';
+import Theme, { Colors } from '../app/Theme';
 
 interface Props {
   label: string;
@@ -42,13 +42,16 @@ export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextI
     <View>
       <TextInput
         autoCapitalize={autoCapitalize}
-        activeOutlineColor={Colors.secondary}
+        activeOutlineColor={Colors.primary}
         outlineColor={Colors.input.outline}
-        style={{ backgroundColor: Colors.white }}
+        outlineStyle={{
+          borderRadius: Theme.shapes.inputRadius,
+        }}
+        style={{ backgroundColor: Colors.background }}
         textColor={Colors.text.main}
         theme={{
           colors: {
-            onSurfaceVariant: Colors.text.main // Label text color
+            onSurfaceVariant: Colors.gray.light // Label text color
           }
         }}
         mode="outlined"

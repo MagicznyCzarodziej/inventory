@@ -2,8 +2,8 @@ import { FlatList, View } from 'react-native';
 import { Entry, useGetItems } from '../../../api/item/useGetItems';
 import { Page } from '../../../layouts/Page';
 import { Spinner } from '../../../components/Spinner';
-import { TextInput } from 'react-native-paper';
-import { Colors } from '../../../app/Theme';
+import { Divider, TextInput } from 'react-native-paper';
+import Theme, { Colors } from '../../../app/Theme';
 import { Button } from '../../../components/Button';
 import { ListEntry } from './ListEntry';
 import { useState } from 'react';
@@ -28,14 +28,27 @@ export const InventoryManagerPage = () => {
 
   const sortedItems = sortEntries(itemsQuery.data.entries)
 
-  return <Page>
+  return <Page safeArea={false} style={{
+    backgroundColor: Colors.secondary
+  }}>
     <TextInput
       style={{
-        marginHorizontal: 16
+        marginHorizontal: 16,
+        backgroundColor: Colors.background,
       }}
-      label="Co chcesz utworzyć?"
-      outlineColor={Colors.input.outline}
-      activeOutlineColor={Colors.secondary}
+      outlineStyle={{
+        borderRadius: Theme.shapes.inputRadius,
+      }}
+      textColor={Colors.white}
+      placeholderTextColor={Colors.white}
+      label="Co chcesz dodać?"
+      outlineColor={Colors.gray.light}
+      activeOutlineColor={Colors.primary}
+      theme={{
+        colors: {
+          onSurfaceVariant: Colors.text.gray
+        }
+      }}
       mode="outlined"
       onChangeText={(value) => {
         setSearchPhrase(value)
@@ -46,7 +59,9 @@ export const InventoryManagerPage = () => {
       flexDirection: "row",
       gap: 16,
       marginTop: 16,
+      marginBottom: 16,
       paddingHorizontal: 16,
+      backgroundColor: Colors.secondary
     }}>
       <Button
         small
@@ -58,7 +73,7 @@ export const InventoryManagerPage = () => {
             merge: true
           })
         }}
-        title="Utwórz produkt"
+        title="Nowy produkt"
       />
       <Button
         small
@@ -70,15 +85,14 @@ export const InventoryManagerPage = () => {
             merge: true
           })
         }}
-        title="Utwórz grupę"
+        title="Nowa grupa"
       />
     </View>
-
+    <Divider />
     <FlatList<Entry>
       style={{
-        marginTop: 16,
-        paddingHorizontal: 16,
-        flexBasis: 0, // fix for hiding under menu
+        flexBasis: 0, // fix for hiding under menu,
+        backgroundColor: Colors.background
       }}
       data={sortedItems}
       renderItem={({ item }) => <ListEntry key={item.id} entry={item} searchPhrase={searchPhrase} />}

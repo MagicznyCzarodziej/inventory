@@ -59,7 +59,7 @@ export const ParentItemEditor = (props: Props) => {
     navigate("PARENT_ITEMS_LIST")
   }
 
-  return <Page style={styles.page}>
+  return <Page safeArea={false} style={styles.page}>
     <TextField
       label="Nazwa"
       value={name}

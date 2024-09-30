@@ -44,7 +44,6 @@ export const ParentItemsPage = () => {
       renderSectionHeader={(list) => (
         <View style={styles.sectionHeader}>
           <Text key={list.section.title} style={styles.categoryName}>{list.section.title}</Text>
-          <View style={styles.divider} />
         </View>
       )}
       renderItem={({ item }) => (
@@ -57,30 +56,28 @@ export const ParentItemsPage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-    paddingTop: 8,
   },
   divider: {
     height: 1,
     flexGrow: 1,
     marginTop: 3,
-    backgroundColor: "lightgray",
+    backgroundColor: Colors.gray.light,
   },
   sectionHeader: {
+    backgroundColor: Colors.secondary,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 20,
-    paddingTop: 16,
+    padding: 16,
     paddingBottom: 8,
-    paddingLeft: 8,
-    paddingRight: 8,
+    marginTop: 8,
   },
   sectionFooter: {
-    marginTop: 16
   },
   categoryName: {
-    fontSize: 20,
-    color: Colors.text.gray,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.text.main,
   }
 })

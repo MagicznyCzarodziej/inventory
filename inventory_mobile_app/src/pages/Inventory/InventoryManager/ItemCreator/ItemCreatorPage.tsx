@@ -147,6 +147,7 @@ export const ItemCreatorPage = (props: Props) => {
           right={
             <TextInput.Icon
               icon="barcode-scan"
+              color={Colors.gray.light}
               onPress={() => navigate("BARCODE_SCANNER", { from: 'ADD_ITEM' })}
             />
           }
@@ -173,7 +174,6 @@ export const ItemCreatorPage = (props: Props) => {
             disabled={!isValid}
           />
         </View>
-
       </View>
     </ParallaxScrollView>
   </Page>

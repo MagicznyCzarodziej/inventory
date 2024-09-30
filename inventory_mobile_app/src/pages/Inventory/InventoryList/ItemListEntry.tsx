@@ -2,7 +2,7 @@ import React from 'react';
 import { ItemEntry } from '../../../api/item/useGetItems';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { getColor } from './inventoryListUtils';
-import { Divider, IconButton } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { useUpdateCurrentStock } from '../../../api/item/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Colors } from '../../../app/Theme';
@@ -31,14 +31,14 @@ export const ItemListEntry = React.memo((props: Props) => {
       <View style={{ ...styles.itemEntry, borderLeftColor: getColor(entry), borderLeftWidth: 8 }}>
         <View style={styles.stockContainer}>
           <Text style={{ ...styles.currentStock, color: getColor(entry) }}>{entry.currentStock}</Text>
-          <Text style={styles.desiredStock}>/{entry.desiredStock}</Text>
+          <Text style={styles.desiredStock}> / {entry.desiredStock}</Text>
         </View>
         <Text style={styles.name}>{entry.name}</Text>
         <View style={styles.controls}>
           {entry.currentStock > 0 && <IconButton
             icon="minus"
             style={styles.controlButton}
-            iconColor={Colors.accent}
+            iconColor={Colors.gray.light}
             onPress={() => {
               updateCurrentStockMutation.mutate({
                 itemId: entry.id,
@@ -50,7 +50,7 @@ export const ItemListEntry = React.memo((props: Props) => {
           <IconButton
             icon="plus"
             style={styles.controlButton}
-            iconColor={Colors.accent}
+            iconColor={Colors.gray.light}
             onPress={() => {
               updateCurrentStockMutation.mutate({
                 itemId: entry.id,
@@ -61,17 +61,17 @@ export const ItemListEntry = React.memo((props: Props) => {
           />
         </View>
       </View>
-      <Divider horizontalInset />
     </View>
   </Pressable>
 }, arePropsEqual)
 
 const styles = StyleSheet.create({
   itemEntry: {
-    marginVertical: 8,
+    marginTop: 8,
     paddingLeft: 16,
     flexDirection: "row",
     alignItems: "baseline",
+    backgroundColor: Colors.secondary,
   },
   stockContainer: {
     paddingVertical: 16,
@@ -87,7 +87,8 @@ const styles = StyleSheet.create({
     color: Colors.gray.light,
   },
   name: {
-    fontSize: 18
+    fontSize: 18,
+    color: Colors.text.main,
   },
   controls: {
     flexDirection: "row",

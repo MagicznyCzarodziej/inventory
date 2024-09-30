@@ -6,29 +6,42 @@ import {
 import { CategoriesAndParentItemsStackParamsList } from '../../../navigation/navigationTypes';
 import { CategoryEditorPage } from '../CategoryEditor/CategoryEditorPage';
 import { CategoryCreatorPage } from './CategoryCreator/CategoryCreatorPage';
+import { Colors } from '../../../app/Theme';
 
 const Stack = createNativeStackNavigator<CategoriesAndParentItemsStackParamsList>()
 
 export const CategoriesAndParentItemsStackNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerShadowVisible: false,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: Colors.secondary,
+        },
+        headerTintColor: Colors.white,
+      }}
+    >
       <Stack.Screen
-        options={{ headerShown: false, animation: 'none' }}
+        options={{
+          title: "Kategorie i grupy",
+          animation: 'none'
+        }}
         name="CATEGORIES_AND_PARENT_ITEMS_TABS_NAVIGATION"
         component={CategoriesAndParentItemsTabsNavigation}
       />
       <Stack.Screen
-        options={{ headerShown: false, animation: 'none' }}
+        options={{ title: "Edytuj grupę", animation: 'none' }}
         name="EDIT_PARENT_ITEM"
         component={ParentItemEditorPage}
       />
       <Stack.Screen
-        options={{ headerShown: false, animation: 'none' }}
+        options={{ title: "Nowa kategoria", animation: 'none' }}
         name="ADD_CATEGORY"
         component={CategoryCreatorPage}
       />
       <Stack.Screen
-        options={{ headerShown: false, animation: 'none' }}
+        options={{ title: "Edytuj kategorię", animation: 'none' }}
         name="EDIT_CATEGORY"
         component={CategoryEditorPage}
       />

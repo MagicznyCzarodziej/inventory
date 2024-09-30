@@ -3,6 +3,7 @@ import { Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Drawer as PaperDrawer } from 'react-native-paper';
 import { InventoryStackParamList, InventoryTabsParamList, RootStackParamList } from '../../navigation/navigationTypes';
+import { Colors } from '../../app/Theme';
 
 interface Props {
   closeDrawer: () => void
@@ -27,7 +28,8 @@ export const Drawer = (props: Props) => {
         paddingHorizontal: 24,
         marginBottom: 32,
         fontSize: 32,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        color: Colors.text.main,
       }}>
       Inventory
     </Text>
@@ -35,6 +37,7 @@ export const Drawer = (props: Props) => {
       <PaperDrawer.Item
         label="Konto"
         icon="account"
+        theme={DRAWER_ITEM_THEME}
         onPress={() => {
           navigate("ACCOUNT")
           closeDrawer()
@@ -43,6 +46,7 @@ export const Drawer = (props: Props) => {
       <PaperDrawer.Item
         label="Ustawienia"
         icon="cog"
+        theme={DRAWER_ITEM_THEME}
         onPress={() => {
           navigate("SETTINGS")
           closeDrawer()
@@ -54,6 +58,7 @@ export const Drawer = (props: Props) => {
       <PaperDrawer.Item
         label="Inwentarz"
         icon="clipboard-list-outline"
+        theme={DRAWER_ITEM_THEME}
         onPress={() => {
           navigate("INVENTORY_LIST")
           closeDrawer()
@@ -62,6 +67,7 @@ export const Drawer = (props: Props) => {
       <PaperDrawer.Item
         label="Lista zakupów"
         icon="basket-outline"
+        theme={DRAWER_ITEM_THEME}
         onPress={() => {
           navigate("SHOPPING_LIST")
           closeDrawer()
@@ -70,6 +76,7 @@ export const Drawer = (props: Props) => {
       <PaperDrawer.Item
         label="Zmywaki"
         icon="mirror-rectangle"
+        theme={DRAWER_ITEM_THEME}
         onPress={() => {
           navigate("SPONGES")
           closeDrawer()
@@ -77,4 +84,11 @@ export const Drawer = (props: Props) => {
       />
     </PaperDrawer.Section>
   </SafeAreaView>
+}
+
+const DRAWER_ITEM_THEME = {
+  colors: {
+    onSurfaceVariant: Colors.text.main, // Makes text white
+  },
+  roundness: 0
 }

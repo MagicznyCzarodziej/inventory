@@ -146,6 +146,7 @@ export const ItemEditor = (props: ItemEditorProps) => {
           }}
           right={
             <TextInput.Icon
+              color={Colors.gray.light}
               icon="barcode-scan"
               onPress={() => navigate("BARCODE_SCANNER", { from: 'EDIT_ITEM' })}
             />

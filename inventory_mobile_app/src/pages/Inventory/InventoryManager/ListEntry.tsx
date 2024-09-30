@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Entry } from '../../../api/item/useGetItems';
 import { isParentEntry } from '../utils/itemsUtils';
-import { Divider, Icon } from 'react-native-paper';
-import Theme from '../../../app/Theme';
+import {  Icon } from 'react-native-paper';
+import Theme, { Colors } from '../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';
 
@@ -18,7 +18,6 @@ export const ListEntry = (props: Props) => {
   const isParentItem = isParentEntry(entry)
 
   return <>
-    <Divider />
     <View style={styles.entry}>
       <View style={styles.row}>
         <Text style={styles.itemName}>{entry.name}</Text>
@@ -62,7 +61,7 @@ const AddSubItemButton = (props: AddSubItemButtonProps) => {
   >
     <Text style={styles.buttonText}>Dodaj podprodukt</Text>
     <View style={{ marginTop: 3, marginRight: 3 }}>
-      <Icon size={15} source="arrow-down-right" color={Theme.colors.accent} />
+      <Icon size={15} source="arrow-down-right" color={Theme.colors.text.gray} />
     </View>
   </Pressable>
 }
@@ -82,13 +81,15 @@ const SeeItemButton = (props: SeeItemProps) => {
     }}
   >
     <Text style={styles.buttonText}>Zobacz produkt</Text>
-    <Icon size={20} source="chevron-right" color={Theme.colors.accent} />
+    <Icon size={20} source="chevron-right" color={Theme.colors.text.gray} />
   </Pressable>
 }
 
 const styles = StyleSheet.create({
   entry: {
-    paddingVertical: 16,
+    padding: 16,
+    marginTop: 8,
+    backgroundColor: Colors.secondary,
   },
   row: {
     display: 'flex',
@@ -96,16 +97,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'baseline'
   },
-  parentItemName: {
-    fontSize: 18
-  },
   subItemName: {
-    fontSize: 16,
-    marginLeft: 8,
+    fontSize: 18,
+    // marginLeft: 8,
     marginTop: 4,
+    color: Colors.text.main,
   },
   itemName: {
-    fontSize: 18
+    color: Colors.text.main,
+    fontSize: 18,
+    fontWeight:"bold"
   },
   button: {
     display: 'flex',
@@ -113,6 +114,6 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   buttonText: {
-    color: Theme.colors.accent
+    color: Colors.text.gray
   }
 })
