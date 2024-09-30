@@ -3,7 +3,7 @@ import { ItemEntry, useGetItems } from '../../../api/item/useGetItems';
 import { useEffect, useState } from 'react';
 import { flattenParentEntries, sortEntries } from './inventoryListUtils';
 import { ItemListEntry } from './ItemListEntry';
-import { Divider, IconButton, TextInput, } from 'react-native-paper';
+import { IconButton, TextInput, } from 'react-native-paper';
 import Theme, { Colors } from '../../../app/Theme';
 import { Page } from '../../../layouts/Page';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
@@ -53,6 +53,8 @@ export const InventoryPage = () => {
         paddingLeft: 16,
         paddingRight: 16,
         paddingBottom: 16,
+        borderBottomColor: Colors.gray.dark,
+        borderBottomWidth: 1,
       }}
     >
       <TextInput
@@ -67,14 +69,23 @@ export const InventoryPage = () => {
         label="Szukaj w produktach"
         outlineColor={Colors.gray.light}
         activeOutlineColor={Colors.primary}
+        textColor={Colors.text.main}
+        cursorColor={Colors.text.main}
         theme={{
           colors: {
-            onSurfaceVariant: Colors.text.gray
+            onSurfaceVariant: Colors.text.gray,
           }
         }}
         mode="outlined"
+        value={searchPhrase}
         onChangeText={handleSearch}
-        right={<TextInput.Icon color={Colors.gray.light} icon="text-search" />}
+        right={searchPhrase.length > 0 && <TextInput.Icon
+          color={Colors.gray.light}
+          icon="close"
+          onPress={() => {
+            handleSearch("")
+          }}
+        />}
       />
       <IconButton
         size={34}
@@ -90,7 +101,6 @@ export const InventoryPage = () => {
         }}
       />
     </View>
-    <Divider />
   </>
 
   return <Page safeArea={false} style={{

@@ -2,7 +2,7 @@ import { FlatList, View } from 'react-native';
 import { Entry, useGetItems } from '../../../api/item/useGetItems';
 import { Page } from '../../../layouts/Page';
 import { Spinner } from '../../../components/Spinner';
-import { Divider, TextInput } from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import Theme, { Colors } from '../../../app/Theme';
 import { Button } from '../../../components/Button';
 import { ListEntry } from './ListEntry';
@@ -44,6 +44,7 @@ export const InventoryManagerPage = () => {
       label="Co chcesz dodać?"
       outlineColor={Colors.gray.light}
       activeOutlineColor={Colors.primary}
+      cursorColor={Colors.text.main}
       theme={{
         colors: {
           onSurfaceVariant: Colors.text.gray
@@ -59,9 +60,11 @@ export const InventoryManagerPage = () => {
       flexDirection: "row",
       gap: 16,
       marginTop: 16,
-      marginBottom: 16,
+      paddingBottom: 16,
       paddingHorizontal: 16,
-      backgroundColor: Colors.secondary
+      backgroundColor: Colors.secondary,
+      borderBottomColor: Colors.gray.dark,
+      borderBottomWidth: 1,
     }}>
       <Button
         small
@@ -88,7 +91,6 @@ export const InventoryManagerPage = () => {
         title="Nowa grupa"
       />
     </View>
-    <Divider />
     <FlatList<Entry>
       style={{
         flexBasis: 0, // fix for hiding under menu,

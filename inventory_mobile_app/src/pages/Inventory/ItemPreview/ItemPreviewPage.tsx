@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useGetItem } from '../../../api/item/useGetItem';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { IconButton } from 'react-native-paper';
@@ -12,17 +12,22 @@ import { useUpdateCurrentStock } from '../../../api/item/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RemoteItemPhoto } from '../../../components/Photo/RemoteItemPhoto';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';
+import { PhotoFullSizePreview } from './PhotoFullSizePreview';
+import { useState } from 'react';
 
 type Props = NativeStackScreenProps<InventoryStackParamList, "ITEM">;
 
 export const ItemPreviewPage = (props: Props) => {
   const itemId = props.route.params.itemId
+  const [isPhotoPreviewOpen, setIsPhotoPreviewOpen] = useState(false)
+
   const itemQuery = useGetItem(itemId)
 
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
 
   const photoUrl = itemQuery.data?.photoUrl ?? null
   const hasPhoto = photoUrl !== null
+
 
   const updateCurrentStockMutation = useUpdateCurrentStock();
 
@@ -35,7 +40,19 @@ export const ItemPreviewPage = (props: Props) => {
   }
 
   return <Page safeArea={!hasPhoto} style={styles.page}>
-    {hasPhoto && <RemoteItemPhoto photoUrl={photoUrl} />}
+    {(isPhotoPreviewOpen && hasPhoto) && <PhotoFullSizePreview
+      photoUri={photoUrl}
+      closePreview={() => {
+        setIsPhotoPreviewOpen(false)
+      }}
+    />}
+    <Pressable
+      onPress={() => {
+        setIsPhotoPreviewOpen(true)
+      }}
+    >
+      {hasPhoto && <RemoteItemPhoto photoUrl={photoUrl} />}
+    </Pressable>
 
     <View style={{
       ...styles.card,

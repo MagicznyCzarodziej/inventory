@@ -14,6 +14,7 @@ interface Props {
 
 const arePropsEqual = (prev: Props, next: Props) =>
   prev.entry.currentStock === next.entry.currentStock &&
+  prev.entry.desiredStock === next.entry.desiredStock &&
   prev.entry.name === next.entry.name
 
 export const ItemListEntry = React.memo((props: Props) => {

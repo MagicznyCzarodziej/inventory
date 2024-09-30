@@ -30,7 +30,7 @@ export const Select = (props: Props) => {
       },
       inputIOS: {
         color: Colors.text.main,
-      }
+      },
     }}
   />
 }

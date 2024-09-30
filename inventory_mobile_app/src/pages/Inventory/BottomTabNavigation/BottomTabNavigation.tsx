@@ -17,6 +17,7 @@ export const BottomTabNavigation = () => {
     backBehavior={"initialRoute"}
     initialRouteName="INVENTORY_NAVIGATION"
     screenOptions={{
+      tabBarHideOnKeyboard: true,
       headerShadowVisible: false,
       headerShown: false,
       headerStyle: {

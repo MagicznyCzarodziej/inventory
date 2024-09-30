@@ -11,6 +11,7 @@ export const useRemoveParentItem = () => {
     onSuccess: (data, variables) => {
       queryClient.invalidateQueries({ queryKey: ["getParentItems"] })
       queryClient.invalidateQueries({ queryKey: ["getCategory"] })
+      queryClient.invalidateQueries({ queryKey: ["getItems"] })
     }
   });
 }

@@ -6,8 +6,15 @@ import { Spinner } from '../../../../components/Spinner';
 import { ParentItemEntry } from './ParentItemEntry';
 import { ParentItem } from '../../../../api/common';
 import { Colors } from '../../../../app/Theme';
+import { Button } from '../../../../components/Button';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  InventoryStackParamList
+} from '../../../../navigation/navigationTypes';
 
 export const ParentItemsPage = () => {
+  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
+
   const parentItemsQuery = useGetParentItems()
 
   if (parentItemsQuery.isPending) {
@@ -51,12 +58,23 @@ export const ParentItemsPage = () => {
       )}
       renderSectionFooter={() => <View style={styles.sectionFooter} />}
     />
+    <View style={styles.button}>
+      <Button
+        title="Nowa grupa"
+        onPress={() => {
+          navigate({
+            name: "ADD_PARENT_ITEM",
+            params: {},
+            merge: true,
+          })
+        }}
+      />
+    </View>
   </Page>
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   divider: {
     height: 1,
     flexGrow: 1,
@@ -73,11 +91,13 @@ const styles = StyleSheet.create({
     paddingBottom: 8,
     marginTop: 8,
   },
-  sectionFooter: {
-  },
+  sectionFooter: {},
   categoryName: {
     fontSize: 18,
     fontWeight: "bold",
     color: Colors.text.main,
+  },
+  button: {
+    padding: 16,
   }
 })

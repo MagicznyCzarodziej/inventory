@@ -11,13 +11,16 @@ import { Colors } from '../../../app/Theme';
 const Stack = createNativeStackNavigator<InventoryStackParamList>()
 
 export const InventoryNavigation = () => {
-  return <Stack.Navigator initialRouteName="INVENTORY_LIST" screenOptions={{
-    headerShadowVisible:false,
-    headerStyle: {
-      backgroundColor: Colors.secondary,
-    },
-    headerTintColor: Colors.white,
-  }}>
+  return <Stack.Navigator
+    initialRouteName="INVENTORY_LIST"
+    screenOptions={{
+      headerShadowVisible: false,
+      headerStyle: {
+        backgroundColor: Colors.secondary,
+      },
+      headerTintColor: Colors.white,
+    }}
+  >
     <Stack.Screen
       options={{ headerShown: true, title: "Inwentarz" }}
       name="INVENTORY_LIST"

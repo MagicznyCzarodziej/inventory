@@ -14,7 +14,9 @@ export const CategoriesAndParentItemsTabsNavigation = () => {
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {
-            backgroundColor: Colors.secondary
+            backgroundColor: Colors.secondary,
+            borderBottomColor: Colors.gray.dark,
+            borderBottomWidth: 1,
           },
           tabBarPressColor: Colors.secondary,
           tabBarLabelStyle: {

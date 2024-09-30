@@ -29,7 +29,7 @@ export const PhotoUpload = (props: Props) => {
         />
       ) : (
         <View style={styles.uploadPhoto}>
-          <Icon source="camera-plus-outline" size={64} color={Colors.gray.light} />
+          <Icon source="camera-plus-outline" size={64} color={Colors.text.gray} />
           <Text style={styles.photoHint}>Dodaj zdjęcie</Text>
         </View>
       )}

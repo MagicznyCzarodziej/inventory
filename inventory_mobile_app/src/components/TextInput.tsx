@@ -49,9 +49,13 @@ export const TextField = forwardRef((props: Props, ref: ForwardedRef<NativeTextI
         }}
         style={{ backgroundColor: Colors.background }}
         textColor={Colors.text.main}
+        cursorColor={Colors.text.main}
         theme={{
           colors: {
-            onSurfaceVariant: Colors.gray.light // Label text color
+            onSurfaceVariant: Colors.gray.light, // Label text color
+            outline: Colors.white,
+            surfaceDisabled: Colors.gray.dark, // Outline for disabled input
+            onSurfaceDisabled: Colors.input.outline // Label color for disabled
           }
         }}
         mode="outlined"
