@@ -1,3 +1,4 @@
+import React from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { Page } from '../../../layouts/Page';
 import { Colors } from '../../../app/Theme';
@@ -9,20 +10,23 @@ const Tab = createMaterialTopTabNavigator<CategoriesAndParentItemsTabsParamsList
 
 export const CategoriesAndParentItemsTabsNavigation = () => {
   return (
-    <Page style={{ flex: 1, backgroundColor: Colors.primary }}>
+    <Page safeArea={false} style={{ flex: 1, backgroundColor: Colors.secondary }}>
       <Tab.Navigator
         screenOptions={{
           tabBarStyle: {
-            backgroundColor: Colors.primary
+            backgroundColor: Colors.secondary,
+            borderBottomColor: Colors.gray.dark,
+            borderBottomWidth: 1,
           },
+          tabBarPressColor: Colors.secondary,
           tabBarLabelStyle: {
-            fontSize: 18
+            fontSize: 14,
           },
           tabBarIndicatorStyle: {
-            backgroundColor: Colors.secondary
+            backgroundColor: Colors.primary
           },
-          tabBarActiveTintColor: Colors.secondary,
-          tabBarInactiveTintColor: Colors.secondary,
+          tabBarActiveTintColor: Colors.white,
+          tabBarInactiveTintColor: Colors.white,
         }}
         backBehavior="none"
       >

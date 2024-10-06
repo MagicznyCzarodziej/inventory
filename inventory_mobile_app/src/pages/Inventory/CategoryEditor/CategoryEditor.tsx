@@ -9,6 +9,7 @@ import { TextField } from '../../../components/TextInput';
 import { GetCategoryResponse } from '../../../api/category/useGetCategory';
 import { useRemoveCategory } from '../../../api/category/useRemoveCategory';
 import { useEditCategory } from '../../../api/category/useEditCategory';
+import { Colors } from '../../../app/Theme';
 
 interface Props {
   category: GetCategoryResponse;
@@ -51,7 +52,7 @@ export const CategoryEditor = (props: Props) => {
     navigate("CATEGORIES")
   }
 
-  return <Page style={styles.page}>
+  return <Page safeArea={false} style={styles.page}>
     <TextField
       label="Nazwa"
       value={name}
@@ -63,7 +64,7 @@ export const CategoryEditor = (props: Props) => {
     />
 
     {hasItems
-      ? <Text>
+      ? <Text style={styles.hint}>
         {`Kategoria zawiera ${category.itemsCount} ${category.itemsCount === 1
           ? "produkt"
           : category.itemsCount < 5
@@ -71,7 +72,7 @@ export const CategoryEditor = (props: Props) => {
             : "produktów"
         }`}
       </Text>
-      : <Text>
+      : <Text style={styles.hint}>
         Kategoria nie zawiera żadnych produktów
       </Text>
     }
@@ -109,4 +110,7 @@ const styles = StyleSheet.create({
     gap: 16,
     marginTop: "auto"
   },
+  hint: {
+    color: Colors.text.main
+  }
 })

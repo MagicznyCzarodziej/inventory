@@ -3,7 +3,6 @@ import { Page } from '../../../../layouts/Page';
 import { Button } from '../../../../components/Button';
 import { StyleSheet, View } from 'react-native';
 import { TextField } from '../../../../components/TextInput';
-import { Select } from '../../../../components/Select';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
   CategoriesAndParentItemsStackParamsList, CategoriesAndParentItemsTabsParamsList,
@@ -39,7 +38,7 @@ export const CategoryCreatorPage = (props: Props) => {
   }
 
   return (
-    <Page style={styles.page}>
+    <Page safeArea={false} style={styles.page}>
       <TextField
         label="Nazwa"
         value={name}

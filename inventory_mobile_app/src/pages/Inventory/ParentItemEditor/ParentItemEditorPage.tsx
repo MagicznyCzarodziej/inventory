@@ -22,7 +22,7 @@ export const ParentItemEditorPage = (props: Props) => {
     />
   }
 
-  return <Page>
+  return <Page safeArea={false}>
     <Spinner />
   </Page>
 }

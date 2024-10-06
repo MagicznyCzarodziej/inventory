@@ -29,7 +29,7 @@ export const PhotoUpload = (props: Props) => {
         />
       ) : (
         <View style={styles.uploadPhoto}>
-          <Icon source="camera-plus-outline" size={64} color={Colors.secondary} />
+          <Icon source="camera-plus-outline" size={64} color={Colors.text.gray} />
           <Text style={styles.photoHint}>Dodaj zdjęcie</Text>
         </View>
       )}
@@ -44,10 +44,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
   },
   photoHint: {
     fontSize: 20,
-    marginTop: 8
+    marginTop: 8,
+    color: Colors.text.gray
   },
 })

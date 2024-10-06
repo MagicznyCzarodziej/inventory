@@ -36,7 +36,7 @@ export const CategoriesPage = () => {
     />
     <View style={styles.button}>
       <Button
-        title="Utwórz kategorię"
+        title="Nowa kategoria"
         onPress={() => {
           navigate("ADD_CATEGORY")
         }}
@@ -47,7 +47,6 @@ export const CategoriesPage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
   },
   button: {
     padding: 16,

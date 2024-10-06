@@ -12,6 +12,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useRemoveParentItem } from '../../../api/parentItem/useRemoveParentItem';
 import { GetParentItemResponse } from '../../../api/parentItem/useGetParentItem';
 import { CategoriesAndParentItemsTabsParamsList } from '../../../navigation/navigationTypes';
+import { Colors } from '../../../app/Theme';
 
 interface Props {
   parentItem: GetParentItemResponse;
@@ -59,7 +60,7 @@ export const ParentItemEditor = (props: Props) => {
     navigate("PARENT_ITEMS_LIST")
   }
 
-  return <Page style={styles.page}>
+  return <Page safeArea={false} style={styles.page}>
     <TextField
       label="Nazwa"
       value={name}
@@ -73,7 +74,7 @@ export const ParentItemEditor = (props: Props) => {
     <Select value={categoryId ?? undefined} onValueChange={setCategoryId} items={categorySelectItems} />
 
     {hasSubItems
-      ? <Text>
+      ? <Text style={styles.hint}>
         {`Grupa zawiera ${parentItem.subItemsCount} ${parentItem.subItemsCount === 1
           ? "produkt"
           : parentItem.subItemsCount < 5
@@ -81,7 +82,7 @@ export const ParentItemEditor = (props: Props) => {
             : "produktów"
         }`}
       </Text>
-      : <Text>
+      : <Text style={styles.hint}>
         Grupa nie zawiera żadnych produktów
       </Text>
     }
@@ -119,4 +120,7 @@ const styles = StyleSheet.create({
     gap: 16,
     marginTop: "auto"
   },
+  hint: {
+    color: Colors.text.main,
+  }
 })

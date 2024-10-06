@@ -16,8 +16,8 @@ export const ItemPreviewBarcode = (props: Props) => {
 
   return (
     <View style={styles.wrapper}>
-      <Icon source="barcode" size={28} />
-      <Text>{barcode}</Text>
+      <Icon color={Colors.text.main} source="barcode" size={28} />
+      <Text style={styles.barcode}>{barcode}</Text>
       <Text style={styles.compare}>Porównaj</Text>
     </View>
   );
@@ -31,8 +31,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
+  barcode: {
+    color: Colors.text.main,
+  },
   compare: {
-    color: Colors.accent,
+    color: Colors.gray.light,
     marginLeft: 8
   }
 })

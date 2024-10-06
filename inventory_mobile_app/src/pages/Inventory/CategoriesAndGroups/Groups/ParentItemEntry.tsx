@@ -28,18 +28,21 @@ export const ParentItemEntry = (props: Props) => {
 
 const styles = StyleSheet.create({
   entry: {
-    padding: 8,
+    paddingTop: 8,
     paddingLeft: 16,
     paddingRight: 16,
+    paddingBottom: 16,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: Colors.secondary,
   },
   name: {
-    fontSize: 18
+    fontSize: 18,
+    color: Colors.text.main
   },
   edit: {
     fontSize: 14,
-    color: Colors.accent
+    color: Colors.text.gray,
   }
 })

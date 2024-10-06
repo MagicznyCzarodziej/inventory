@@ -38,7 +38,7 @@ export const ParentItemCreatorPage = (props: Props) => {
   }
 
   return (
-    <Page style={styles.page}>
+    <Page safeArea={false} style={styles.page}>
       <TextField
         label="Nazwa"
         value={name}

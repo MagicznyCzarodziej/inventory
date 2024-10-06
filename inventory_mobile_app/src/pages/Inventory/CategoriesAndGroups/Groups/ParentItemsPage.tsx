@@ -6,8 +6,15 @@ import { Spinner } from '../../../../components/Spinner';
 import { ParentItemEntry } from './ParentItemEntry';
 import { ParentItem } from '../../../../api/common';
 import { Colors } from '../../../../app/Theme';
+import { Button } from '../../../../components/Button';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import {
+  InventoryStackParamList
+} from '../../../../navigation/navigationTypes';
 
 export const ParentItemsPage = () => {
+  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
+
   const parentItemsQuery = useGetParentItems()
 
   if (parentItemsQuery.isPending) {
@@ -44,7 +51,6 @@ export const ParentItemsPage = () => {
       renderSectionHeader={(list) => (
         <View style={styles.sectionHeader}>
           <Text key={list.section.title} style={styles.categoryName}>{list.section.title}</Text>
-          <View style={styles.divider} />
         </View>
       )}
       renderItem={({ item }) => (
@@ -52,35 +58,46 @@ export const ParentItemsPage = () => {
       )}
       renderSectionFooter={() => <View style={styles.sectionFooter} />}
     />
+    <View style={styles.button}>
+      <Button
+        title="Nowa grupa"
+        onPress={() => {
+          navigate({
+            name: "ADD_PARENT_ITEM",
+            params: {},
+            merge: true,
+          })
+        }}
+      />
+    </View>
   </Page>
 }
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    paddingTop: 8,
-  },
+  container: {},
   divider: {
     height: 1,
     flexGrow: 1,
     marginTop: 3,
-    backgroundColor: "lightgray",
+    backgroundColor: Colors.gray.light,
   },
   sectionHeader: {
+    backgroundColor: Colors.secondary,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     gap: 20,
-    paddingTop: 16,
+    padding: 16,
     paddingBottom: 8,
-    paddingLeft: 8,
-    paddingRight: 8,
+    marginTop: 8,
   },
-  sectionFooter: {
-    marginTop: 16
-  },
+  sectionFooter: {},
   categoryName: {
-    fontSize: 20,
-    color: Colors.text.gray,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: Colors.text.main,
+  },
+  button: {
+    padding: 16,
   }
 })

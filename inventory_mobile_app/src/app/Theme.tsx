@@ -1,20 +1,21 @@
 export const Colors = {
-  primary: "#F8D96B",
-  secondary: "#171310",
-  accent: "#AD7C15",
-  background: "#FBFBF9",
+  primary: "#F0C502",
+  secondary: "#262628",
+  accent: "#61db9e",
+  background: "#181818",
   white: "#FFFFFF",
   gray: {
     light: "#9E9E9E",
-    dark: "#222222",
+    dark: "#333333",
   },
   text: {
-    main: "#222222",
+    main: "#F2F2F2",
+    button: "#222222",
     gray: "#9E9E9E",
-    error: "#DC0000",
+    error: "#EF0030",
   },
   input: {
-    outline: "#222222"
+    outline: "#9E9E9E"
   },
   status: {
     green: "#4FAC50",
@@ -27,7 +28,7 @@ export const Colors = {
 }
 
 export const Shapes = {
-  inputRadius: 4,
+  inputRadius: 0,
 }
 
 const Theme = {

@@ -19,7 +19,7 @@ export const CategoryEditorPage = (props: Props) => {
     />
   }
 
-  return <Page>
+  return <Page safeArea={false}>
     <Spinner />
   </Page>
 }

@@ -36,7 +36,7 @@ export const Button = (props: Props) => {
     >
       {
         spinner
-          ? <ActivityIndicator color={Colors.text.main} />
+          ? <ActivityIndicator color={Colors.text.button} />
           : <Text style={{
             ...styles.text,
             ...(small ? styles.text_small : {}),
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: 40,
   },
   button_disabled: {
-    backgroundColor: Colors.gray.light,
+    backgroundColor: Colors.gray.dark,
   },
   variant_filled: {
     elevation: 1,
@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
     textTransform: "uppercase",
-    color: Colors.text.main,
+    color: Colors.text.button,
   },
   text_small: {
-    fontSize: 12,
+    fontSize: 14,
   },
   text_disabled: {
-    color: Colors.white,
+    color: Colors.gray.light,
   }
 });
