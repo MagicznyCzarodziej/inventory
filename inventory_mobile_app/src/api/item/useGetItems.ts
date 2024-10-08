@@ -1,5 +1,6 @@
 import { api } from '../api';
 import { useQuery } from '@tanstack/react-query';
+import removeAccents from 'remove-accents'
 import { isParentEntry } from '../../pages/Inventory/utils/itemsUtils';
 
 const getItems = () => api.get<GetItemsResponse>(`/items`);
@@ -20,11 +21,13 @@ export const useGetItems = (searchPhrase?: string) => useQuery({
 });
 
 const entryNameContainsPhrase = (searchPhrase: string) => (entry: Entry) => {
+  const normalizedSearchPhrase = removeAccents(searchPhrase).toLowerCase()
+
   if (isParentEntry(entry)) {
-    return entry.items.some(entryNameContainsPhrase(searchPhrase)) || entry.name.toLowerCase().includes(searchPhrase.toLowerCase())
+    return entry.items.some(entryNameContainsPhrase(searchPhrase)) || removeAccents(entry.name).toLowerCase().includes(normalizedSearchPhrase)
   }
 
-  return entry.name.toLowerCase().includes(searchPhrase.toLowerCase())
+  return removeAccents(entry.name).toLowerCase().includes(normalizedSearchPhrase)
 }
 
 export interface GetItemsResponse {
