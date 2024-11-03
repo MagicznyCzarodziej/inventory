@@ -1,6 +1,6 @@
 import { FlatList, RefreshControl, View } from 'react-native';
 import { ItemEntry, useGetItems } from '../../../api/item/useGetItems';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { flattenParentEntries, sortEntries } from './inventoryListUtils';
 import { ItemListEntry } from './ItemListEntry';
 import { IconButton, TextInput, } from 'react-native-paper';
@@ -8,16 +8,23 @@ import Theme, { Colors } from '../../../app/Theme';
 import { Page } from '../../../layouts/Page';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';
+import { useGetCategories } from '../../../api/category/useGetCategories';
+import { Picker } from '@react-native-picker/picker';
 
 export const InventoryPage = () => {
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
 
   const [isManuallyRefreshing, setIsManuallyRefreshing] = useState(false)
   const [searchPhrase, setSearchPhrase] = useState("")
+  const [filterByCategory, setFilterByCategory] = useState<string>("ALL")
 
   const [sortedEntries, setSortedEntries] = useState<ItemEntry[]>([])
+  const [finalEntries, setFinalEntries] = useState<ItemEntry[]>([])
 
   const getItemsQuery = useGetItems(searchPhrase)
+  const getCategoriesQuery = useGetCategories()
+
+  const filterByCategoryRef = useRef<Picker<string>>(null)
 
   useEffect(() => {
     if (!getItemsQuery.isRefetching) {
@@ -32,6 +39,15 @@ export const InventoryPage = () => {
       )
     }
   }, [getItemsQuery.data, getItemsQuery.isRefetching]);
+
+  useEffect(() => {
+    if (filterByCategory === "ALL") {
+      setFinalEntries(sortedEntries)
+      return
+    }
+
+    setFinalEntries(sortedEntries.filter(entry => entry.category.id === filterByCategory))
+  }, [sortedEntries, filterByCategory]);
 
   const refreshList = () => {
     getItemsQuery.refetch().then()
@@ -79,6 +95,14 @@ export const InventoryPage = () => {
         mode="outlined"
         value={searchPhrase}
         onChangeText={handleSearch}
+        left={<TextInput.Icon
+          forceTextInputFocus={false}
+          color={filterByCategory === "ALL" ? Colors.gray.light : Colors.primary}
+          icon={"shape-outline"}
+          onPress={() => {
+            filterByCategoryRef.current?.focus()
+          }}
+        />}
         right={searchPhrase.length > 0 && <TextInput.Icon
           color={Colors.gray.light}
           icon="close"
@@ -108,7 +132,8 @@ export const InventoryPage = () => {
   }}>
     {Search}
     <FlatList
-      data={sortedEntries}
+      keyboardShouldPersistTaps="always" // Allows pressing buttons without unfocusing the input
+      data={finalEntries}
       style={{
         backgroundColor: Colors.background,
         paddingBottom: 8,
@@ -127,5 +152,17 @@ export const InventoryPage = () => {
           }}
         />}
     />
+    <Picker
+      style={{ display: "none" }}
+      selectedValue={filterByCategory} ref={filterByCategoryRef}
+      onValueChange={(value) => {
+        setFilterByCategory(value)
+      }}
+    >
+      <Picker.Item key={"ALL"} label={"Wszystkie kategorie"} value={"ALL"} />
+      {getCategoriesQuery.data?.categories.map(x => (
+        <Picker.Item key={x.id} label={x.name} value={x.id} />
+      ))}
+    </Picker>
   </Page>
 }
