@@ -2,6 +2,7 @@ import { api } from '../api';
 import { useQuery } from '@tanstack/react-query';
 import removeAccents from 'remove-accents'
 import { isParentEntry } from '../../pages/Inventory/utils/itemsUtils';
+import { Category } from '../common';
 
 const getItems = () => api.get<GetItemsResponse>(`/items`);
 
@@ -46,6 +47,7 @@ export interface ItemEntry {
   id: string;
   name: string;
   brand: string | null;
+  category: Category;
   currentStock: number;
   desiredStock: number;
 }

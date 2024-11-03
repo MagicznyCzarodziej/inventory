@@ -43,6 +43,7 @@ export const ParallaxScrollView = (props: PropsWithChildren<Props>) => {
       ref={scrollRef}
       scrollEventThrottle={16}
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="always" // Allows pressing buttons without unfocusing the input
     >
       <Animated.View style={[imageAnimatedStyle]}>
         {parallaxHeaderContent}

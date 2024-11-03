@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 import pl.przemyslawpitus.inventory.inventory.domain.item.getItemsUseCase.GetItemsUseCase
 import pl.przemyslawpitus.inventory.inventory.domain.item.getItemsUseCase.ItemsView
 import pl.przemyslawpitus.inventory.common.domain.user.UserDetails
+import pl.przemyslawpitus.inventory.inventory.domain.item.Item
+import pl.przemyslawpitus.inventory.inventory.domain.item.Root
 import pl.przemyslawpitus.inventory.logging.WithLogger
 
 @RestController
@@ -49,10 +51,16 @@ data class GetItemsResponse(
             val id: String,
             val name: String,
             val brand: String?,
+            val category: Category,
             val currentStock: Int,
             val desiredStock: Int,
         ) : Entry()
     }
+
+    data class Category(
+        val id: String,
+        val name: String,
+    )
 }
 
 private fun List<ItemsView.Entry>.toGetItemsResponse() = GetItemsResponse(
@@ -61,24 +69,33 @@ private fun List<ItemsView.Entry>.toGetItemsResponse() = GetItemsResponse(
             is ItemsView.Entry.ParentEntry -> GetItemsResponse.Entry.ParentEntry(
                 id = it.parentItem.id.value,
                 name = it.parentItem.name,
-                items = it.items.map { item ->
-                    GetItemsResponse.Entry.ItemEntry(
-                        id = item.id.value,
-                        name = item.name,
-                        brand = item.brand,
-                        currentStock = item.stock.currentStock,
-                        desiredStock = item.stock.desiredStock,
-                    )
-                }
+                items = it.items.map { item -> item.toGetItemsResponse()},
             )
 
-            is ItemsView.Entry.IndependentItemEntry -> GetItemsResponse.Entry.ItemEntry(
-                id = it.item.id.value,
-                name = it.item.name,
-                brand = it.item.brand,
-                currentStock = it.item.stock.currentStock,
-                desiredStock = it.item.stock.desiredStock,
-            )
+            is ItemsView.Entry.IndependentItemEntry -> it.item.toGetItemsResponse()
         }
     }
 )
+
+private fun Item.toGetItemsResponse(): GetItemsResponse.Entry.ItemEntry {
+    val category = when (this.root) {
+        is Root.CategoryRoot -> GetItemsResponse.Category(
+            id = this.root.category.id.value,
+            name = this.root.category.name,
+        )
+
+        is Root.ParentRoot -> GetItemsResponse.Category(
+            id = this.root.parentItem.category.id.value,
+            name = this.root.parentItem.category.name,
+        )
+    }
+
+    return GetItemsResponse.Entry.ItemEntry(
+        id = this.id.value,
+        name = this.name,
+        brand = this.brand,
+        category = category,
+        currentStock = this.stock.currentStock,
+        desiredStock = this.stock.desiredStock,
+    )
+}

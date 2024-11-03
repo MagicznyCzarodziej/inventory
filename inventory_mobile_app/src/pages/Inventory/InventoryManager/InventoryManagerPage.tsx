@@ -92,6 +92,7 @@ export const InventoryManagerPage = () => {
       />
     </View>
     <FlatList<Entry>
+      keyboardShouldPersistTaps="always" // Allows pressing buttons without unfocusing the input
       style={{
         flexBasis: 0, // fix for hiding under menu,
         backgroundColor: Colors.background
