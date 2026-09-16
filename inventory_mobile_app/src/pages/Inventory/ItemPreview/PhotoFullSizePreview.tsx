@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, } from 'react-native';
+import { Image, Pressable, StyleSheet, Text } from 'react-native';
 import { useGetPhoto } from '../../../api/photo/useGetPhoto';
 
 interface Props {

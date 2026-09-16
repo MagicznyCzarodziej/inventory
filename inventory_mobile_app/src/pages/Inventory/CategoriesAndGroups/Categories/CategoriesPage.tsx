@@ -6,9 +6,7 @@ import { useGetCategories } from '../../../../api/category/useGetCategories';
 import { CategoryEntry } from './CategoryEntry';
 import { Button } from '../../../../components/Button';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import {
-  CategoriesAndParentItemsStackParamsList,
-} from '../../../../navigation/navigationTypes';
+import { CategoriesAndParentItemsStackParamsList } from '../../../../navigation/navigationTypes';
 
 export const CategoriesPage = () => {
   const { navigate } = useNavigation<NavigationProp<CategoriesAndParentItemsStackParamsList>>()

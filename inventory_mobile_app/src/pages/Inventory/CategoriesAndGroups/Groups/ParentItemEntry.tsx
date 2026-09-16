@@ -1,5 +1,5 @@
 import { ParentItem } from '../../../../api/common';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { CategoriesAndParentItemsStackParamsList } from '../../../../navigation/navigationTypes';

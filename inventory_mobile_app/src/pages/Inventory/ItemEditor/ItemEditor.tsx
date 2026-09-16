@@ -11,7 +11,7 @@ import { TextField } from '../../../components/TextInput';
 import { Select } from '../../../components/Select';
 import { TextInput } from 'react-native-paper';
 import { Button } from '../../../components/Button';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { ParallaxScrollView } from '../../../components/ParallaxScrollView';
 import { Colors } from '../../../app/Theme';
 import { WheelPicker } from '../../../components/WheelPicker';

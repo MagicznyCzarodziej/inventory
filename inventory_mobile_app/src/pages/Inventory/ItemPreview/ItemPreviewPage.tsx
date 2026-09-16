@@ -7,7 +7,7 @@ import { Spinner } from '../../../components/Spinner';
 import { Page } from '../../../layouts/Page';
 import { ItemEntry } from '../../../api/item/useGetItems';
 import { ItemPreviewBarcode } from './ItemPreviewBarcode';
-import { Button } from "../../../components/Button";
+import { Button } from '../../../components/Button';
 import { useUpdateCurrentStock } from '../../../api/item/useUpdateCurrentStock';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RemoteItemPhoto } from '../../../components/Photo/RemoteItemPhoto';

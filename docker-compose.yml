@@ -1,0 +1,16 @@
+# Matches src/main/resources/application-local.yml (local Spring profile)
+services:
+  mongodb:
+    image: mongo:7
+    container_name: inventory-mongodb
+    ports:
+      - "55000:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: docker
+      MONGO_INITDB_ROOT_PASSWORD: mongopw
+    volumes:
+      - inventory_mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  inventory_mongodb_data:

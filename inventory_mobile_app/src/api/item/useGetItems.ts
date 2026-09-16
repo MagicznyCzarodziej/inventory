@@ -1,6 +1,6 @@
 import { api } from '../api';
 import { useQuery } from '@tanstack/react-query';
-import removeAccents from 'remove-accents'
+import removeAccents from 'remove-accents';
 import { isParentEntry } from '../../pages/Inventory/utils/itemsUtils';
 import { Category } from '../common';
 

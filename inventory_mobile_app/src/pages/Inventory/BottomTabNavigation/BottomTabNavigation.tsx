@@ -1,8 +1,8 @@
 import React from 'react';
 import { ShoppingListPage } from '../ShoppingList/ShoppingListPage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
-  CategoriesAndParentItemsStackNavigation
+  CategoriesAndParentItemsStackNavigation,
 } from '../CategoriesAndGroups/CategoriesAndParentItemsStackNavigation';
 import { InventoryNavigation } from '../InventoryList/InventoryNavigation';
 import { Colors } from '../../../app/Theme';

@@ -1,6 +1,9 @@
+import { NavigatorScreenParams } from '@react-navigation/native';
+
 export type RootStackParamList = {
-  INVENTORY: InventoryTabsParamList;
+  INVENTORY: NavigatorScreenParams<InventoryTabsParamList>;
   SPONGES: undefined;
+  LOGIN: undefined;
   ACCOUNT: undefined;
   SETTINGS: undefined;
   CAMERA: { from: 'ADD_ITEM' | 'EDIT_ITEM' }
@@ -8,9 +11,9 @@ export type RootStackParamList = {
 }
 
 export type InventoryTabsParamList = {
-  INVENTORY_NAVIGATION: InventoryStackParamList;
+  INVENTORY_NAVIGATION: NavigatorScreenParams<InventoryStackParamList>;
   SHOPPING_LIST: undefined;
-  CATEGORIES_AND_PARENT_ITEMS_STACK_NAVIGATION: CategoriesAndParentItemsStackParamsList;
+  CATEGORIES_AND_PARENT_ITEMS_STACK_NAVIGATION: NavigatorScreenParams<CategoriesAndParentItemsStackParamsList>;
 }
 
 export type InventoryStackParamList = {

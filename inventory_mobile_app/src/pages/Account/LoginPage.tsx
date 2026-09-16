@@ -1,6 +1,6 @@
-import { Text, View, } from 'react-native';
-import { useEffect, useState } from 'react';
-import { Button } from "../../components/Button";
+import { Text, View } from 'react-native';
+import { useState } from 'react';
+import { Button } from '../../components/Button';
 import { TextField } from '../../components/TextInput';
 import { useLogin } from '../../api/useLogin';
 import { AxiosError } from 'axios';
@@ -11,7 +11,7 @@ import { InventoryStackParamList, RootStackParamList } from '../../navigation/na
 import { Colors } from '../../app/Theme';
 
 type Props = CompositeScreenProps<
-  NativeStackScreenProps<RootStackParamList, "ACCOUNT">,
+  NativeStackScreenProps<RootStackParamList, "LOGIN">,
   NativeStackScreenProps<InventoryStackParamList, "INVENTORY_LIST">
 >
 
@@ -21,14 +21,6 @@ export const LoginPage = (props: Props) => {
 
   const loginMutation = useLogin()
   const loginError = getError(loginMutation.error)
-
-  const { navigate } = props.navigation
-
-  useEffect(() => {
-    if (loginMutation.status === "success") {
-      navigate("INVENTORY_LIST")
-    }
-  }, [loginMutation.status]);
 
   return <Page>
     <View

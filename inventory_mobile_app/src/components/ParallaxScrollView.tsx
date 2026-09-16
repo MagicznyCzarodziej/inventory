@@ -1,10 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import Animated, {
-  interpolate,
-  useAnimatedRef,
-  useAnimatedStyle,
-  useScrollViewOffset,
-} from 'react-native-reanimated'
+import Animated, { interpolate, useAnimatedRef, useAnimatedStyle, useScrollViewOffset } from 'react-native-reanimated';
 
 interface Props {
   parallaxHeaderContent: React.ReactNode
