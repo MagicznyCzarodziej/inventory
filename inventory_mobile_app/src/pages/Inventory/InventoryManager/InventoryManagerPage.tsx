@@ -70,11 +70,7 @@ export const InventoryManagerPage = () => {
         small
         fullWidth
         onPress={() => {
-          navigate({
-            name: "ADD_ITEM",
-            params: { nameDraft: searchPhrase },
-            merge: true
-          })
+          navigate("ADD_ITEM", { nameDraft: searchPhrase })
         }}
         title="Nowy produkt"
       />
@@ -82,11 +78,7 @@ export const InventoryManagerPage = () => {
         small
         fullWidth
         onPress={() => {
-          navigate({
-            name: "ADD_PARENT_ITEM",
-            params: { nameDraft: searchPhrase },
-            merge: true
-          })
+          navigate("ADD_PARENT_ITEM", { nameDraft: searchPhrase })
         }}
         title="Nowa grupa"
       />

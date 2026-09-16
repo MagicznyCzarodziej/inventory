@@ -8,10 +8,10 @@ import { ParentItem } from '../../../../api/common';
 import { Colors } from '../../../../app/Theme';
 import { Button } from '../../../../components/Button';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { InventoryStackParamList } from '../../../../navigation/navigationTypes';
+import { CategoriesAndParentItemsStackParamsList } from '../../../../navigation/navigationTypes';
 
 export const ParentItemsPage = () => {
-  const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()
+  const { navigate } = useNavigation<NavigationProp<CategoriesAndParentItemsStackParamsList>>()
 
   const parentItemsQuery = useGetParentItems()
 
@@ -60,11 +60,7 @@ export const ParentItemsPage = () => {
       <Button
         title="Nowa grupa"
         onPress={() => {
-          navigate({
-            name: "ADD_PARENT_ITEM",
-            params: {},
-            merge: true,
-          })
+          navigate("ADD_PARENT_ITEM", {})
         }}
       />
     </View>

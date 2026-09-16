@@ -48,6 +48,9 @@ export type CategoriesAndParentItemsStackParamsList = {
     categoryId: string,
   };
   ADD_CATEGORY: undefined,
+  ADD_PARENT_ITEM: {
+    nameDraft?: string,
+  };
 }
 
 export type CategoriesAndParentItemsTabsParamsList = {

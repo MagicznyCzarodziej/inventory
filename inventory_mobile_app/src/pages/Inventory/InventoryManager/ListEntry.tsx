@@ -52,10 +52,9 @@ const AddSubItemButton = (props: AddSubItemButtonProps) => {
   return <Pressable
     style={styles.button}
     onPress={() => {
-      navigate({
-        name: "ADD_ITEM",
-        params: { parent: { parentId: itemId, parentName: itemName }, nameDraft: searchPhrase },
-        merge: true
+      navigate("ADD_ITEM", {
+        parent: { parentId: itemId, parentName: itemName },
+        nameDraft: searchPhrase,
       })
     }}
   >
