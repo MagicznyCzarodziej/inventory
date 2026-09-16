@@ -15,6 +15,7 @@ export const InventoryNavigation = () => {
     initialRouteName="INVENTORY_LIST"
     screenOptions={{
       headerShadowVisible: false,
+      animation: 'none',
       headerStyle: {
         backgroundColor: Colors.secondary,
       },
@@ -36,7 +37,7 @@ export const InventoryNavigation = () => {
       component={ItemPreviewPage}
     />
     <Stack.Screen
-      options={{ headerShown: true, title: "Nowy produkt", animation: 'fade' }}
+      options={{ headerShown: true, title: "Nowy produkt" }}
       name="ADD_ITEM"
       component={ItemCreatorPage}
     />

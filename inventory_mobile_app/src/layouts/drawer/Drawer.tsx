@@ -83,9 +83,13 @@ export const Drawer = (props: Props) => {
         icon="clipboard-list-outline"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate('INVENTORY', {
-            screen: 'INVENTORY_NAVIGATION',
-            params: { screen: 'INVENTORY_LIST' },
+          navigate({
+            name: 'INVENTORY',
+            params: {
+              screen: 'INVENTORY_NAVIGATION',
+              params: { screen: 'INVENTORY_LIST' },
+            },
+            merge: true,
           });
           closeDrawer();
         }}
@@ -95,7 +99,11 @@ export const Drawer = (props: Props) => {
         icon="basket-outline"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate('INVENTORY', { screen: 'SHOPPING_LIST' });
+          navigate({
+            name: 'INVENTORY',
+            params: { screen: 'SHOPPING_LIST' },
+            merge: true,
+          });
           closeDrawer();
         }}
       />

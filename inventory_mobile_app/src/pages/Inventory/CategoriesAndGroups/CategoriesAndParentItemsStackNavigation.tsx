@@ -4,6 +4,7 @@ import { CategoriesAndParentItemsTabsNavigation } from './CategoriesAndParentIte
 import { CategoriesAndParentItemsStackParamsList } from '../../../navigation/navigationTypes';
 import { CategoryEditorPage } from '../CategoryEditor/CategoryEditorPage';
 import { CategoryCreatorPage } from './CategoryCreator/CategoryCreatorPage';
+import { ParentItemCreatorPage } from '../InventoryManager/ParentItemCreator/ParentItemCreatorPage';
 import { Colors } from '../../../app/Theme';
 
 const Stack = createNativeStackNavigator<CategoriesAndParentItemsStackParamsList>()
@@ -14,6 +15,7 @@ export const CategoriesAndParentItemsStackNavigation = () => {
       screenOptions={{
         headerShadowVisible: false,
         headerShown: true,
+        animation: 'none',
         headerStyle: {
           backgroundColor: Colors.secondary,
         },
@@ -42,6 +44,11 @@ export const CategoriesAndParentItemsStackNavigation = () => {
         options={{ title: "Edytuj kategorię", animation: 'none' }}
         name="EDIT_CATEGORY"
         component={CategoryEditorPage}
+      />
+      <Stack.Screen
+        options={{ title: "Nowa grupa", animation: 'none' }}
+        name="ADD_PARENT_ITEM"
+        component={ParentItemCreatorPage}
       />
     </Stack.Navigator>
   )

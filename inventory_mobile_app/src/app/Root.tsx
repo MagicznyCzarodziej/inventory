@@ -81,6 +81,7 @@ const AppNavigator = (props: AppNavigatorProps) => {
       screenOptions={{
         headerShadowVisible: false,
         headerShown: false,
+        animation: 'none',
         headerStyle: {
           backgroundColor: Colors.secondary,
         },

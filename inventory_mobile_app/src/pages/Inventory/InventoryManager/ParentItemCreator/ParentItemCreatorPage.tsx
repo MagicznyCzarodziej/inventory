@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<InventoryStackParamList, 'ADD_PARENT_ITEM'>
 
 export const ParentItemCreatorPage = (props: Props) => {
   const { nameDraft } = props.route.params;
-  const { navigate } = props.navigation
+  const { goBack } = props.navigation
 
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [name, setName] = useState<string>(nameDraft ?? "");
@@ -34,7 +34,7 @@ export const ParentItemCreatorPage = (props: Props) => {
       categoryId
     })
 
-    navigate("INVENTORY_MANAGER")
+    goBack()
   }
 
   return (
