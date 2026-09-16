@@ -1,7 +1,6 @@
-import React, { ForwardedRef, forwardRef, ReactNode } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { ForwardedRef, forwardRef, ReactNode } from 'react';
+import { StyleSheet, Text, TextInput as NativeTextInput, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import { TextInput as NativeTextInput } from 'react-native';
 import Theme, { Colors } from '../app/Theme';
 
 interface Props {

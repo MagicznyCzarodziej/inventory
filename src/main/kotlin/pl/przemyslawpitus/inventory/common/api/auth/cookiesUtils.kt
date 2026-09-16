@@ -16,6 +16,17 @@ fun createSecureCookie(name: String, value: String) =
         .build()
         .toString()
 
+fun createExpiredCookie(name: String) =
+    ResponseCookie
+        .from(name, "")
+        .secure(false)
+        .secure(false)
+        .httpOnly(true)
+        .path("/")
+        .maxAge(0)
+        .build()
+        .toString()
+
 fun extractCookieFromRequest(request: HttpServletRequest, cookieName: String): String? {
     return request.cookies
         ?.find { it.name == cookieName }

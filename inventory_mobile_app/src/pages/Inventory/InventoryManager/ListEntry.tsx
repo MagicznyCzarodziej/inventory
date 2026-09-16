@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, Pressable } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Entry } from '../../../api/item/useGetItems';
 import { isParentEntry } from '../utils/itemsUtils';
-import {  Icon } from 'react-native-paper';
+import { Icon } from 'react-native-paper';
 import Theme, { Colors } from '../../../app/Theme';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { InventoryStackParamList } from '../../../navigation/navigationTypes';

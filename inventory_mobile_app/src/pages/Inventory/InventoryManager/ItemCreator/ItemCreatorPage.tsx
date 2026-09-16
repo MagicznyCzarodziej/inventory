@@ -17,7 +17,7 @@ import { useCategorySelect } from '../../utils/categoryUtils';
 import {
   InventoryStackParamList,
   InventoryTabsParamList,
-  RootStackParamList
+  RootStackParamList,
 } from '../../../../navigation/navigationTypes';
 
 type Props = CompositeScreenProps<

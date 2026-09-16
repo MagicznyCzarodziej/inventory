@@ -5,7 +5,8 @@ import { StyleSheet, View } from 'react-native';
 import { TextField } from '../../../../components/TextInput';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import {
-  CategoriesAndParentItemsStackParamsList, CategoriesAndParentItemsTabsParamsList,
+  CategoriesAndParentItemsStackParamsList,
+  CategoriesAndParentItemsTabsParamsList,
 } from '../../../../navigation/navigationTypes';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useCreateCategory } from '../../../../api/category/useCreateCategory';

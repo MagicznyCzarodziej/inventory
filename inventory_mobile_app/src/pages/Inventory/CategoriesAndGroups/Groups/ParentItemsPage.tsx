@@ -8,9 +8,7 @@ import { ParentItem } from '../../../../api/common';
 import { Colors } from '../../../../app/Theme';
 import { Button } from '../../../../components/Button';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
-import {
-  InventoryStackParamList
-} from '../../../../navigation/navigationTypes';
+import { InventoryStackParamList } from '../../../../navigation/navigationTypes';
 
 export const ParentItemsPage = () => {
   const { navigate } = useNavigation<NavigationProp<InventoryStackParamList>>()

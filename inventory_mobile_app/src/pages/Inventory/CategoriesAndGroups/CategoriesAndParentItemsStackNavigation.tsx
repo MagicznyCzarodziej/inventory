@@ -1,8 +1,6 @@
 import { ParentItemEditorPage } from '../ParentItemEditor/ParentItemEditorPage';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import {
-  CategoriesAndParentItemsTabsNavigation,
-} from './CategoriesAndParentItemsTabsNavigation';
+import { CategoriesAndParentItemsTabsNavigation } from './CategoriesAndParentItemsTabsNavigation';
 import { CategoriesAndParentItemsStackParamsList } from '../../../navigation/navigationTypes';
 import { CategoryEditorPage } from '../CategoryEditor/CategoryEditorPage';
 import { CategoryCreatorPage } from './CategoryCreator/CategoryCreatorPage';

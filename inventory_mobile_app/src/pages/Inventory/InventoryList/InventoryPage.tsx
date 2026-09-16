@@ -3,7 +3,7 @@ import { ItemEntry, useGetItems } from '../../../api/item/useGetItems';
 import { useEffect, useRef, useState } from 'react';
 import { flattenParentEntries, sortEntries } from './inventoryListUtils';
 import { ItemListEntry } from './ItemListEntry';
-import { IconButton, TextInput, } from 'react-native-paper';
+import { IconButton, TextInput } from 'react-native-paper';
 import Theme, { Colors } from '../../../app/Theme';
 import { Page } from '../../../layouts/Page';
 import { NavigationProp, useNavigation } from '@react-navigation/native';

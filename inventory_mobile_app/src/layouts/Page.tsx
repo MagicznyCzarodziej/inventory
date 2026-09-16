@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Colors } from '../app/Theme';
 import { ViewStyle } from 'react-native/Libraries/StyleSheet/StyleSheetTypes';
 

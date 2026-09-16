@@ -1,46 +1,69 @@
-import { CompositeNavigationProp, NavigationProp, useNavigation } from '@react-navigation/native';
-import { Text } from 'react-native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Drawer as PaperDrawer } from 'react-native-paper';
-import { InventoryStackParamList, InventoryTabsParamList, RootStackParamList } from '../../navigation/navigationTypes';
+import { RootStackParamList } from '../../navigation/navigationTypes';
 import { Colors } from '../../app/Theme';
+import { useAuth } from '../../context/AuthContext';
 
 interface Props {
-  closeDrawer: () => void
+  closeDrawer: () => void;
 }
-
-type Navigation =
-  CompositeNavigationProp<
-    CompositeNavigationProp<
-      NavigationProp<RootStackParamList, 'INVENTORY'>,
-      NavigationProp<InventoryTabsParamList, 'INVENTORY_NAVIGATION'>
-    >,
-    NavigationProp<InventoryStackParamList, 'INVENTORY_LIST'>
-  >
 
 export const Drawer = (props: Props) => {
   const { closeDrawer } = props;
-  const { navigate } = useNavigation<Navigation>()
+  const { navigate } = useNavigation<NavigationProp<RootStackParamList>>();
+  const { isAuthenticated, username } = useAuth();
 
   return <SafeAreaView>
     <Text
       style={{
         paddingHorizontal: 24,
-        marginBottom: 32,
+        marginBottom: 16,
         fontSize: 32,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: Colors.text.main,
-      }}>
+      }}
+    >
       Inventory
     </Text>
+    {isAuthenticated && username && (
+      <View
+        style={{
+          paddingHorizontal: 24,
+          marginBottom: 16,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: Colors.background,
+            borderRadius: 16,
+            width: 32,
+            height: 32,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight: 10,
+          }}
+        >
+          <Text style={{ fontSize: 16, color: Colors.primary, fontWeight: 'bold' }}>
+            {username.charAt(0).toUpperCase()}
+          </Text>
+        </View>
+        <Text style={{ color: Colors.text.gray, fontSize: 14 }}>
+          {username}
+        </Text>
+      </View>
+    )}
     <PaperDrawer.Section>
       <PaperDrawer.Item
-        label="Konto"
+        label={isAuthenticated ? 'Konto' : 'Zaloguj'}
         icon="account"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate("ACCOUNT")
-          closeDrawer()
+          navigate('ACCOUNT');
+          closeDrawer();
         }}
       />
       <PaperDrawer.Item
@@ -48,8 +71,8 @@ export const Drawer = (props: Props) => {
         icon="cog"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate("SETTINGS")
-          closeDrawer()
+          navigate('SETTINGS');
+          closeDrawer();
         }}
       />
     </PaperDrawer.Section>
@@ -60,8 +83,11 @@ export const Drawer = (props: Props) => {
         icon="clipboard-list-outline"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate("INVENTORY_LIST")
-          closeDrawer()
+          navigate('INVENTORY', {
+            screen: 'INVENTORY_NAVIGATION',
+            params: { screen: 'INVENTORY_LIST' },
+          });
+          closeDrawer();
         }}
       />
       <PaperDrawer.Item
@@ -69,8 +95,8 @@ export const Drawer = (props: Props) => {
         icon="basket-outline"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate("SHOPPING_LIST")
-          closeDrawer()
+          navigate('INVENTORY', { screen: 'SHOPPING_LIST' });
+          closeDrawer();
         }}
       />
       <PaperDrawer.Item
@@ -78,17 +104,17 @@ export const Drawer = (props: Props) => {
         icon="mirror-rectangle"
         theme={DRAWER_ITEM_THEME}
         onPress={() => {
-          navigate("SPONGES")
-          closeDrawer()
+          navigate('SPONGES');
+          closeDrawer();
         }}
       />
     </PaperDrawer.Section>
-  </SafeAreaView>
-}
+  </SafeAreaView>;
+};
 
 const DRAWER_ITEM_THEME = {
   colors: {
     onSurfaceVariant: Colors.text.main, // Makes text white
   },
-  roundness: 0
-}
+  roundness: 0,
+};
